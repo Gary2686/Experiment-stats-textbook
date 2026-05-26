@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心理學實驗設計與分析 · 互動教材</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1a2e;
+  --paper: #f8f4ef;
+  --cream: #fdf8f2;
+  --accent: #c0392b;
+  --accent2: #2980b9;
+  --gold: #d4a017;
+  --teal: #1a6b6e;
+  --muted: #6b7280;
+  --border: #d5c9be;
+  --card-bg: #ffffff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+/* HERO */
+.index-hero {
+  background: linear-gradient(135deg, #1a1a2e 0%, #2c1810 100%);
+  color: var(--paper);
+  padding: 100px 40px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.index-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(212,160,23,0.1) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(192,57,43,0.08) 0%, transparent 40%),
+    repeating-linear-gradient(-55deg, transparent, transparent 40px,
+      rgba(255,255,255,0.02) 40px, rgba(255,255,255,0.02) 41px);
+}
+.index-hero > * { position: relative; z-index: 1; }
+.hero-eyebrow {
+  color: var(--gold); font-size: 13px; letter-spacing: 4px;
+  text-transform: uppercase; margin-bottom: 16px; font-weight: 500;
+}
+.index-hero h1 {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(34px, 6vw, 64px);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 24px;
+}
+.index-hero h1 .title-accent { color: var(--gold); }
+.index-hero .subtitle {
+  font-size: 18px;
+  color: rgba(248,244,239,0.75);
+  max-width: 620px;
+  margin: 0 auto 16px;
+  line-height: 1.7;
+}
+.index-hero .author {
+  font-size: 14px;
+  color: rgba(248,244,239,0.45);
+  margin-bottom: 36px;
+  font-style: italic;
+}
+.stat-row {
+  display: flex; gap: 40px; justify-content: center;
+  flex-wrap: wrap; margin-top: 32px;
+}
+.stat { text-align: center; }
+.stat-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--gold);
+  display: block;
+  line-height: 1;
+}
+.stat-lab {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: rgba(248,244,239,0.5);
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+
+/* LAYOUT */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+.intro-section {
+  background: var(--cream);
+  padding: 80px 0;
+}
+.intro-section h2 {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.intro-section .lead {
+  font-size: 16px;
+  text-align: center;
+  color: var(--muted);
+  max-width: 640px;
+  margin: 0 auto 48px;
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin: 40px 0;
+}
+.feature { text-align: center; padding: 24px 20px; }
+.feature-icon { font-size: 40px; margin-bottom: 12px; }
+.feature h4 { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+.feature p { font-size: 13.5px; color: var(--muted); line-height: 1.7; }
+
+.chapters-section { padding: 80px 0; }
+.chapters-section h2 {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.chapters-section .lead {
+  font-size: 16px;
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 40px;
+}
+.progress-info {
+  text-align: center;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 32px;
+}
+.progress-info strong { color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+
+/* PROGRESS BAR */
+.overall-progress {
+  max-width: 480px;
+  margin: 0 auto 48px;
+  background: var(--border);
+  border-radius: 100px;
+  height: 8px;
+  overflow: hidden;
+}
+.overall-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--accent));
+  border-radius: 100px;
+  transition: width 0.8s ease;
+}
+
+/* CHAPTER CARDS */
+.ch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin: 40px 0;
+}
+.ch-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 28px;
+  text-decoration: none;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+.ch-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 4px;
+  background: var(--gold);
+}
+.ch-card.unavailable::before { background: var(--border); }
+.ch-card.unavailable {
+  opacity: 0.65;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.ch-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+  border-color: var(--gold);
+}
+.ch-card-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ch-card.unavailable .ch-card-num { color: var(--muted); }
+.ch-badge {
+  font-size: 10px;
+  padding: 2px 10px;
+  border-radius: 100px;
+  letter-spacing: 1px;
+}
+.ch-badge.ready {
+  background: rgba(39,174,96,0.15);
+  color: #27ae60;
+}
+.ch-badge.coming {
+  background: rgba(107,114,128,0.15);
+  color: var(--muted);
+}
+.ch-card-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 16px;
+}
+.ch-card-desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 20px;
+  flex: 1;
+}
+.ch-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.ch-card-tag {
+  font-size: 11px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  border-radius: 12px;
+  color: var(--muted);
+}
+.ch-card-cta {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ch-card.unavailable .ch-card-cta { color: var(--muted); }
+.ch-card:hover .ch-card-cta { gap: 12px; }
+
+/* FOOTER */
+footer.page-footer {
+  background: var(--ink); color: rgba(248,244,239,0.5);
+  text-align: center; padding: 32px; font-size: 13px;
+}
+footer.page-footer a { color: var(--gold); text-decoration: none; }
+footer.page-footer a:hover { text-decoration: underline; }
+
+@media (max-width: 600px) {
+  .index-hero { padding: 60px 20px 50px; }
+  .container { padding: 0 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="index-hero">
+  <div class="hero-eyebrow">心理學統計教材</div>
+  <h1>實驗設計與分析<br><span class="title-accent">互動式教材</span></h1>
+  <p class="subtitle">從實驗設計的基礎概念，到相關、F 檢定，再到簡單線性迴歸——一套持續成長的心理學統計入門教材。</p>
+  <p class="author">基於 Abdi, Edelman, Valentin & Dowling 著《Experimental Design and Analysis for Psychology》</p>
+  
+  <div class="stat-row">
+    <div class="stat">
+      <span class="stat-num" id="statTotal">4</span>
+      <div class="stat-lab">規劃章節</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num" id="statAvail">1</span>
+      <div class="stat-lab">已上架</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num">∞</span>
+      <div class="stat-lab">免費學習</div>
+    </div>
+  </div>
+</div>
+
+<!-- 特色 -->
+<div class="intro-section">
+  <div class="container">
+    <h2>本教材特色</h2>
+    <p class="lead">用直觀的設計與互動性，把抽象的統計概念變成清晰可見的學習體驗</p>
+    
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-icon">🎯</div>
+        <h4>循序漸進</h4>
+        <p>從變數定義到迴歸分析，概念逐步建構</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🎛️</div>
+        <h4>互動式圖表</h4>
+        <p>調整參數即時觀察結果</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📝</div>
+        <h4>逐步推導</h4>
+        <p>每個公式都有完整計算範例</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">✅</div>
+        <h4>即時測驗</h4>
+        <p>每章結尾互動測驗，立即檢驗學習成果</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 章節區（動態渲染）-->
+<div class="chapters-section">
+  <div class="container">
+    <h2>章節列表</h2>
+    <p class="lead">隨著時間推進，更多章節會陸續上架</p>
+    <div class="progress-info">
+      學習進度：<strong id="progressText">1 / 4</strong> 章節已上架
+    </div>
+    <div class="overall-progress">
+      <div class="overall-progress-fill" id="progressFill" style="width: 0%;"></div>
+    </div>
+    
+    <div class="ch-grid" id="chGrid">
+      <!-- 章節卡片由 JS 動態產生 -->
+    </div>
+  </div>
+</div>
+
+<footer class="page-footer">
+  教材製作基於：Abdi, H., Edelman, B., Valentin, D. &amp; Dowling, W. J. (2009).
+  <em>Experimental Design and Analysis for Psychology</em>. Oxford University Press.<br><br>
+  💡 想新增章節？編輯 <code style="color:var(--gold)">chapters.js</code> 即可。
+</footer>
+
+<!-- 動態載入章節資料 -->
+<script src="chapters.js"></script>
+<script>
+(function() {
+  const data = window.chaptersData || [];
+  const grid = document.getElementById('chGrid');
+  const totalEl = document.getElementById('statTotal');
+  const availEl = document.getElementById('statAvail');
+  const progressText = document.getElementById('progressText');
+  const progressFill = document.getElementById('progressFill');
+  
+  const total = data.length;
+  const available = data.filter(c => c.available).length;
+  
+  totalEl.textContent = total;
+  availEl.textContent = available;
+  progressText.textContent = `${available} / ${total}`;
+  
+  // 動畫進度條
+  setTimeout(() => {
+    progressFill.style.width = (available / total * 100) + '%';
+  }, 200);
+  
+  // 渲染章節卡片
+  data.forEach(ch => {
+    const card = document.createElement(ch.available ? 'a' : 'div');
+    card.className = 'ch-card' + (ch.available ? '' : ' unavailable');
+    if (ch.available) {
+      card.href = ch.file;
+    }
+    
+    const tagsHtml = ch.tags.map(t => `<span class="ch-card-tag">${t}</span>`).join('');
+    const badge = ch.available 
+      ? '<span class="ch-badge ready">✓ 已上架</span>'
+      : '<span class="ch-badge coming">敬請期待</span>';
+    const cta = ch.available
+      ? '開始閱讀 →'
+      : '製作中...';
+    
+    card.innerHTML = `
+      <div class="ch-card-num">
+        <span>CHAPTER ${ch.num}</span>
+        ${badge}
+      </div>
+      <div class="ch-card-title">${ch.title}</div>
+      <div class="ch-card-desc">${ch.desc}</div>
+      <div class="ch-card-tags">${tagsHtml}</div>
+      <div class="ch-card-cta">${cta}</div>
+    `;
+    
+    grid.appendChild(card);
+  });
+})();
+</script>
+</body>
+</html>
