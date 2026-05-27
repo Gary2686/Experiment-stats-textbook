@@ -17,21 +17,21 @@ window.chaptersData = [
     title: "實驗設計導論",
     desc: "什麼是自變數、依變數？如何避免混淆變數？內部效度 vs 外部效度，以及隨機分派的重要性。",
     tags: ["自變數", "依變數", "隨機化", "效度"],
-    available: false
+    available: true
   },
   {
     num: "02", file: "ch2.html",
     title: "相關分析",
     desc: "Pearson 相關係數的意義與計算。從散佈圖到交叉乘積，理解兩變數之間的線性關係。",
     tags: ["散佈圖", "共變數", "相關係數 r", "Z 分數"],
-    available: false
+    available: true
   },
   {
     num: "03", file: "ch3.html",
     title: "統計檢定：F 檢定",
     desc: "虛無假設、顯著水準、Type I/II 錯誤。Fisher 的 F 分配、臨界值與信賴區間的完整介紹。",
     tags: ["H₀ / H₁", "α 水準", "F 分配", "信賴區間"],
-    available: false
+    available: true
   },
   {
     num: "04", file: "ch4.html",
