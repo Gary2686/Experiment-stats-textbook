@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一章：實驗設計導論 | 心理學統計教材</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a2e;--paper:#f8f4ef;--cream:#fdf8f2;--accent:#c0392b;--accent2:#2980b9;--gold:#d4a017;--teal:#1a6b6e;--muted:#6b7280;--border:#d5c9be;--card-bg:#fff;--formula-bg:#1a1a2e;--formula-text:#f0e6d3;--highlight:#fff3cd}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.8}
+.hero{background:var(--ink);color:var(--paper);padding:80px 40px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(255,255,255,.02) 40px,rgba(255,255,255,.02) 41px)}
+.hero-eyebrow{font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500}
+.hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(28px,5vw,52px);font-weight:700;line-height:1.2;margin-bottom:20px}
+.hero h1 span{color:var(--gold)}
+.hero-sub{font-size:15px;color:rgba(248,244,239,.65);max-width:560px;margin:0 auto 40px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.tag{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 16px;font-size:13px;color:var(--paper)}
+nav{position:sticky;top:0;z-index:100;background:rgba(26,26,46,.97);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);padding:0 40px;display:flex;gap:0;overflow-x:auto}
+nav a{display:block;padding:16px 20px;color:rgba(248,244,239,.65);text-decoration:none;font-size:13px;font-weight:500;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+nav a:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+section{padding:64px 0;border-bottom:1px solid var(--border)}
+section:last-of-type{border-bottom:none}
+.section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:36px}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.2);border-radius:4px;padding:3px 8px;flex-shrink:0}
+.section-header h2{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:700;color:var(--ink)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:32px}
+.concept-card{background:var(--card-bg);border-radius:12px;padding:24px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.06);transition:transform .2s,box-shadow .2s}
+.concept-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.concept-icon{font-size:28px;margin-bottom:12px}
+.concept-card h3{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:10px}
+.concept-card p{font-size:14px;color:var(--muted);line-height:1.7}
+.concept-card p+p{margin-top:8px}
+.highlight-box{background:var(--highlight);border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#6b4c00}
+.warn-box{background:rgba(192,57,43,.06);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#7a2a1f}
+.formula-box{background:var(--formula-bg);border-radius:12px;padding:28px 32px;margin:24px 0;position:relative;overflow:hidden}
+.formula-box::before{content:'CONCEPT';position:absolute;top:12px;right:16px;font-size:10px;letter-spacing:3px;color:rgba(255,255,255,.2);font-family:'JetBrains Mono',monospace}
+.formula-box .formula-label{font-size:12px;color:var(--gold);margin-bottom:10px;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.formula-box .formula-main{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--formula-text);font-weight:600;margin-bottom:12px}
+.formula-box .formula-desc{font-size:13px;color:rgba(240,230,211,.6);line-height:1.7}
+.formula-box .formula-desc strong{color:var(--gold)}
+.data-table-wrap{overflow-x:auto;margin:24px 0;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--card-bg)}
+thead tr{background:var(--ink)}
+thead th{color:var(--paper);padding:12px 16px;text-align:left;font-weight:600;font-size:13px;letter-spacing:.5px}
+tbody tr:nth-child(even){background:var(--cream)}
+tbody td{padding:10px 16px;border-bottom:1px solid var(--border);font-size:13.5px;vertical-align:top}
+.prose p{margin-bottom:16px;font-size:15px;line-height:1.85;color:#333}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--ink)}
+.prose em{color:var(--accent);font-style:normal;font-weight:500}
+.notions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0}
+.notion-item{background:var(--ink);color:var(--paper);border-radius:8px;padding:14px 18px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px}
+.notion-item::before{content:'◆';color:var(--gold);font-size:10px;flex-shrink:0}
+.quiz-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:20px;transition:border-color .2s}
+.quiz-q{font-weight:700;font-size:15px;margin-bottom:16px;line-height:1.6}
+.quiz-q span{display:inline-block;width:26px;height:26px;background:var(--ink);color:var(--gold);border-radius:50%;font-size:13px;text-align:center;line-height:26px;margin-right:8px;font-family:'JetBrains Mono',monospace}
+.quiz-opts{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:12px 18px;cursor:pointer;font-size:14px;transition:all .2s;text-align:left;font-family:'Noto Sans TC',sans-serif}
+.quiz-opt:hover{border-color:var(--accent2);background:rgba(41,128,185,.05)}
+.quiz-opt.selected-correct{border-color:#27ae60;background:rgba(39,174,96,.1);color:#1e8449;font-weight:600}
+.quiz-opt.selected-wrong{border-color:var(--accent);background:rgba(192,57,43,.1);color:var(--accent)}
+.quiz-feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:13.5px;display:none;line-height:1.6}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:rgba(39,174,96,.1);color:#1e8449;border:1px solid rgba(39,174,96,.3)}
+.quiz-feedback.wrong{background:rgba(192,57,43,.08);color:#c0392b;border:1px solid rgba(192,57,43,.2)}
+.btn{display:inline-block;padding:14px 32px;background:var(--ink);color:var(--paper);border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.btn:hover{background:var(--accent);transform:translateY(-2px)}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--accent);color:#fff}
+footer{background:var(--ink);color:rgba(248,244,239,.5);text-align:center;padding:32px;font-size:13px}
+footer a{color:var(--gold);text-decoration:none}
+footer a:hover{text-decoration:underline}
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);z-index:9999;width:0%;transition:width .1s}
+@media(max-width:600px){.hero{padding:48px 20px 40px}nav{padding:0 16px}.container{padding:0 16px}section{padding:48px 0}}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<div class="hero">
+  <div class="hero-eyebrow">第一章 · Chapter 1</div>
+  <h1>實驗設計<span>導論</span><br>Introduction to Experimental Design</h1>
+  <p class="hero-sub">在計算統計值之前，先了解：什麼是實驗？什麼是變數？如何避免錯誤的研究設計？</p>
+  <div class="hero-tags">
+    <span class="tag">🧪 實驗思維</span>
+    <span class="tag">📐 自變數 / 依變數</span>
+    <span class="tag">🎲 隨機分派</span>
+    <span class="tag">⚠️ 混淆變數</span>
+    <span class="tag">✅ 內外效度</span>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" style="color:var(--gold)">← 回首頁</a>
+  <a href="#intro">§1 什麼是實驗</a>
+  <a href="#variables">§2 變數</a>
+  <a href="#random">§3 隨機化</a>
+  <a href="#confound">§4 混淆變數</a>
+  <a href="#classif">§5 分類 vs 操弄</a>
+  <a href="#validity">§6 效度</a>
+  <a href="#dv">§7 好的依變數</a>
+  <a href="#subjects">§8 受試者</a>
+  <a href="#quiz">§9 測驗</a>
+</nav>
+
+<div class="container">
+
+<section id="intro">
+<div class="section-header"><span class="section-num">§1</span><h2>實驗：探索因果關係的最佳工具</h2></div>
+<div class="prose">
+<p><strong>心理學</strong>研究行為與心智，而<em>實驗</em>是發現「<strong>因果關係</strong>」最有效的工具。實驗的基本原則很簡單：</p>
+</div>
+<div class="highlight-box">🎯 <strong>實驗的核心邏輯</strong><br>把受試者分成數組，<em>除了實驗操弄之外</em>，所有條件都保持相同。觀察到的行為差異，必定來自實驗操弄本身。</div>
+<div class="concept-grid">
+<div class="concept-card"><div class="concept-icon">📊</div><h3>描述統計</h3><p>Descriptive Statistics 的功能是<strong>正確呈現研究結果</strong>，從一堆數字中看出規律與重點。</p></div>
+<div class="concept-card"><div class="concept-icon">🎯</div><h3>推論統計</h3><p>Inferential Statistics 的功能是<strong>評估結論的可信度</strong>，判斷觀察到的差異是否真實存在。</p></div>
+</div>
+<div class="warn-box">⚠️ <strong>顯著性（Significance）≠ 重要性（Relevance）</strong><br>當樣本足夠大，<em>即使微小的差異也會「顯著」</em>。例如：閱讀一個字的時間 500 ms，A 組 498 ms vs B 組 502 ms 在大樣本下會「統計顯著」，但這 4 ms 的差異實際上毫無意義（讀完 300 頁的書才差幾分鐘）。<br><br><strong>學會問：「這個差異有實際意義嗎？」</strong></div>
+</section>
+
+<section id="variables">
+<div class="section-header"><span class="section-num">§2</span><h2>自變數與依變數</h2></div>
+<div class="prose"><p>實驗設計的核心是兩種變數的關係。讓我們從一個例子開始：</p></div>
+<div class="concept-card" style="border-left:4px solid var(--accent2);margin-bottom:24px">
+<h3>📚 範例：記憶實驗</h3>
+<p style="margin-top:8px">假設：「<em>使用心像（imagery）來記憶單字配對，效果會優於死記硬背</em>」。</p>
+<p>研究設計：A 組使用心像策略 vs B 組使用死記硬背，比較兩組的回憶成績。</p>
+</div>
+<div class="concept-grid">
+<div class="concept-card"><div class="concept-icon">🎛️</div><h3>自變數 I.V.<br>(Independent Variable)</h3><p><strong>研究者操弄的變數</strong>，代表「<em>推測的原因</em>」。上例中是「<strong>編碼策略</strong>」，有兩個水準。</p><p style="margin-top:8px">統計上稱為「<strong>因子（Factor）</strong>」。</p></div>
+<div class="concept-card"><div class="concept-icon">📏</div><h3>依變數 D.V.<br>(Dependent Variable)</h3><p><strong>研究者測量的變數</strong>，代表「<em>觀察到的效果</em>」。上例中是「<strong>回憶成績</strong>」。</p><p style="margin-top:8px">叫「依」變數，是因為它「依賴於」自變數而變化。</p></div>
+</div>
+<div class="formula-box">
+<div class="formula-label">研究假設的標準寫法</div>
+<div class="formula-main">依變數 = f (自變數)</div>
+<div class="formula-desc">論文標題常寫成：「<strong>處理時間（D.V.）</strong>作為<strong>視覺刺激數量（I.V.）</strong>的函數」</div>
+</div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">📋 經典實驗範例</h3>
+<div class="data-table-wrap"><table>
+<thead><tr><th>研究假設</th><th>自變數（I.V.）</th><th>依變數（D.V.）</th></tr></thead>
+<tbody>
+<tr><td>跟讀作業在兩個聲音相似時較困難</td><td>聲音相似度</td><td>跟讀錯誤次數</td></tr>
+<tr><td>練習越多，記得越多</td><td>練習次數（0,8,16,32,64）</td><td>24 小時後重新學習所需試驗次數</td></tr>
+<tr><td>西洋棋大師對棋盤的記憶優於新手</td><td>棋手水準（新手 → 大師）</td><td>5 分鐘後正確擺放的棋子數</td></tr>
+<tr><td>巴比妥酸鹽會延長反應時間</td><td>是否服用藥物</td><td>反應時間（毫秒）</td></tr>
+</tbody>
+</table></div>
+<div class="highlight-box">💡 自變數可以有<strong>多個水準</strong>。例如「聲音相似度」可以有三個水準：相同聲音、兩個男聲、一男一女。</div>
+</section>
+
+<section id="random">
+<div class="section-header"><span class="section-num">§3</span><h2>隨機分派（Randomization）</h2></div>
+<div class="prose"><p>受試者「<strong>如何被分派到不同組別</strong>」是關鍵。理想做法是<em>隨機分派</em>。</p></div>
+<div class="warn-box">⚠️ <strong>反面教材：非隨機分派的後果</strong><br>假設記憶實驗中，研究者把「最早來實驗室的人」分到 A 組（8 次練習），「較晚來的人」分到 B 組（64 次練習）。<br><br>問題：早到的人可能<em>更積極或更焦慮</em>，這些特質會與自變數效果<strong>混在一起</strong>，無法純粹歸因於練習次數。</div>
+<div class="concept-grid">
+<div class="concept-card"><div class="concept-icon">🎲</div><h3>為什麼要隨機？</h3><p>1. 避免實驗組與受試者特質的<strong>系統性配對</strong></p><p>2. 統計分析方法的<strong>數學前提</strong>就是隨機分派</p><p>3. 即使各組仍有差異，那也是<strong>隨機差異而非系統差異</strong></p></div>
+<div class="concept-card"><div class="concept-icon">📋</div><h3>怎麼做隨機分派？</h3><p>1. 紙條放帽子裡抽</p><p>2. 受試者編號 + 隨機數表</p><p>3. 電腦隨機數產生器</p><p>關鍵：必須在<strong>實驗條件確定前</strong>完成</p></div>
+</div>
+</section>
+
+<section id="confound">
+<div class="section-header"><span class="section-num">§4</span><h2>混淆變數（Confounded Variables）</h2></div>
+<div class="prose"><p><strong>混淆變數</strong>是實驗設計的最大陷阱：當兩個自變數的水準<em>系統性地連動</em>，就無法判斷效果來自哪一個。</p></div>
+<div class="formula-box">
+<div class="formula-label">混淆變數的定義</div>
+<div class="formula-main">當 IV-1 改變時，IV-2 必然也跟著改變</div>
+<div class="formula-desc">當兩變數<strong>同步變化</strong>，無法分離各自效果，實驗無法解釋。<br>正面效果 → 不知道誰造成的　負面效果 → 可能互相抵消</div>
+</div>
+<div class="concept-card" style="border-left:4px solid var(--accent);margin:24px 0">
+<h3>🚨 經典案例：教學法比較</h3>
+<p style="margin-top:8px">研究者比較三種數學教學法，每種由<strong>不同的老師</strong>教一個班級。學期末比較成績。</p>
+<p><strong>問題</strong>：能說某種教學法比較好嗎？❌</p>
+<p>三位老師的「個人特質、教學熱忱、與學生互動」本來就不同，這些因素與「教學法」<em>完全混淆</em>。差異可能來自<strong>老師</strong>、<strong>方法</strong>，或<strong>兩者交互作用</strong>。</p>
+</div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">🔬 著名的「執行猴實驗」（Brady, 1958）</h3>
+<div class="prose">
+<p>研究者把猴子兩兩配對，定期電擊。「執行猴」可按按鈕避免電擊。結果：執行猴<em>潰瘍更多</em>，似乎證明「責任 → 壓力」。</p>
+<p><strong>問題</strong>：Brady 用「學按鈕的速度最快」來選執行猴。所以「壓力強度」與「學習速度」<em>混淆了</em>。後來 Weiss (1972) 指出，可能是學習快的猴子本身就更容易潰瘍。<strong>實驗結論不可解釋！</strong></p>
+</div>
+<div class="highlight-box">🔍 <strong>如何發現混淆？</strong> 透過<strong>重複實驗（Replication）</strong>。如果他人無法複製出相同結果，可能就是有未發現的混淆變數作祟。Hawthorne 效應、Pygmalion 效應、雙盲設計都是防範混淆的工具。</div>
+</section>
+
+<section id="classif">
+<div class="section-header"><span class="section-num">§5</span><h2>分類變數 vs 操弄變數</h2></div>
+<div class="prose"><p>並非所有自變數都能被「操弄」。有些變數是受試者<strong>原本就具備的特徵</strong>。</p></div>
+<div class="concept-grid">
+<div class="concept-card" style="border-top:4px solid var(--accent2)"><div class="concept-icon">🔬</div><h3>操弄變數<br>(Manipulated I.V.)</h3><p><strong>研究者主動控制</strong>，可隨機分派。</p><p>範例：藥物劑量、訊息呈現速度、燈光亮度、練習次數</p><p style="margin-top:8px;color:var(--accent2);font-weight:600">✓ 可下「因果」結論</p></div>
+<div class="concept-card" style="border-top:4px solid var(--gold)"><div class="concept-icon">🏷️</div><h3>分類（標籤）變數<br>(Classificatory I.V.)</h3><p><strong>受試者天生具有</strong>，無法隨機分派。</p><p>範例：性別、年齡、智力、社經地位、人格</p><p style="margin-top:8px;color:var(--gold);font-weight:600">⚠ 只能說「相關」，不能說「因果」</p></div>
+</div>
+<div class="warn-box">🚫 <strong>為什麼分類變數不能下因果？</strong><br>受試者「<em>已帶著標籤</em>」進入實驗。例如比較男女空間能力，使用「生理性別」這個分類變數，但真正影響結果的可能是「<em>社會化經驗、教育背景、激素</em>」⋯⋯這些因素全與「生理性別」混淆。<br><br>使用分類變數的研究有時稱為「<strong>準實驗（Quasi-experiment）</strong>」。</div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">🌉 著名研究：搖晃的吊橋（Dutton &amp; Aron, 1974）</h3>
+<div class="prose">
+<p>研究者想驗證「<em>生理喚醒會被誤解為性吸引</em>」。他們找了兩座橋：</p>
+<p><strong>實驗組</strong>：高空搖晃吊橋（恐懼喚醒）　<strong>控制組</strong>：低空堅固木橋</p>
+<p>美女實驗助理在橋的另一端發問卷、留電話。一週後計算<em>有多少男性打電話</em>。</p>
+<p>結果：吊橋組 9/18 打電話，控制組 2/16。差異<strong>顯著</strong>！</p>
+<p>但「走哪座橋」是<em>自我選擇</em>（分類變數）。為了排除「冒險者特質」混淆，研究者後續在實驗室用「電擊強度」（操弄變數）隨機分派，得到相同結果，才能下因果結論。</p>
+</div>
+<div class="highlight-box">💡 <strong>聚斂操作（Converging Operations）</strong>：用多種方法（操弄 + 分類變數，實驗室 + 現場）驗證同一假設，結論一致時可信度大幅提升。</div>
+</section>
+
+<section id="validity">
+<div class="section-header"><span class="section-num">§6</span><h2>內部效度 vs 外部效度</h2></div>
+<div class="prose"><p>好的實驗應該兼顧兩種「效度」，但兩者通常需要<em>取捨</em>。</p></div>
+<div class="concept-grid">
+<div class="concept-card" style="border-top:4px solid var(--accent)"><div class="concept-icon">🎯</div><h3>內部效度<br>Internal Validity</h3><p><strong>結果能否清楚歸因於自變數？</strong></p><p>高 = 實驗誤差小、混淆少、隨機分派完善</p><p style="margin-top:8px"><em>影響因素</em>：控制其他變數、消除混淆</p></div>
+<div class="concept-card" style="border-top:4px solid var(--teal)"><div class="concept-icon">🌍</div><h3>外部效度<br>External / Ecological Validity</h3><p><strong>結果能否推廣到實驗室外？</strong></p><p>高 = 接近真實情境、可推廣到其他人群</p><p style="margin-top:8px"><em>影響因素</em>：自然情境、多元受試者、實用變數</p></div>
+</div>
+<div class="formula-box">
+<div class="formula-label">內外效度的取捨</div>
+<div class="formula-main">高內部效度 ⇄ 高外部效度</div>
+<div class="formula-desc"><strong>單因子設計</strong>：簡單，控制好 → 內部效度高，但情境單純 → 外部效度低<br><strong>多因子設計</strong>：複雜，接近真實 → 外部效度高，但難分離各變數 → 內部效度可能低</div>
+</div>
+</section>
+
+<section id="dv">
+<div class="section-header"><span class="section-num">§7</span><h2>什麼是「好的依變數」？</h2></div>
+<div class="concept-grid">
+<div class="concept-card"><div class="concept-icon">🎯</div><h3>有效性 Validity</h3><p>真的測到你想測的東西。測「智力」就要真的反映認知能力，而非只測語言流利度。</p></div>
+<div class="concept-card"><div class="concept-icon">📡</div><h3>敏感性 Sensitivity</h3><p>能清楚反映自變數效果。測「問題難度」時，「解題時間」比「是否解出」更敏感。</p></div>
+<div class="concept-card"><div class="concept-icon">🔁</div><h3>可操作化 Operationalizable</h3><p>容易測量、定義清楚、可被複製。「反應時間」很容易，「兒童遊戲中的內向程度」很困難。</p></div>
+<div class="concept-card"><div class="concept-icon">⚖️</div><h3>可靠性 Reliability</h3><p>測量誤差小，多次測量結果穩定一致。可靠性高 → 直接提升內部效度。</p></div>
+</div>
+<div class="warn-box">🔬 <strong>分離現象（Dissociation）</strong><br>不同依變數測同一概念，卻給出不同結論。例如「記憶」可用<em>明示測驗</em>（回憶）或<em>內隱測驗</em>（促發）測量。「注意力」操弄會提升明示記憶，但對內隱記憶沒影響——這稱為<em>分離現象</em>，提示「記憶」並非單一系統，而是有多個成分。</div>
+</section>
+
+<section id="subjects">
+<div class="section-header"><span class="section-num">§8</span><h2>受試者的選擇與代表性</h2></div>
+<div class="prose"><p>實驗的目標通常不是了解這些<em>特定受試者</em>，而是推廣到「<strong>受試者代表的母群體</strong>」。但要做到真正的隨機取樣幾乎不可能。</p></div>
+<div class="highlight-box">📊 <strong>實際做法</strong>：心理學研究通常使用「<em>方便樣本</em>」（多為大學生）。雖不完美，但只要：(1) 研究的是<em>基本心理機制</em>、(2) 受試者<em>隨機分派</em>、(3) 各條件之間的<em>差異</em>才是焦點，結論仍有科學價值。</div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">⚠️ 自願者的偏誤</h3>
+<div class="prose"><p>Rosenthal &amp; Rosnow (1976) 整理出「典型自願者」的特徵：</p></div>
+<div class="notions-grid">
+<div class="notion-item">教育程度較高</div>
+<div class="notion-item">較需要他人認可</div>
+<div class="notion-item">智力測驗分數較高</div>
+<div class="notion-item">較傾向權威性格</div>
+<div class="notion-item">較容易出現心理不穩定徵兆</div>
+<div class="notion-item">較可能符合研究者期望</div>
+</div>
+<div class="warn-box" style="margin-top:24px">🚨 <strong>結論</strong>：自願者本身就是<em>混淆變數</em>。當你看到一個研究的結論時，要問：「這些受試者代表誰？」、「換成其他人結論還會一樣嗎？」</div>
+</section>
+
+<section>
+<div class="section-header"><span class="section-num">§K</span><h2>本章關鍵概念</h2></div>
+<div class="notions-grid">
+<div class="notion-item">自變數（I.V.）</div>
+<div class="notion-item">依變數（D.V.）</div>
+<div class="notion-item">實驗因子</div>
+<div class="notion-item">操弄變數</div>
+<div class="notion-item">分類變數</div>
+<div class="notion-item">混淆變數</div>
+<div class="notion-item">準實驗</div>
+<div class="notion-item">隨機分派</div>
+<div class="notion-item">實驗誤差</div>
+<div class="notion-item">操作型定義</div>
+<div class="notion-item">聚斂操作</div>
+<div class="notion-item">內部效度</div>
+<div class="notion-item">外部效度</div>
+<div class="notion-item">敏感性 / 有效性 / 可靠性</div>
+</div>
+</section>
+
+<section id="quiz">
+<div class="section-header"><span class="section-num">§Q</span><h2>複習測驗</h2></div>
+<div id="quizContainer"></div>
+<div style="text-align:center;margin-top:32px">
+<button onclick="resetQuiz()" class="btn">🔄 重新作答</button>
+<div id="quizScore" style="margin-top:16px;font-size:16px;font-weight:700;color:var(--teal);display:none"></div>
+</div>
+</section>
+
+<section style="text-align:center;border-bottom:none">
+<h2 style="font-family:'Noto Serif TC',serif;margin-bottom:16px">準備好了嗎？</h2>
+<p style="color:var(--muted);margin-bottom:24px">下一章學習如何用數字量化兩個變數之間的關係</p>
+<a href="ch2.html" class="btn btn-gold">前往第二章：相關分析 →</a>
+</section>
+
+</div>
+
+<footer>
+<a href="index.html">← 回首頁</a>  &nbsp;|&nbsp;  <a href="ch2.html">第二章 →</a><br><br>
+教材製作基於：Abdi, H., Edelman, B., Valentin, D. &amp; Dowling, W. J. (2009). <em>Experimental Design and Analysis for Psychology</em>. Oxford University Press.<br><br>
+© 版權所有　<strong style="color:var(--paper)">葉欲禾（Gary Yu-Ho Yeh）</strong>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{const d=document.documentElement;document.getElementById('progress-bar').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%'});
+
+const questions = [
+{q:"下列關於「自變數（I.V.）」與「依變數（D.V.）」的描述，何者正確？",
+opts:["自變數是測量結果，依變數是研究者操弄的變數","自變數代表「推測的原因」，依變數代表「觀察到的效果」","兩者可以互換","依變數必須是量化變數"],
+ans:1,fb:"自變數（I.V.）由研究者操弄，是推測的「因」；依變數（D.V.）由研究者測量，是觀察的「果」。"},
+{q:"為什麼實驗中要進行「隨機分派」？",
+opts:["為了看起來比較科學","為了減少受試者數量","為避免受試者特質與實驗組系統性配對，並符合統計分析前提","為了招募受試者方便"],
+ans:2,fb:"隨機分派確保各組受試者特質「隨機」分布，避免系統性偏誤；同時，推論統計方法都以隨機分派為前提。"},
+{q:"「教學法比較」實驗中，三位老師各教一種教學法。這個設計有什麼問題？",
+opts:["樣本太小","教學法與老師個人特質混淆，無法分離兩者效果","缺少對照組","沒問題，是好的設計"],
+ans:1,fb:"這是典型的「混淆變數」陷阱。觀察到的成績差異可能來自教學法、老師特質、或兩者交互作用，無法分離。理想做法：讓每位老師都教所有教學法，或多位老師教同一種教學法。"},
+{q:"下列哪一個是「分類變數」？",
+opts:["藥物劑量（0/10/20mg）","燈光亮度","受試者性別","練習次數"],
+ans:2,fb:"「性別」是受試者本身具有的特徵，研究者無法隨機分派。因此屬於分類（標籤）變數，只能下「相關」結論而非「因果」結論。"},
+{q:"為什麼分類變數的研究不能下「因果」結論？",
+opts:["統計分析比較複雜","測量比較不準確","受試者已帶著「標籤」進入實驗，這些特徵可能與其他無法控制的變數混淆","不能用統計方法分析"],
+ans:2,fb:"分類變數無法隨機分派，受試者「自帶」許多其他特徵。例如比較男女空間能力，差異可能來自社會化、教育、激素等無數因素，而非生理性別本身。"},
+{q:"「內部效度」指的是？",
+opts:["結果能推廣到實驗室外","受試者的內在感受被準確測量","結果能清楚歸因於自變數的程度","樣本是否代表母群體"],
+ans:2,fb:"內部效度 = 實驗誤差小、混淆少、能清楚把結果歸因於自變數。外部效度才是「能否推廣」。"},
+{q:"Dutton & Aron 的「搖晃吊橋實驗」為什麼要在實驗室裡再做一次研究？",
+opts:["原樣本太小","為了發表更多論文","「走哪座橋」是自選的分類變數，要用實驗室操弄變數才能下因果結論","原結果不顯著"],
+ans:2,fb:"原實驗中橋的選擇是「自我選擇」（分類變數），可能有「冒險者特質」等混淆。實驗室裡用「電擊強度」（操弄變數）隨機分派，得到相同結果才能確認因果。這就是「聚斂操作」。"},
+{q:"「好的依變數」應該具備哪些特質？",
+opts:["只需要敏感性","有效性、敏感性、可操作化、可靠性","越複雜越好","必須是反應時間或正確率"],
+ans:1,fb:"好的依變數必須同時具備四個特質：(1) 有效性、(2) 敏感性、(3) 可操作化、(4) 可靠性。"}
+];
+
+function buildQuiz(){
+  const c=document.getElementById('quizContainer');c.innerHTML='';
+  questions.forEach((q,qi)=>{
+    const card=document.createElement('div');card.className='quiz-card';
+    card.innerHTML=`<div class="quiz-q"><span>${qi+1}</span>${q.q}</div><div class="quiz-opts">${q.opts.map((o,oi)=>`<button class="quiz-opt" onclick="answerQ(${qi},${oi})">${String.fromCharCode(65+oi)}. ${o}</button>`).join('')}</div><div class="quiz-feedback" id="qfb${qi}"></div>`;
+    c.appendChild(card);
+  });
+}
+let answered=[],correct=0;
+function answerQ(qi,oi){
+  if(answered.includes(qi))return;answered.push(qi);
+  const card=document.getElementById('quizContainer').children[qi];
+  const opts=card.querySelectorAll('.quiz-opt');
+  const fb=document.getElementById('qfb'+qi);
+  const q=questions[qi];
+  opts.forEach((o,i)=>{o.style.pointerEvents='none';if(i===q.ans)o.classList.add('selected-correct');if(i===oi&&oi!==q.ans)o.classList.add('selected-wrong');});
+  if(oi===q.ans){fb.textContent='✅ '+q.fb;fb.className='quiz-feedback show correct';correct++;}
+  else{fb.innerHTML=`❌ 正確答案是：${String.fromCharCode(65+q.ans)}. ${q.opts[q.ans]}　${q.fb}`;fb.className='quiz-feedback show wrong';}
+  if(answered.length===questions.length){document.getElementById('quizScore').style.display='block';document.getElementById('quizScore').textContent=`🎯 測驗完成！答對 ${correct} / ${questions.length} 題`;}
+}
+function resetQuiz(){answered=[];correct=0;document.getElementById('quizScore').style.display='none';buildQuiz();}
+buildQuiz();
+</script>
+</body>
+</html>

@@ -260,6 +260,36 @@ body {
 .ch-card.unavailable .ch-card-cta { color: var(--muted); }
 .ch-card:hover .ch-card-cta { gap: 12px; }
 
+/* PART HEADERS */
+.part-header {
+  margin: 48px 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.part-header:first-child { margin-top: 0; }
+.part-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  background: rgba(192,57,43,0.08);
+  border: 1px solid rgba(192,57,43,0.2);
+  border-radius: 4px;
+  padding: 3px 10px;
+  letter-spacing: 2px;
+}
+.part-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.part-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
 /* FOOTER */
 footer.page-footer {
   background: var(--ink); color: rgba(248,244,239,0.5);
@@ -280,7 +310,7 @@ footer.page-footer a:hover { text-decoration: underline; }
 <div class="index-hero">
   <div class="hero-eyebrow">心理學統計教材</div>
   <h1>實驗設計與分析<br><span class="title-accent">互動式教材</span></h1>
-  <p class="subtitle">從實驗設計的基礎概念，到相關、F 檢定，再到簡單線性迴歸——一套持續成長的心理學統計入門教材。</p>
+  <p class="subtitle">從實驗設計的基礎概念，到變異數分析與多因子設計——一套涵蓋全書 22 章、隨課程進度持續更新的心理學統計教材。</p>
   <p class="author">基於 Abdi, Edelman, Valentin & Dowling 著《Experimental Design and Analysis for Psychology》</p>
   
   <div class="stat-row">
@@ -334,7 +364,7 @@ footer.page-footer a:hover { text-decoration: underline; }
 <div class="chapters-section">
   <div class="container">
     <h2>章節列表</h2>
-    <p class="lead">隨著時間推進，更多章節會陸續上架</p>
+    <p class="lead">全書共 22 章，依書本架構分為五大主題區塊</p>
     <div class="progress-info">
       學習進度：<strong id="progressText">1 / 4</strong> 章節已上架
     </div>
@@ -342,8 +372,8 @@ footer.page-footer a:hover { text-decoration: underline; }
       <div class="overall-progress-fill" id="progressFill" style="width: 0%;"></div>
     </div>
     
-    <div class="ch-grid" id="chGrid">
-      <!-- 章節卡片由 JS 動態產生 -->
+    <div id="chSections">
+      <!-- 章節由 JS 動態產生 -->
     </div>
   </div>
 </div>
@@ -351,6 +381,7 @@ footer.page-footer a:hover { text-decoration: underline; }
 <footer class="page-footer">
   教材製作基於：Abdi, H., Edelman, B., Valentin, D. &amp; Dowling, W. J. (2009).
   <em>Experimental Design and Analysis for Psychology</em>. Oxford University Press.<br><br>
+  © 版權所有　<strong style="color:var(--paper)">葉欲禾（Gary Yu-Ho Yeh）</strong><br>
   💡 想新增章節？編輯 <code style="color:var(--gold)">chapters.js</code> 即可。
 </footer>
 
@@ -359,7 +390,7 @@ footer.page-footer a:hover { text-decoration: underline; }
 <script>
 (function() {
   const data = window.chaptersData || [];
-  const grid = document.getElementById('chGrid');
+  const sections = document.getElementById('chSections');
   const totalEl = document.getElementById('statTotal');
   const availEl = document.getElementById('statAvail');
   const progressText = document.getElementById('progressText');
@@ -372,39 +403,65 @@ footer.page-footer a:hover { text-decoration: underline; }
   availEl.textContent = available;
   progressText.textContent = `${available} / ${total}`;
   
-  // 動畫進度條
   setTimeout(() => {
     progressFill.style.width = (available / total * 100) + '%';
   }, 200);
   
-  // 渲染章節卡片
-  data.forEach(ch => {
-    const card = document.createElement(ch.available ? 'a' : 'div');
-    card.className = 'ch-card' + (ch.available ? '' : ' unavailable');
-    if (ch.available) {
-      card.href = ch.file;
-    }
+  // 章節分區（依照書本結構）
+  const parts = [
+    { name: '基礎概念', range: [1, 4] },
+    { name: '多元迴歸', range: [5, 6] },
+    { name: '單因子變異數分析', range: [7, 14] },
+    { name: '多因子設計', range: [15, 21] },
+    { name: '進階主題', range: [22, 22] }
+  ];
+  
+  parts.forEach((part, idx) => {
+    const partChapters = data.filter(c => {
+      const n = parseInt(c.num);
+      return n >= part.range[0] && n <= part.range[1];
+    });
     
-    const tagsHtml = ch.tags.map(t => `<span class="ch-card-tag">${t}</span>`).join('');
-    const badge = ch.available 
-      ? '<span class="ch-badge ready">✓ 已上架</span>'
-      : '<span class="ch-badge coming">敬請期待</span>';
-    const cta = ch.available
-      ? '開始閱讀 →'
-      : '製作中...';
+    if (partChapters.length === 0) return;
     
-    card.innerHTML = `
-      <div class="ch-card-num">
-        <span>CHAPTER ${ch.num}</span>
-        ${badge}
-      </div>
-      <div class="ch-card-title">${ch.title}</div>
-      <div class="ch-card-desc">${ch.desc}</div>
-      <div class="ch-card-tags">${tagsHtml}</div>
-      <div class="ch-card-cta">${cta}</div>
+    // Part header
+    const header = document.createElement('div');
+    header.className = 'part-header';
+    header.innerHTML = `
+      <span class="part-num">PART ${idx + 1}</span>
+      <span class="part-title">${part.name}</span>
+      <span class="part-line"></span>
     `;
+    sections.appendChild(header);
     
-    grid.appendChild(card);
+    // Grid for this part
+    const grid = document.createElement('div');
+    grid.className = 'ch-grid';
+    sections.appendChild(grid);
+    
+    partChapters.forEach(ch => {
+      const card = document.createElement(ch.available ? 'a' : 'div');
+      card.className = 'ch-card' + (ch.available ? '' : ' unavailable');
+      if (ch.available) card.href = ch.file;
+      
+      const tagsHtml = ch.tags.map(t => `<span class="ch-card-tag">${t}</span>`).join('');
+      const badge = ch.available 
+        ? '<span class="ch-badge ready">✓ 已上架</span>'
+        : '<span class="ch-badge coming">敬請期待</span>';
+      const cta = ch.available ? '開始閱讀 →' : '製作中...';
+      
+      card.innerHTML = `
+        <div class="ch-card-num">
+          <span>CHAPTER ${ch.num}</span>
+          ${badge}
+        </div>
+        <div class="ch-card-title">${ch.title}</div>
+        <div class="ch-card-desc">${ch.desc}</div>
+        <div class="ch-card-tags">${tagsHtml}</div>
+        <div class="ch-card-cta">${cta}</div>
+      `;
+      grid.appendChild(card);
+    });
   });
 })();
 </script>
