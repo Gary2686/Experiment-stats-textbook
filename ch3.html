@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第三章：F 檢定 | 心理學統計教材</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a2e;--paper:#f8f4ef;--cream:#fdf8f2;--accent:#c0392b;--accent2:#2980b9;--gold:#d4a017;--teal:#1a6b6e;--muted:#6b7280;--border:#d5c9be;--card-bg:#fff;--formula-bg:#1a1a2e;--formula-text:#f0e6d3;--highlight:#fff3cd}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.8}
+.hero{background:var(--ink);color:var(--paper);padding:80px 40px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(255,255,255,.02) 40px,rgba(255,255,255,.02) 41px)}
+.hero-eyebrow{font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500}
+.hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(28px,5vw,52px);font-weight:700;line-height:1.2;margin-bottom:20px}
+.hero h1 span{color:var(--gold)}
+.hero-sub{font-size:15px;color:rgba(248,244,239,.65);max-width:560px;margin:0 auto 40px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.tag{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 16px;font-size:13px;color:var(--paper)}
+nav{position:sticky;top:0;z-index:100;background:rgba(26,26,46,.97);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);padding:0 40px;display:flex;gap:0;overflow-x:auto}
+nav a{display:block;padding:16px 20px;color:rgba(248,244,239,.65);text-decoration:none;font-size:13px;font-weight:500;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+nav a:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+section{padding:64px 0;border-bottom:1px solid var(--border)}
+section:last-of-type{border-bottom:none}
+.section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:36px}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.2);border-radius:4px;padding:3px 8px;flex-shrink:0}
+.section-header h2{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:700;color:var(--ink)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:32px}
+.concept-card{background:var(--card-bg);border-radius:12px;padding:24px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.concept-icon{font-size:28px;margin-bottom:12px}
+.concept-card h3{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;margin-bottom:10px}
+.concept-card p{font-size:14px;color:var(--muted);line-height:1.7}
+.concept-card p+p{margin-top:8px}
+.highlight-box{background:var(--highlight);border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#6b4c00}
+.warn-box{background:rgba(192,57,43,.06);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#7a2a1f}
+.formula-box{background:var(--formula-bg);border-radius:12px;padding:28px 32px;margin:24px 0;position:relative;overflow:hidden}
+.formula-box::before{content:'FORMULA';position:absolute;top:12px;right:16px;font-size:10px;letter-spacing:3px;color:rgba(255,255,255,.2);font-family:'JetBrains Mono',monospace}
+.formula-box .formula-label{font-size:12px;color:var(--gold);margin-bottom:10px;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.formula-box .formula-main{font-family:'JetBrains Mono',monospace;font-size:22px;color:var(--formula-text);font-weight:600;margin-bottom:12px;word-wrap:break-word}
+.formula-box .formula-desc{font-size:13px;color:rgba(240,230,211,.6);line-height:1.7}
+.formula-box .formula-desc strong{color:var(--gold)}
+.chart-wrapper{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px;margin:28px 0}
+.chart-title{font-size:14px;font-weight:600;color:var(--muted);margin-bottom:16px;letter-spacing:.5px}
+canvas{display:block;width:100%}
+.data-table-wrap{overflow-x:auto;margin:24px 0;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--card-bg)}
+thead tr{background:var(--ink)}
+thead th{color:var(--paper);padding:12px 16px;text-align:center;font-weight:600;font-size:13px}
+thead th:first-child{text-align:left}
+tbody tr:nth-child(even){background:var(--cream)}
+tbody td{padding:10px 16px;text-align:center;border-bottom:1px solid var(--border);font-size:13.5px}
+tbody td:first-child{text-align:left;font-weight:500}
+.prose p{margin-bottom:16px;font-size:15px;line-height:1.85;color:#333}
+.prose strong{color:var(--ink)}
+.prose em{color:var(--accent);font-style:normal;font-weight:500}
+.steps{counter-reset:step}
+.step{display:flex;gap:20px;margin-bottom:28px;align-items:flex-start}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--gold);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.step-body{flex:1}
+.step-body h4{font-weight:700;font-size:15px;margin-bottom:8px}
+.step-body p{font-size:14px;color:#444}
+.notions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0}
+.notion-item{background:var(--ink);color:var(--paper);border-radius:8px;padding:14px 18px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px}
+.notion-item::before{content:'◆';color:var(--gold);font-size:10px;flex-shrink:0}
+.formula-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:24px 0}
+.formula-mini{background:var(--ink);border-radius:10px;padding:20px;color:var(--formula-text)}
+.formula-mini .fm-label{font-size:11px;color:var(--gold);letter-spacing:2px;font-family:'JetBrains Mono',monospace;margin-bottom:8px;text-transform:uppercase}
+.formula-mini .fm-eq{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;color:#fff;line-height:1.5;word-wrap:break-word}
+.formula-mini .fm-note{font-size:12px;color:rgba(255,255,255,.5);margin-top:6px;line-height:1.5}
+.quiz-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:20px}
+.quiz-q{font-weight:700;font-size:15px;margin-bottom:16px;line-height:1.6}
+.quiz-q span{display:inline-block;width:26px;height:26px;background:var(--ink);color:var(--gold);border-radius:50%;font-size:13px;text-align:center;line-height:26px;margin-right:8px;font-family:'JetBrains Mono',monospace}
+.quiz-opts{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:12px 18px;cursor:pointer;font-size:14px;transition:all .2s;text-align:left;font-family:'Noto Sans TC',sans-serif}
+.quiz-opt:hover{border-color:var(--accent2);background:rgba(41,128,185,.05)}
+.quiz-opt.selected-correct{border-color:#27ae60;background:rgba(39,174,96,.1);color:#1e8449;font-weight:600}
+.quiz-opt.selected-wrong{border-color:var(--accent);background:rgba(192,57,43,.1);color:var(--accent)}
+.quiz-feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:13.5px;display:none;line-height:1.6}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:rgba(39,174,96,.1);color:#1e8449;border:1px solid rgba(39,174,96,.3)}
+.quiz-feedback.wrong{background:rgba(192,57,43,.08);color:#c0392b;border:1px solid rgba(192,57,43,.2)}
+.btn{display:inline-block;padding:14px 32px;background:var(--ink);color:var(--paper);border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.btn:hover{background:var(--accent);transform:translateY(-2px)}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--accent);color:#fff}
+footer{background:var(--ink);color:rgba(248,244,239,.5);text-align:center;padding:32px;font-size:13px}
+footer a{color:var(--gold);text-decoration:none}
+footer a:hover{text-decoration:underline}
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);z-index:9999;width:0%;transition:width .1s}
+@media(max-width:600px){.hero{padding:48px 20px 40px}nav{padding:0 16px}.container{padding:0 16px}section{padding:48px 0}}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<div class="hero">
+  <div class="hero-eyebrow">第三章 · Chapter 3</div>
+  <h1>統計檢定：<span>F 檢定</span><br>Statistical Test: The F Test</h1>
+  <p class="hero-sub">算出了相關係數 r，但這個關係是「真的」還是「巧合」？本章介紹假設檢定的完整邏輯。</p>
+  <div class="hero-tags">
+    <span class="tag">📐 H₀ vs H₁</span>
+    <span class="tag">🎯 顯著水準 α</span>
+    <span class="tag">⚠️ Type I/II 錯誤</span>
+    <span class="tag">📊 Fisher's F</span>
+    <span class="tag">📏 信賴區間</span>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" style="color:var(--gold)">← 回首頁</a>
+  <a href="#intro">§1 為什麼要檢定</a>
+  <a href="#hypo">§2 H₀ vs H₁</a>
+  <a href="#alpha">§3 顯著水準</a>
+  <a href="#errors">§4 兩種錯誤</a>
+  <a href="#f">§5 F 分配</a>
+  <a href="#critical">§6 臨界值</a>
+  <a href="#procedure">§7 六步驟</a>
+  <a href="#effect">§8 效果量</a>
+  <a href="#ci">§9 信賴區間</a>
+  <a href="#quiz">§10 測驗</a>
+</nav>
+
+<div class="container">
+
+<section id="intro">
+<div class="section-header"><span class="section-num">§1</span><h2>為什麼需要統計檢定？</h2></div>
+<div class="prose"><p>第二章學會了計算相關係數 r。但問題來了：</p></div>
+<div class="warn-box">🤔 <strong>關鍵問題</strong><br>假設我從 6 位受試者算出 r = −0.5。這個相關真的存在嗎？還是純粹是<em>抽樣巧合</em>？<br>如果重新抽 6 個人，會不會得到 r = +0.2、或 r = 0？</div>
+<div class="prose"><p>這正是<strong>推論統計（Inferential Statistics）</strong>要解決的問題。我們不只想知道<em>樣本</em>的相關，更想知道<em>母群體</em>的真實相關。</p></div>
+<div class="formula-box">
+<div class="formula-label">統計檢定的核心問題</div>
+<div class="formula-main">樣本 r → 母群體 ρ = 0 嗎？</div>
+<div class="formula-desc">我們用 <strong>F 比值</strong>來判斷：<br>F = r² / (1−r²) × (S−2)<br>其中 S 是觀察值數量，(S−2) 稱為「<strong>誤差自由度</strong>」</div>
+</div>
+<div class="concept-grid">
+<div class="concept-card"><div class="concept-icon">📊</div><h3>樣本 vs 母群體</h3><p><strong>樣本（Sample）</strong>：實際測量的觀察值<br><strong>母群體（Population）</strong>：要推論的整體</p><p style="margin-top:8px">樣本叫「statistics」，母群體真值叫「parameters」</p></div>
+<div class="concept-card"><div class="concept-icon">🎲</div><h3>機率推論</h3><p>無法 100% 確定，只能用機率：「如果母群體相關為 0，<em>有多少機率</em>會抽到像我這樣的樣本？」</p></div>
+</div>
+</section>
+
+<section id="hypo">
+<div class="section-header"><span class="section-num">§2</span><h2>虛無假設 vs 對立假設</h2></div>
+<div class="prose"><p>假設檢定的核心是兩個對立的假設：</p></div>
+<div class="concept-grid">
+<div class="concept-card" style="border-left:4px solid var(--accent)"><div class="concept-icon">∅</div><h3>虛無假設 H₀<br>(Null Hypothesis)</h3><p><strong>陳述</strong>：母群體兩變數<em>沒有</em>線性關係（ρ = 0）</p><p style="margin-top:8px"><strong>性質</strong>：「<em>精確</em>」假設（明確指定 ρ=0）</p></div>
+<div class="concept-card" style="border-left:4px solid var(--accent2)"><div class="concept-icon">∃</div><h3>對立假設 H₁<br>(Alternative Hypothesis)</h3><p><strong>陳述</strong>：母群體兩變數<em>有</em>線性關係（ρ ≠ 0）</p><p style="margin-top:8px"><strong>性質</strong>：「<em>不精確</em>」假設（沒指定確切數值，涵蓋無限多種可能）</p></div>
+</div>
+<div class="formula-box">
+<div class="formula-label">決策邏輯</div>
+<div class="formula-main">如果 H₀ 看起來不太可能 → 拒絕 H₀，接受 H₁</div>
+<div class="formula-desc">我們無法直接「證明」H₁，只能「<strong>反證</strong>」H₀。<br>如果樣本結果在 H₀ 為真時機率很小，就有信心拒絕 H₀。<br>但反過來不行：<em>永遠不能「接受」H₀</em>，只能「無法拒絕」（暫緩判斷）。</div>
+</div>
+<div class="warn-box">⚠️ <strong>重要：永遠不能「接受 H₀」</strong><br>「無法拒絕 H₀」 ≠ 「H₀ 為真」。可能是樣本不夠、效果太小、檢定力不足。正確說法是「<em>暫緩判斷（Suspend Judgment）</em>」。</div>
+</section>
+
+<section id="alpha">
+<div class="section-header"><span class="section-num">§3</span><h2>顯著水準 α：多不可能才算「不可能」？</h2></div>
+<div class="prose"><p>判斷 H₀「不太可能」需要一個明確的<em>機率門檻</em>，稱為「<strong>顯著水準</strong>」，以希臘字母 <strong>α</strong> 表示。</p></div>
+<div class="formula-box">
+<div class="formula-label">傳統的「儀式性」顯著水準</div>
+<div class="formula-main">α = .05　或　α = .01</div>
+<div class="formula-desc"><strong>α = .05</strong>：1/20，意思是「<em>如果 H₀ 為真，結果發生機率小於 5%</em>」<br><strong>α = .01</strong>：1/100，更嚴格的標準<br><br>這兩個值來自 Fisher 在 20 世紀初的偏好（加上 10 進位的便利性），<em>並非神聖不可改變</em>。</div>
+</div>
+<div class="highlight-box">💡 <strong>歷史背景</strong>：早年沒電腦，計算機率非常困難。Fisher 編製機率表時只能選幾個 α 值。.05 對應 1/20，.01 對應 1/100，都是「10 進位整數倍」——於是成了標準。</div>
+</section>
+
+<section id="errors">
+<div class="section-header"><span class="section-num">§4</span><h2>兩種錯誤：Type I 與 Type II</h2></div>
+<div class="prose"><p>無論 α 設多嚴格，都不可能完全避免錯誤。統計檢定有兩種錯誤類型：</p></div>
+<div class="data-table-wrap"><table>
+<thead><tr><th></th><th>實際 H₀ 為真<br>（無真實關係）</th><th>實際 H₀ 為假<br>（有真實關係）</th></tr></thead>
+<tbody>
+<tr><td>不拒絕 H₀</td><td style="background:#d4f8d4;color:#1e8449;font-weight:600">✅ 正確不拒絕<br>機率 = 1−α</td><td style="background:#fbe4d5;color:#7a2a1f;font-weight:600">❌ <strong>Type II 錯誤</strong><br>（漏失 Miss）<br>機率 = β</td></tr>
+<tr><td>拒絕 H₀</td><td style="background:#fbe4d5;color:#7a2a1f;font-weight:600">❌ <strong>Type I 錯誤</strong><br>（假警報）<br>機率 = α</td><td style="background:#d4f8d4;color:#1e8449;font-weight:600">✅ 正確偵測<br>機率 = 1−β = <strong>檢定力</strong></td></tr>
+</tbody>
+</table></div>
+<div class="concept-grid">
+<div class="concept-card" style="border-top:4px solid var(--accent)"><div class="concept-icon">🚨</div><h3>Type I 錯誤（假警報）</h3><p><strong>實際沒效果，我們卻說有</strong></p><p>機率 = α（直接控制）<br>嚴格的 α（如 .01）會減少 Type I 錯誤</p></div>
+<div class="concept-card" style="border-top:4px solid var(--gold)"><div class="concept-icon">😴</div><h3>Type II 錯誤（漏失）</h3><p><strong>實際有效果，我們卻沒發現</strong></p><p>機率 = β（無法精確計算）<br>寬鬆 α（如 .10）會減少 Type II 錯誤</p></div>
+</div>
+<div class="formula-box">
+<div class="formula-label">α 與 β 的取捨</div>
+<div class="formula-main">α ↓ ⇄ β ↑</div>
+<div class="formula-desc">兩種錯誤<strong>反向變動</strong>。要降低 β（增加檢定力），可以：(1) 提高 α、(2) 增加樣本數、(3) 減少實驗誤差。</div>
+</div>
+<div class="highlight-box">🎯 <strong>檢定力 = 1 − β</strong><br>檢定力（Statistical Power）是「<em>當效果真實存在時，我們能成功偵測到的機率</em>」。心理學界一般建議檢定力應達 .80 以上。</div>
+</section>
+
+<section id="f">
+<div class="section-header"><span class="section-num">§5</span><h2>Fisher 的 F 分配</h2></div>
+<div class="prose"><p>用一個小例子說明：我們從 6 位受試者算出 r = −0.5。如何判斷在 H₀ 為真時的機率？</p></div>
+<div class="formula-box">
+<div class="formula-label">F 比值公式</div>
+<div class="formula-main">F = r² / (1−r²) × (S−2)</div>
+<div class="formula-desc">本例：F = (.25) / (1−.25) × (6−2) = (.25/.75) × 4 = <strong>1.33</strong><br><strong>ν₁ = 1</strong>（分子自由度），<strong>ν₂ = S − 2 = 4</strong>（分母自由度）</div>
+</div>
+<div class="prose"><p>當 H₀ 為真時，F 值會服從一個特定的分配——<strong>Fisher's F 分配</strong>。它的形狀由兩個自由度（ν₁, ν₂）決定。</p></div>
+<div class="chart-wrapper">
+<div class="chart-title">📊 Fisher F 分配（ν₁=1, ν₂=4）：H₀ 為真時 F 值的機率分布</div>
+<canvas id="fCanvas" height="320"></canvas>
+<div style="text-align:center;margin-top:8px;font-size:13px;color:var(--muted)">紅線 = α=.05 臨界值（F=7.71）　橘線 = α=.01 臨界值（F=21.20）</div>
+</div>
+<div class="concept-grid">
+<div class="concept-card"><div class="concept-icon">🎲</div><h3>Monte-Carlo 法</h3><p>用電腦<em>實際模擬</em>數千個 H₀ 為真的樣本，觀察 F 的分布。直觀但需大量計算。</p></div>
+<div class="concept-card"><div class="concept-icon">📐</div><h3>理論 F 分配</h3><p>Fisher 數學推導出的理論分配。前提：母群體呈常態分配。可查表得到臨界值。</p></div>
+<div class="concept-card"><div class="concept-icon">🔄</div><h3>排列檢定</h3><p>計算所有可能的資料排列（如 6!=720 種），看其中多少 F 超過觀察值。最精確。</p></div>
+</div>
+</section>
+
+<section id="critical">
+<div class="section-header"><span class="section-num">§6</span><h2>臨界值與拒絕區</h2></div>
+<div class="prose"><p><strong>臨界值（F<sub>critical</sub>）</strong>把 F 分配劃分成兩個區域：</p></div>
+<div class="concept-grid">
+<div class="concept-card" style="border-top:4px solid var(--accent)"><div class="concept-icon">🚫</div><h3>拒絕區（Rejection Region）</h3><p>F ≥ F<sub>critical</sub> 的範圍</p><p>機率 ≤ α → <em>拒絕 H₀</em>，接受 H₁</p><p style="color:var(--accent);font-weight:600">看到顯著結果！</p></div>
+<div class="concept-card" style="border-top:4px solid var(--gold)"><div class="concept-icon">⏸️</div><h3>暫緩判斷區</h3><p>F &lt; F<sub>critical</sub> 的範圍</p><p>機率 &gt; α → <em>無法拒絕 H₀</em></p><p style="color:var(--gold);font-weight:600">結果不顯著（但不代表 H₀ 為真）</p></div>
+</div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">📋 F 表查表範例</h3>
+<div class="data-table-wrap"><table>
+<thead><tr><th>ν₂ \ ν₁</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead>
+<tbody>
+<tr><td>4</td><td><strong style="color:var(--accent)">7.71 / 21.20</strong></td><td>6.94 / 18.00</td><td>6.59 / 16.69</td><td>6.39 / 15.98</td></tr>
+<tr><td>18</td><td><strong style="color:var(--accent)">4.41 / 8.28</strong></td><td>3.55 / 6.01</td><td>3.16 / 5.09</td><td>2.93 / 4.58</td></tr>
+<tr><td>20</td><td>4.35 / 8.10</td><td>3.49 / 5.85</td><td>3.10 / 4.94</td><td>2.87 / 4.43</td></tr>
+<tr><td>40</td><td>4.08 / 7.31</td><td>3.23 / 5.18</td><td>2.84 / 4.31</td><td>2.61 / 3.83</td></tr>
+</tbody>
+</table></div>
+<div style="font-size:13px;color:var(--muted);margin-top:8px">每格上方為 α=.05 臨界值，下方為 α=.01 臨界值</div>
+<div class="highlight-box">📖 <strong>例題</strong>：S=6 → ν₂=4。算出 F=1.33。查表：F<sub>critical</sub>(α=.05)=7.71。<br>因為 1.33 &lt; 7.71，<strong>無法拒絕 H₀</strong>。結論：暫緩判斷，r=−0.5 可能是巧合。</div>
+</section>
+
+<section id="procedure">
+<div class="section-header"><span class="section-num">§7</span><h2>統計檢定六步驟</h2></div>
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div class="step-body"><h4>提出假設 H₀ 與 H₁</h4><p>H₀：母群體無線性關係（ρ=0）<br>H₁：母群體有線性關係（ρ≠0）</p></div></div>
+<div class="step"><div class="step-num">2</div><div class="step-body"><h4>選擇統計量</h4><p>對相關分析：使用 F 比值（也可用 r² 或 t）</p></div></div>
+<div class="step"><div class="step-num">3</div><div class="step-body"><h4>決定顯著水準 α</h4><p>傳統：α=.05 或 .01<br>權衡：嚴格 α 減少 Type I，但增加 Type II</p></div></div>
+<div class="step"><div class="step-num">4</div><div class="step-body"><h4>找出 H₀ 下的抽樣分布</h4><p>F 分配，自由度為 ν₁=1，ν₂=S−2</p></div></div>
+<div class="step"><div class="step-num">5</div><div class="step-body"><h4>查表得 F<sub>critical</sub></h4><p>根據 α 和自由度查 F 表，畫出拒絕區與暫緩判斷區</p></div></div>
+<div class="step"><div class="step-num">6</div><div class="step-body"><h4>計算 F 並做決策</h4><p>F ≥ F<sub>critical</sub>：<strong>拒絕 H₀</strong>（顯著）<br>F &lt; F<sub>critical</sub>：<strong>暫緩判斷</strong>（不顯著）</p></div></div>
+</div>
+</section>
+
+<section id="effect">
+<div class="section-header"><span class="section-num">§8</span><h2>「不是零」還不夠！效果量的重要性</h2></div>
+<div class="prose"><p>拒絕 H₀ 只說「<em>相關不是 0</em>」，但無法告訴我們<strong>相關有多大</strong>。現代統計學主張：除了顯著性，更要報告<em>效果量</em>與<em>信賴區間</em>。</p></div>
+<div class="warn-box">🎯 <strong>樣本 r 會「高估」母群體相關！</strong><br>樣本 r 是「<em>偏誤估計量</em>」，系統性大於母群體真值。樣本越小，高估越嚴重。<br>解決方法：使用「<strong>校正後 r²</strong>」（Shrunken / Adjusted r）。</div>
+<div class="formula-box">
+<div class="formula-label">校正公式 1（最常用）</div>
+<div class="formula-main">r̃² = 1 − (1−r²) × (S−1)/(S−2)</div>
+<div class="formula-desc">本例：r=−0.5, S=6 → r²=.25<br>r̃² = 1 − (1−.25)×(5/4) = 1 − .9375 = <strong>0.06</strong><br>r̃ = −√0.06 = <strong>−0.24</strong>（要還原原本的負號）</div>
+</div>
+<div class="highlight-box">💡 <strong>校正的啟示</strong>：原本看似有意義的 r=−0.5，校正後其實只有 −0.24（或更小）。這就是為什麼小樣本研究的結果<em>需要重複驗證</em>才能信任。</div>
+</section>
+
+<section id="ci">
+<div class="section-header"><span class="section-num">§9</span><h2>信賴區間：比顯著性更有資訊</h2></div>
+<div class="prose"><p>單純說「顯著/不顯著」太簡化。<strong>信賴區間（CI）</strong>給出母群體 r 的「<em>可能範圍</em>」，資訊量大得多。美國心理學會（APA）建議優先使用信賴區間。</p></div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:24px 0 16px;font-weight:700">🔢 Fisher's Z 轉換</h3>
+<div class="prose"><p>因為 r 的抽樣分布不對稱，需先把 r 轉成 Z（這個 Z 的抽樣分布近似常態）：</p></div>
+<div class="formula-box">
+<div class="formula-label">r 轉 Z（Fisher's Z transform）</div>
+<div class="formula-main">Z = ½ × [ln(1+r) − ln(1−r)]</div>
+<div class="formula-desc">本例：r=−0.5 → Z = ½ × [ln(0.5) − ln(1.5)] = <strong>−0.5493</strong></div>
+</div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:24px 0 16px;font-weight:700">📏 計算 95% 信賴區間</h3>
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div class="step-body"><h4>選 α，查 Z 表</h4><p>α=.05 → Z<sub>α</sub>=1.960<br>α=.01 → Z<sub>α</sub>=2.575</p></div></div>
+<div class="step"><div class="step-num">2</div><div class="step-body"><h4>計算 Q（標準誤）</h4><p>Q = Z<sub>α</sub> × √(1/(S−3))<br>本例：Q = 1.960 × √(1/3) = <strong>1.1316</strong></p></div></div>
+<div class="step"><div class="step-num">3</div><div class="step-body"><h4>計算 Z 上下限</h4><p>Z 下限 = −0.5493 − 1.1316 = <strong>−1.6809</strong><br>Z 上限 = −0.5493 + 1.1316 = <strong>+0.5823</strong></p></div></div>
+<div class="step"><div class="step-num">4</div><div class="step-body"><h4>把 Z 轉回 r</h4><p>r 下限 = <strong>−0.93</strong>　　r 上限 = <strong>+0.52</strong><br><em>95% 信賴區間為 [−0.93, +0.52]</em></p></div></div>
+</div>
+<div class="warn-box">📊 <strong>解讀</strong>：母群體真實相關 r 可能介於 −0.93 到 +0.52 之間——範圍非常寬！<em>因為 0 在這個區間內</em>，所以無法拒絕 H₀。<br><br>但 CI 還告訴我們：<strong>真實效果可能非常強（負相關），也可能完全不存在或微弱正相關</strong>——這些是 p 值給不了的。</div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">🎲 Bootstrap：現代替代方案</h3>
+<div class="prose"><p><strong>Bootstrap（自助法，Efron, 1979）</strong>是現代強大的方法。原理：把樣本當「迷你母群體」，從中重複抽樣（可重複抽取）千百次，得到統計量的經驗分布，再從中讀百分位數作為 CI。</p>
+<p>本例 1000 次 bootstrap 後的 95% CI 為 [−.95, +.41]，與 Fisher 法的 [−.93, +.52] 相當吻合。Bootstrap 不依賴常態分配假設，是現代統計學最重要的進展之一。</p></div>
+</section>
+
+<section>
+<div class="section-header"><span class="section-num">§K</span><h2>關鍵公式整理</h2></div>
+<div class="formula-grid">
+<div class="formula-mini"><div class="fm-label">F 比值</div><div class="fm-eq">F = r²/(1−r²) × (S−2)</div><div class="fm-note">ν₁=1, ν₂=S−2</div></div>
+<div class="formula-mini"><div class="fm-label">校正 r²</div><div class="fm-eq">r̃² = 1−(1−r²)(S−1)/(S−2)</div><div class="fm-note">最常用的校正</div></div>
+<div class="formula-mini"><div class="fm-label">Fisher's Z 轉換</div><div class="fm-eq">Z = ½ × ln((1+r)/(1−r))</div><div class="fm-note">從 r 轉到 Z</div></div>
+<div class="formula-mini"><div class="fm-label">Z 信賴區間</div><div class="fm-eq">Z_limits = Z ± Zα × √(1/(S−3))</div><div class="fm-note">先算 Z 區間，再轉回 r</div></div>
+<div class="formula-mini"><div class="fm-label">檢定力</div><div class="fm-eq">Power = 1 − β</div><div class="fm-note">正確偵測效應的機率</div></div>
+<div class="formula-mini"><div class="fm-label">α/β 關係</div><div class="fm-eq">α ↑ ⇄ β ↓</div><div class="fm-note">兩種錯誤反向變動</div></div>
+</div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">📌 關鍵概念</h3>
+<div class="notions-grid">
+<div class="notion-item">虛無假設 H₀</div>
+<div class="notion-item">對立假設 H₁</div>
+<div class="notion-item">推論統計</div>
+<div class="notion-item">母群體 vs 樣本</div>
+<div class="notion-item">統計量 vs 參數</div>
+<div class="notion-item">精確 vs 不精確假設</div>
+<div class="notion-item">檢定力</div>
+<div class="notion-item">抽樣分布</div>
+<div class="notion-item">Fisher's F</div>
+<div class="notion-item">Type I 錯誤</div>
+<div class="notion-item">Type II 錯誤</div>
+<div class="notion-item">臨界值</div>
+<div class="notion-item">拒絕區</div>
+<div class="notion-item">暫緩判斷區</div>
+<div class="notion-item">校正 r²</div>
+<div class="notion-item">信賴區間</div>
+<div class="notion-item">Bootstrap</div>
+<div class="notion-item">Fisher's Z 轉換</div>
+</div>
+</section>
+
+<section id="quiz">
+<div class="section-header"><span class="section-num">§Q</span><h2>複習測驗</h2></div>
+<div id="quizContainer"></div>
+<div style="text-align:center;margin-top:32px">
+<button onclick="resetQuiz()" class="btn">🔄 重新作答</button>
+<div id="quizScore" style="margin-top:16px;font-size:16px;font-weight:700;color:var(--teal);display:none"></div>
+</div>
+</section>
+
+<section style="text-align:center;border-bottom:none">
+<h2 style="font-family:'Noto Serif TC',serif;margin-bottom:16px">繼續學習</h2>
+<p style="color:var(--muted);margin-bottom:24px">最後一章把相關升級成「預測」——簡單線性迴歸</p>
+<a href="ch4.html" class="btn btn-gold">前往第四章：簡單線性迴歸 →</a>
+</section>
+
+</div>
+
+<footer>
+<a href="ch2.html">← 第二章</a>  &nbsp;|&nbsp;  <a href="index.html">回首頁</a>  &nbsp;|&nbsp;  <a href="ch4.html">第四章 →</a><br><br>
+教材製作基於：Abdi, H., Edelman, B., Valentin, D. &amp; Dowling, W. J. (2009). <em>Experimental Design and Analysis for Psychology</em>. Oxford University Press.<br><br>
+© 版權所有　<strong style="color:var(--paper)">葉欲禾（Gary Yu-Ho Yeh）</strong>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{const d=document.documentElement;document.getElementById('progress-bar').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%'});
+
+// F-distribution PDF using Gamma function
+function lgamma(n){
+  if(n<0.5)return Math.log(Math.PI/Math.sin(Math.PI*n))-lgamma(1-n);
+  n-=1;const g=7;
+  const c=[0.99999999999980993,676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
+  let x=c[0];for(let i=1;i<g+2;i++)x+=c[i]/(n+i);
+  const t=n+g+0.5;
+  return 0.5*Math.log(2*Math.PI)+(n+0.5)*Math.log(t)-t+Math.log(x);
+}
+function fPDF(x,d1,d2){
+  if(x<=0)return 0;
+  const a=d1/2,b=d2/2;
+  const logB=lgamma(a)+lgamma(b)-lgamma(a+b);
+  const logCoef=a*Math.log(d1/d2)-logB;
+  const logP=logCoef+(a-1)*Math.log(x)-(a+b)*Math.log(1+d1*x/d2);
+  return Math.exp(logP);
+}
+
+function drawF(){
+  const c=document.getElementById('fCanvas');
+  const W=c.offsetWidth,H=320;c.width=W;c.height=H;
+  const ctx=c.getContext('2d');
+  const pad={l:50,r:20,t:20,b:40};
+  const tx=v=>pad.l+v/30*(W-pad.l-pad.r);
+  const ty=v=>H-pad.b-v/1.0*(H-pad.t-pad.b);
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(0,0,0,.05)';
+  for(let i=0;i<=30;i+=5){ctx.beginPath();ctx.moveTo(tx(i),pad.t);ctx.lineTo(tx(i),H-pad.b);ctx.stroke();}
+  
+  const pts=[];
+  for(let x=0.01;x<=30;x+=0.1)pts.push([x,fPDF(x,1,4)]);
+  
+  // Rejection area (α=.05)
+  ctx.fillStyle='rgba(192,57,43,.2)';
+  ctx.beginPath();ctx.moveTo(tx(7.71),H-pad.b);
+  pts.filter(p=>p[0]>=7.71).forEach(p=>ctx.lineTo(tx(p[0]),ty(p[1])));
+  ctx.lineTo(tx(30),H-pad.b);ctx.closePath();ctx.fill();
+  
+  // Curve
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2;
+  ctx.beginPath();
+  pts.forEach((p,i)=>{if(i===0)ctx.moveTo(tx(p[0]),ty(p[1]));else ctx.lineTo(tx(p[0]),ty(p[1]));});
+  ctx.stroke();
+  
+  // Critical lines
+  ctx.strokeStyle='#c0392b';ctx.lineWidth=2;ctx.setLineDash([5,3]);
+  ctx.beginPath();ctx.moveTo(tx(7.71),pad.t);ctx.lineTo(tx(7.71),H-pad.b);ctx.stroke();
+  ctx.fillStyle='#c0392b';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='left';
+  ctx.fillText('α=.05',tx(7.71)+4,pad.t+15);ctx.fillText('F=7.71',tx(7.71)+4,pad.t+28);
+  
+  ctx.strokeStyle='#d4a017';
+  ctx.beginPath();ctx.moveTo(tx(21.20),pad.t);ctx.lineTo(tx(21.20),H-pad.b);ctx.stroke();
+  ctx.fillStyle='#d4a017';ctx.fillText('α=.01',tx(21.20)+4,pad.t+15);ctx.fillText('F=21.20',tx(21.20)+4,pad.t+28);
+  ctx.setLineDash([]);
+  
+  // X-axis
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad.l,H-pad.b);ctx.lineTo(W-pad.r,H-pad.b);ctx.stroke();
+  ctx.fillStyle='#555';ctx.font='11px JetBrains Mono';ctx.textAlign='center';
+  for(let i=0;i<=30;i+=5)ctx.fillText(i,tx(i),H-pad.b+16);
+  ctx.font='12px "Noto Sans TC"';ctx.fillStyle='#444';
+  ctx.fillText('F 值',W/2,H-2);
+}
+window.addEventListener('resize',drawF);
+setTimeout(drawF,100);
+
+const questions=[
+{q:"我們用「統計檢定」是為了？",opts:["確認樣本的相關係數計算對不對","推論母群體的相關是否真實存在","降低相關係數的數值","美化研究結果"],ans:1,fb:"統計檢定的目標是「從樣本推論母群體」。樣本的 r 已經算出來了，問題是：這個 r 反映的是真實母群體相關，還是抽樣巧合？"},
+{q:"虛無假設 H₀ 在相關分析中的內容是？",opts:["母群體相關 r 大於 0","母群體相關 r 等於 0","樣本相關 r 等於 0","樣本相關 r 大於 0"],ans:1,fb:"H₀：母群體 ρ = 0（沒有線性關係）。注意 H₀ 是關於「母群體」，不是「樣本」。"},
+{q:"為什麼說「我們永遠不能接受 H₀」？",opts:["因為 H₀ 一定是錯的","因為「無法拒絕」不等於「證明為真」","因為 H₀ 太精確","因為 H₁ 一定是對的"],ans:1,fb:"「無法拒絕 H₀」可能是因為樣本太小、效果太弱、檢定力不足。我們不能因此宣稱「H₀ 為真」，只能說「暫緩判斷」。"},
+{q:"「Type I 錯誤」是什麼？",opts:["實際有效果，我們卻沒發現","實際沒效果，我們卻說有","計算錯誤","樣本選錯"],ans:1,fb:"Type I 錯誤（假警報）：母群體實際沒效果，但我們錯誤地拒絕 H₀。機率 = α。"},
+{q:"如果我們把 α 從 .05 改為 .01，會發生什麼？",opts:["Type I 錯誤機率降低，Type II 錯誤機率升高","兩種錯誤機率都降低","兩種錯誤機率都升高","Type II 錯誤機率降低，Type I 錯誤機率升高"],ans:0,fb:"α 與 β 反向變動。α 越嚴格（如從 .05 變 .01）→ Type I 錯誤降低，但 Type II 錯誤（漏失）升高，檢定力下降。"},
+{q:"F = 1.33，F_critical (α=.05) = 7.71。應該怎麼決策？",opts:["拒絕 H₀，結果顯著","暫緩判斷，無法拒絕 H₀","接受 H₀","樣本太小無法判斷"],ans:1,fb:"因為 F=1.33 < 7.71（落在暫緩判斷區），無法拒絕 H₀。但不能說「接受 H₀」——只能說「暫緩判斷」。"},
+{q:"「檢定力（Power）」的意思是？",opts:["α 的大小","實際有效果時，能成功偵測到的機率（= 1−β）","實際無效果時，正確拒絕的機率","樣本量"],ans:1,fb:"檢定力 = 1 − β，即「當效果真實存在時，能成功偵測到的機率」。心理學界一般建議 .80 以上。"},
+{q:"為什麼樣本的 r 會「高估」母群體的相關？",opts:["計算錯誤","因為樣本太小","r 是偏誤估計量，系統性大於真值，樣本越小高估越嚴重","因為使用了錯誤公式"],ans:2,fb:"樣本 r 是偏誤估計量。樣本越小，高估越嚴重。所以需要使用「校正 r²（Shrunken r）」來估計母群體真值。"},
+{q:"使用「信賴區間」相對於「顯著性檢定」的優點？",opts:["計算更簡單","給出母群體相關的「可能範圍」，資訊量更大","結果一定顯著","不需要假設"],ans:1,fb:"信賴區間給出母群體 r 的範圍（如 [−0.93, +0.52]），而非只說「顯著/不顯著」。APA 現在建議優先使用 CI，因為它能同時回答「有沒有效果」和「效果多大」。"}
+];
+function buildQuiz(){
+  const c=document.getElementById('quizContainer');c.innerHTML='';
+  questions.forEach((q,qi)=>{
+    const card=document.createElement('div');card.className='quiz-card';
+    card.innerHTML=`<div class="quiz-q"><span>${qi+1}</span>${q.q}</div><div class="quiz-opts">${q.opts.map((o,oi)=>`<button class="quiz-opt" onclick="answerQ(${qi},${oi})">${String.fromCharCode(65+oi)}. ${o}</button>`).join('')}</div><div class="quiz-feedback" id="qfb${qi}"></div>`;
+    c.appendChild(card);
+  });
+}
+let answered=[],correct=0;
+function answerQ(qi,oi){
+  if(answered.includes(qi))return;answered.push(qi);
+  const card=document.getElementById('quizContainer').children[qi];
+  const opts=card.querySelectorAll('.quiz-opt');
+  const fb=document.getElementById('qfb'+qi);
+  const q=questions[qi];
+  opts.forEach((o,i)=>{o.style.pointerEvents='none';if(i===q.ans)o.classList.add('selected-correct');if(i===oi&&oi!==q.ans)o.classList.add('selected-wrong');});
+  if(oi===q.ans){fb.textContent='✅ '+q.fb;fb.className='quiz-feedback show correct';correct++;}
+  else{fb.innerHTML=`❌ 正確答案是：${String.fromCharCode(65+q.ans)}. ${q.opts[q.ans]}　${q.fb}`;fb.className='quiz-feedback show wrong';}
+  if(answered.length===questions.length){document.getElementById('quizScore').style.display='block';document.getElementById('quizScore').textContent=`🎯 測驗完成！答對 ${correct} / ${questions.length} 題`;}
+}
+function resetQuiz(){answered=[];correct=0;document.getElementById('quizScore').style.display='none';buildQuiz();}
+buildQuiz();
+</script>
+</body>
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第二章：相關分析 | 心理學統計教材</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a2e;--paper:#f8f4ef;--cream:#fdf8f2;--accent:#c0392b;--accent2:#2980b9;--gold:#d4a017;--teal:#1a6b6e;--muted:#6b7280;--border:#d5c9be;--card-bg:#fff;--formula-bg:#1a1a2e;--formula-text:#f0e6d3;--highlight:#fff3cd}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.8}
+.hero{background:var(--ink);color:var(--paper);padding:80px 40px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(255,255,255,.02) 40px,rgba(255,255,255,.02) 41px)}
+.hero-eyebrow{font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500}
+.hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(28px,5vw,52px);font-weight:700;line-height:1.2;margin-bottom:20px}
+.hero h1 span{color:var(--gold)}
+.hero-sub{font-size:15px;color:rgba(248,244,239,.65);max-width:560px;margin:0 auto 40px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.tag{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 16px;font-size:13px;color:var(--paper)}
+nav{position:sticky;top:0;z-index:100;background:rgba(26,26,46,.97);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);padding:0 40px;display:flex;gap:0;overflow-x:auto}
+nav a{display:block;padding:16px 20px;color:rgba(248,244,239,.65);text-decoration:none;font-size:13px;font-weight:500;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+nav a:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+section{padding:64px 0;border-bottom:1px solid var(--border)}
+section:last-of-type{border-bottom:none}
+.section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:36px}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.2);border-radius:4px;padding:3px 8px;flex-shrink:0}
+.section-header h2{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:700;color:var(--ink)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:32px}
+.concept-card{background:var(--card-bg);border-radius:12px;padding:24px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.06);transition:transform .2s,box-shadow .2s}
+.concept-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.concept-icon{font-size:28px;margin-bottom:12px}
+.concept-card h3{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:10px}
+.concept-card p{font-size:14px;color:var(--muted);line-height:1.7}
+.concept-card p+p{margin-top:8px}
+.highlight-box{background:var(--highlight);border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#6b4c00}
+.warn-box{background:rgba(192,57,43,.06);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#7a2a1f}
+.formula-box{background:var(--formula-bg);border-radius:12px;padding:28px 32px;margin:24px 0;position:relative;overflow:hidden}
+.formula-box::before{content:'FORMULA';position:absolute;top:12px;right:16px;font-size:10px;letter-spacing:3px;color:rgba(255,255,255,.2);font-family:'JetBrains Mono',monospace}
+.formula-box .formula-label{font-size:12px;color:var(--gold);margin-bottom:10px;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.formula-box .formula-main{font-family:'JetBrains Mono',monospace;font-size:22px;color:var(--formula-text);font-weight:600;margin-bottom:12px;word-wrap:break-word}
+.formula-box .formula-desc{font-size:13px;color:rgba(240,230,211,.6);line-height:1.7}
+.formula-box .formula-desc strong{color:var(--gold)}
+.chart-wrapper{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px;margin:28px 0}
+.chart-title{font-size:14px;font-weight:600;color:var(--muted);margin-bottom:16px;letter-spacing:.5px}
+canvas{display:block;width:100%}
+.controls{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin:16px 0;padding:16px;background:var(--cream);border-radius:8px;border:1px solid var(--border)}
+.ctrl-group label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:500}
+.ctrl-group input[type=range]{width:140px;accent-color:var(--accent)}
+.ctrl-val{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);font-weight:600;min-width:40px;display:inline-block}
+.data-table-wrap{overflow-x:auto;margin:24px 0;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--card-bg)}
+thead tr{background:var(--ink)}
+thead th{color:var(--paper);padding:12px 16px;text-align:center;font-weight:600;font-size:13px}
+thead th:first-child{text-align:left}
+tbody tr:nth-child(even){background:var(--cream)}
+tbody td{padding:10px 16px;text-align:center;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:13px}
+tbody td:first-child{text-align:left;font-family:'Noto Sans TC',sans-serif;font-size:13.5px}
+tfoot tr{background:rgba(192,57,43,.08);font-weight:600}
+tfoot td{padding:12px 16px;border-top:2px solid var(--accent);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;text-align:center}
+.prose p{margin-bottom:16px;font-size:15px;line-height:1.85;color:#333}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--ink)}
+.prose em{color:var(--accent);font-style:normal;font-weight:500}
+.notions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0}
+.notion-item{background:var(--ink);color:var(--paper);border-radius:8px;padding:14px 18px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px}
+.notion-item::before{content:'◆';color:var(--gold);font-size:10px;flex-shrink:0}
+.quiz-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:20px}
+.quiz-q{font-weight:700;font-size:15px;margin-bottom:16px;line-height:1.6}
+.quiz-q span{display:inline-block;width:26px;height:26px;background:var(--ink);color:var(--gold);border-radius:50%;font-size:13px;text-align:center;line-height:26px;margin-right:8px;font-family:'JetBrains Mono',monospace}
+.quiz-opts{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:12px 18px;cursor:pointer;font-size:14px;transition:all .2s;text-align:left;font-family:'Noto Sans TC',sans-serif}
+.quiz-opt:hover{border-color:var(--accent2);background:rgba(41,128,185,.05)}
+.quiz-opt.selected-correct{border-color:#27ae60;background:rgba(39,174,96,.1);color:#1e8449;font-weight:600}
+.quiz-opt.selected-wrong{border-color:var(--accent);background:rgba(192,57,43,.1);color:var(--accent)}
+.quiz-feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:13.5px;display:none;line-height:1.6}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:rgba(39,174,96,.1);color:#1e8449;border:1px solid rgba(39,174,96,.3)}
+.quiz-feedback.wrong{background:rgba(192,57,43,.08);color:#c0392b;border:1px solid rgba(192,57,43,.2)}
+.formula-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:24px 0}
+.formula-mini{background:var(--ink);border-radius:10px;padding:20px;color:var(--formula-text)}
+.formula-mini .fm-label{font-size:11px;color:var(--gold);letter-spacing:2px;font-family:'JetBrains Mono',monospace;margin-bottom:8px;text-transform:uppercase}
+.formula-mini .fm-eq{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;color:#fff;line-height:1.5;word-wrap:break-word}
+.btn{display:inline-block;padding:14px 32px;background:var(--ink);color:var(--paper);border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.btn:hover{background:var(--accent);transform:translateY(-2px)}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--accent);color:#fff}
+footer{background:var(--ink);color:rgba(248,244,239,.5);text-align:center;padding:32px;font-size:13px}
+footer a{color:var(--gold);text-decoration:none}
+footer a:hover{text-decoration:underline}
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);z-index:9999;width:0%;transition:width .1s}
+@media(max-width:600px){.hero{padding:48px 20px 40px}nav{padding:0 16px}.container{padding:0 16px}section{padding:48px 0}}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<div class="hero">
+  <div class="hero-eyebrow">第二章 · Chapter 2</div>
+  <h1>相關<span>分析</span><br>Correlation</h1>
+  <p class="hero-sub">如何用一個數字 r 量化兩變數之間的線性關係？本章從散佈圖開始，逐步建構相關係數的完整概念。</p>
+  <div class="hero-tags">
+    <span class="tag">📊 散佈圖</span>
+    <span class="tag">🎯 四象限</span>
+    <span class="tag">📐 交叉乘積</span>
+    <span class="tag">🔢 Pearson r</span>
+    <span class="tag">⚠️ 因果迷思</span>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" style="color:var(--gold)">← 回首頁</a>
+  <a href="#intro">§1 什麼是相關</a>
+  <a href="#scatter">§2 散佈圖</a>
+  <a href="#centering">§3 置中</a>
+  <a href="#quadrants">§4 四象限</a>
+  <a href="#scp">§5 交叉乘積</a>
+  <a href="#cov">§6 共變數</a>
+  <a href="#r">§7 相關係數</a>
+  <a href="#interpret">§8 解讀陷阱</a>
+  <a href="#causality">§9 因果迷思</a>
+  <a href="#quiz">§10 測驗</a>
+</nav>
+
+<div class="container">
+
+<section id="intro">
+<div class="section-header"><span class="section-num">§1</span><h2>什麼是相關？</h2></div>
+<div class="prose">
+<p><strong>相關（Correlation）</strong>用來衡量兩組測量資料是否有「<em>共同變化的趨勢</em>」。共同變化的強度由<strong>相關係數（Coefficient of Correlation）</strong>表示，通常以字母 <em>r</em> 表示。</p>
+<p>由 Galton（1886）首先提出，Karl Pearson（1896）正式化，因此又稱「Pearson 相關係數」。</p>
+</div>
+<div class="formula-box">
+<div class="formula-label">相關係數 r 的範圍</div>
+<div class="formula-main">−1 ≤ r ≤ +1</div>
+<div class="formula-desc">
+<strong>r = +1</strong>：完美正相關（兩變數測量的是同一件事）<br>
+<strong>r = −1</strong>：完美負相關（測量同一件事，但方向相反，如「富有程度」vs「貧窮程度」）<br>
+<strong>r = 0</strong>：無線性相關（兩變數沒有共通性）
+</div>
+</div>
+<div class="concept-grid">
+<div class="concept-card"><div class="concept-icon">➕</div><h3>正相關</h3><p>一個變數變大，另一個也變大。例如：<em>讀書時間 ↑ → 考試成績 ↑</em></p></div>
+<div class="concept-card"><div class="concept-icon">➖</div><h3>負相關</h3><p>一個變數變大，另一個變小。例如：<em>運動量 ↑ → 體重 ↓</em></p></div>
+<div class="concept-card"><div class="concept-icon">🔵</div><h3>零相關</h3><p>兩變數無線性關聯。例如：<em>鞋子尺碼</em> 與 <em>智商</em>。</p></div>
+</div>
+</section>
+
+<section id="scatter">
+<div class="section-header"><span class="section-num">§2</span><h2>散佈圖：第一步</h2></div>
+<div class="prose">
+<p>用一個真實範例：從牛津字典隨機抽取 20 個單字，記錄每個字的<strong>字母數</strong>（Y）和<strong>釋義行數</strong>（W）。直覺上：「<em>常用字（短）的釋義應該比較長</em>」。</p>
+</div>
+<div class="chart-wrapper">
+<div class="chart-title">📊 散佈圖：字母數（Y）vs 釋義行數（W）</div>
+<canvas id="scatterCanvas" height="340"></canvas>
+<div style="text-align:center;margin-top:8px;font-size:13px;color:var(--muted)">每個藍點代表一個單字</div>
+</div>
+<div class="highlight-box">🔍 <strong>從圖中看出什麼？</strong> 點的「雲（cloud）」呈現從<em>左上到右下</em>的橢圓分布，代表「字母多的字 → 釋義行數少」的<strong>負相關</strong>。但要怎麼把「看起來」量化成一個數字？</div>
+</section>
+
+<section id="centering">
+<div class="section-header"><span class="section-num">§3</span><h2>第一步：置中（Centering）</h2></div>
+<div class="prose"><p>把每個資料點的座標<em>減去平均值</em>，讓座標原點移到資料的「重心」上。</p></div>
+<div class="formula-box">
+<div class="formula-label">置中公式</div>
+<div class="formula-main">w = W − M<sub>W</sub>　；　y = Y − M<sub>Y</sub></div>
+<div class="formula-desc">
+新的座標 (w, y) 代表每點「<strong>偏離平均的程度</strong>」。<br>
+本例：M<sub>W</sub> = 8（平均行數）、M<sub>Y</sub> = 6（平均字母數）<br>
+例如「bag」原本是 (14, 3)，置中後變成 (14−8, 3−6) = (<strong>6, −3</strong>)
+</div>
+</div>
+<div class="chart-wrapper">
+<div class="chart-title">🎯 置中後：原點移到資料重心 (M<sub>W</sub>=8, M<sub>Y</sub>=6)</div>
+<canvas id="centeredCanvas" height="340"></canvas>
+<div style="text-align:center;margin-top:8px;font-size:13px;color:var(--muted)">紅色虛線將平面分成四個象限</div>
+</div>
+</section>
+
+<section id="quadrants">
+<div class="section-header"><span class="section-num">§4</span><h2>四個象限的祕密</h2></div>
+<div class="prose"><p>置中後，每個象限的點都有一個特性：<strong>w 與 y 正負號的組合</strong>。</p></div>
+<div class="concept-grid">
+<div class="concept-card" style="border-top:4px solid #e74c3c"><h3>象限 1（左上）</h3><p><strong>w&lt;0, y&gt;0</strong></p><p>釋義短，字長</p><p style="font-family:'JetBrains Mono',monospace;color:var(--accent);font-weight:600">w × y = (−)(+) = <strong>負</strong></p></div>
+<div class="concept-card" style="border-top:4px solid #2ecc71"><h3>象限 2（右上）</h3><p><strong>w&gt;0, y&gt;0</strong></p><p>釋義長，字也長</p><p style="font-family:'JetBrains Mono',monospace;color:#27ae60;font-weight:600">w × y = (+)(+) = <strong>正</strong></p></div>
+<div class="concept-card" style="border-top:4px solid #2ecc71"><h3>象限 3（左下）</h3><p><strong>w&lt;0, y&lt;0</strong></p><p>釋義短，字也短</p><p style="font-family:'JetBrains Mono',monospace;color:#27ae60;font-weight:600">w × y = (−)(−) = <strong>正</strong></p></div>
+<div class="concept-card" style="border-top:4px solid #e74c3c"><h3>象限 4（右下）</h3><p><strong>w&gt;0, y&lt;0</strong></p><p>釋義長，但字短</p><p style="font-family:'JetBrains Mono',monospace;color:var(--accent);font-weight:600">w × y = (+)(−) = <strong>負</strong></p></div>
+</div>
+<div class="highlight-box">💡 <strong>關鍵觀察</strong>：本例 20 個單字裡有 <strong>7 個落在象限 1，8 個落在象限 3</strong>（全是負乘積），象限 2、4 都沒有點。這就是<em>負相關</em>的視覺證據。</div>
+</section>
+
+<section id="scp">
+<div class="section-header"><span class="section-num">§5</span><h2>交叉乘積與其總和（SCP）</h2></div>
+<div class="prose"><p>為了讓「離原點較遠的點」獲得較大權重，我們計算每個點的「<strong>交叉乘積（Cross-Product）</strong>」：</p></div>
+<div class="formula-box">
+<div class="formula-label">交叉乘積 Cross-Product</div>
+<div class="formula-main">CP<sub>s</sub> = (W<sub>s</sub> − M<sub>W</sub>) × (Y<sub>s</sub> − M<sub>Y</sub>)</div>
+<div class="formula-desc">幾何意義：每點對應一個「矩形面積」，越偏離中心 → 矩形越大 → 證據越強。</div>
+</div>
+<div class="formula-box">
+<div class="formula-label">交叉乘積總和 Sum of Cross-Products</div>
+<div class="formula-main">SCP<sub>WY</sub> = Σ(W<sub>s</sub> − M<sub>W</sub>)(Y<sub>s</sub> − M<sub>Y</sub>)</div>
+<div class="formula-desc">
+<strong>SCP &gt; 0</strong>：正相關趨勢　<strong>SCP &lt; 0</strong>：負相關趨勢　<strong>SCP ≈ 0</strong>：無線性關係
+</div>
+</div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:24px 0 16px;font-weight:700">📐 範例計算</h3>
+<div class="data-table-wrap"><table>
+<thead><tr><th>單字</th><th>Y</th><th>W</th><th>y=Y−6</th><th>w=W−8</th><th>w×y</th></tr></thead>
+<tbody>
+<tr><td>bag</td><td>3</td><td>14</td><td>−3</td><td>+6</td><td>−18</td></tr>
+<tr><td>on</td><td>2</td><td>11</td><td>−4</td><td>+3</td><td>−12</td></tr>
+<tr><td>monastery</td><td>9</td><td>4</td><td>+3</td><td>−4</td><td>−12</td></tr>
+<tr><td>therefore</td><td>9</td><td>1</td><td>+3</td><td>−7</td><td>−21</td></tr>
+<tr><td>blot</td><td>4</td><td>15</td><td>−2</td><td>+7</td><td>−14</td></tr>
+<tr><td>（其他 15 筆）</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+</tbody>
+<tfoot><tr><td colspan="3">SS<sub>Y</sub>=Σy²=<strong>150</strong></td><td colspan="2">SS<sub>W</sub>=Σw²=<strong>294</strong></td><td><strong style="color:var(--accent)">SCP=−154</strong></td></tr></tfoot>
+</table></div>
+<div class="highlight-box">📊 SCP<sub>WY</sub> = <strong>−154</strong>，<em>是負數</em>，符合散佈圖看到的負相關趨勢。</div>
+</section>
+
+<section id="cov">
+<div class="section-header"><span class="section-num">§6</span><h2>共變數（Covariance）</h2></div>
+<div class="prose"><p>SCP 會隨樣本數變大。為了標準化，除以樣本數 S：</p></div>
+<div class="formula-box">
+<div class="formula-label">共變數 Covariance</div>
+<div class="formula-main">cov<sub>WY</sub> = SCP<sub>WY</sub> / S</div>
+<div class="formula-desc">本例：cov = −154 / 20 = <strong>−7.70</strong><br>但共變數仍<em>依賴測量單位</em>，無法跨研究比較。</div>
+</div>
+</section>
+
+<section id="r">
+<div class="section-header"><span class="section-num">§7</span><h2>相關係數 r：標準化的關鍵</h2></div>
+<div class="prose"><p>把共變數除以兩個變數的標準差，消除單位，得到無單位的「<strong>Pearson 相關係數 r</strong>」。</p></div>
+<div class="formula-box">
+<div class="formula-label">相關係數 - 概念公式</div>
+<div class="formula-main">r<sub>W·Y</sub> = cov<sub>WY</sub> / (σ<sub>W</sub> × σ<sub>Y</sub>)</div>
+</div>
+<div class="formula-box">
+<div class="formula-label">相關係數 - 實用公式（最常用）</div>
+<div class="formula-main">r<sub>W·Y</sub> = SCP<sub>WY</sub> / √(SS<sub>W</sub> × SS<sub>Y</sub>)</div>
+<div class="formula-desc">
+記憶口訣：「<strong>矩形 ÷ √(正方形)</strong>」<br>
+本例：r = −154 / √(294×150) = −154 / 210 = <strong style="color:var(--gold);font-size:18px">−0.7333</strong>
+</div>
+</div>
+<div class="concept-grid">
+<div class="concept-card"><div class="concept-icon">📏</div><h3>無單位</h3><p>r 是純數，可跨不同研究比較。r=.80 比 r=.50 更強，無論單位是什麼。</p></div>
+<div class="concept-card"><div class="concept-icon">🎯</div><h3>限定範圍</h3><p>由 Schwartz 不等式保證 −1 ≤ r ≤ +1。大小直覺好理解。</p></div>
+<div class="concept-card"><div class="concept-icon">🔁</div><h3>對稱性</h3><p>r<sub>W·Y</sub> = r<sub>Y·W</sub>。兩變數角色可互換。</p></div>
+</div>
+</section>
+
+<section id="interpret">
+<div class="section-header"><span class="section-num">§8</span><h2>解讀陷阱：散佈圖的重要性</h2></div>
+<div class="prose"><p><strong>每次看到 r，都要搭配散佈圖！</strong>只看數字會錯過很多警訊。</p></div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:24px 0 16px;font-weight:700">⚠️ 陷阱 1：非線性關係</h3>
+<div class="warn-box">🚨 r 只衡量「<strong>線性</strong>」關係。如果兩個變數呈 U 字型（如壓力與表現），r 可能為 0，但兩者其實有強烈關係——只是不是直線關係。<br><strong>解決方法</strong>：轉換變數（取平方根、對數），或使用其他統計方法。</div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">⚠️ 陷阱 2：極端值（Outliers）</h3>
+<div class="chart-wrapper">
+<div class="chart-title">🎛️ 互動演示：拖動極端值，觀察 r 的劇烈變化</div>
+<canvas id="outlierCanvas" height="320"></canvas>
+<div style="text-align:center;margin-top:8px;font-size:14px;font-family:'JetBrains Mono',monospace">相關係數 r = <span id="rValOutlier" style="color:var(--accent);font-weight:700">−0.87</span></div>
+<div class="controls">
+<div class="ctrl-group"><label>極端值 X = <span class="ctrl-val" id="outX">10</span></label><input type="range" id="outlierX" min="0" max="10" step="0.5" value="10"></div>
+<div class="ctrl-group"><label>極端值 Y = <span class="ctrl-val" id="outY">10</span></label><input type="range" id="outlierY" min="0" max="10" step="0.5" value="10"></div>
+</div>
+</div>
+<div class="warn-box">🎯 <strong>一個極端值能徹底翻轉 r</strong>：原本 6 個點呈 r=−0.87 的強負相關，加入極端值 (10,10) 後 r 可能變成 +0.61——完全相反！<br><strong>實務建議</strong>：發現極端值時，要追究原因（輸入錯誤？儀器故障？樣本污染？），不要無腦刪除。</div>
+</section>
+
+<section id="causality">
+<div class="section-header"><span class="section-num">§9</span><h2>相關 ≠ 因果（最重要！）</h2></div>
+<div class="formula-box">
+<div class="formula-label">💀 致命錯誤</div>
+<div class="formula-main">相關 ≠ 因果</div>
+<div class="formula-desc">即使兩變數有強烈相關（r 很大），<strong>也不能推論一個導致另一個</strong>。</div>
+</div>
+<div class="concept-grid">
+<div class="concept-card" style="border-left:4px solid var(--accent)"><div class="concept-icon">👣</div><h3>荒謬案例 1</h3><p>兒童的智商與<strong>大腳趾長度</strong>呈高度相關。難道智力住在腳趾裡？</p><p style="margin-top:8px;color:var(--muted);font-size:13px">→ 真相：<em>年齡</em>是共同原因。</p></div>
+<div class="concept-card" style="border-left:4px solid var(--accent)"><div class="concept-icon">⛪</div><h3>荒謬案例 2</h3><p>法國城市的<strong>教堂數</strong>與<strong>肝硬化發生率</strong>高度正相關。難道教堂讓人酗酒？</p><p style="margin-top:8px;color:var(--muted);font-size:13px">→ 真相：<em>城市規模</em>是共同原因。</p></div>
+<div class="concept-card" style="border-left:4px solid var(--accent)"><div class="concept-icon">🚒</div><h3>荒謬案例 3</h3><p><strong>消防車數量</strong>與<strong>火災損失</strong>強烈正相關。為了減少損失應該少派消防車？</p><p style="margin-top:8px;color:var(--muted);font-size:13px">→ 真相：<em>火災規模</em>同時影響兩者。</p></div>
+</div>
+<div class="highlight-box">💡 這些案例稱為「<strong>偽相關（Spurious Correlation）</strong>」：兩變數的相關來自於它們<em>都與第三個變數相關</em>。<br><br><strong>建立因果關係只有兩條路</strong>：(1) <em>實驗</em>（操弄變數 + 隨機分派）　(2) <em>聚斂操作</em>（多種方法都得到一致結論）</div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">🔑 r² 的解讀：決定係數</h3>
+<div class="formula-box">
+<div class="formula-label">決定係數 Coefficient of Determination</div>
+<div class="formula-main">r² = 兩變數的「共同變異比例」</div>
+<div class="formula-desc">本例：r = −0.7333，所以 r² = (−0.7333)² = <strong>0.54</strong><br>意思是：「字母數」與「釋義行數」共享 <strong>54%</strong> 的變異。<br>r² 永遠介於 0 到 1 之間，將在第四章「迴歸分析」中深入討論。</div>
+</div>
+</section>
+
+<section>
+<div class="section-header"><span class="section-num">§K</span><h2>關鍵公式整理</h2></div>
+<div class="formula-grid">
+<div class="formula-mini"><div class="fm-label">交叉乘積總和</div><div class="fm-eq">SCP_WY = Σ(W−M_W)(Y−M_Y)</div></div>
+<div class="formula-mini"><div class="fm-label">共變數</div><div class="fm-eq">cov_WY = SCP / S</div></div>
+<div class="formula-mini"><div class="fm-label">相關係數（概念）</div><div class="fm-eq">r = cov_WY / (σ_W × σ_Y)</div></div>
+<div class="formula-mini"><div class="fm-label">相關係數（實用）</div><div class="fm-eq">r = SCP / √(SS_W × SS_Y)</div></div>
+<div class="formula-mini"><div class="fm-label">Z 分數版</div><div class="fm-eq">r = (1/S) × Σ Z_W × Z_Y</div></div>
+<div class="formula-mini"><div class="fm-label">決定係數</div><div class="fm-eq">r² = 共同變異比例</div></div>
+</div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">📌 關鍵概念</h3>
+<div class="notions-grid">
+<div class="notion-item">線性關係</div>
+<div class="notion-item">散佈圖</div>
+<div class="notion-item">置中</div>
+<div class="notion-item">四象限</div>
+<div class="notion-item">交叉乘積</div>
+<div class="notion-item">共變數</div>
+<div class="notion-item">Pearson r</div>
+<div class="notion-item">完美相關</div>
+<div class="notion-item">偽相關</div>
+<div class="notion-item">極端值</div>
+<div class="notion-item">相關 vs 因果</div>
+<div class="notion-item">r² 共同變異</div>
+</div>
+</section>
+
+<section id="quiz">
+<div class="section-header"><span class="section-num">§Q</span><h2>複習測驗</h2></div>
+<div id="quizContainer"></div>
+<div style="text-align:center;margin-top:32px">
+<button onclick="resetQuiz()" class="btn">🔄 重新作答</button>
+<div id="quizScore" style="margin-top:16px;font-size:16px;font-weight:700;color:var(--teal);display:none"></div>
+</div>
+</section>
+
+<section style="text-align:center;border-bottom:none">
+<h2 style="font-family:'Noto Serif TC',serif;margin-bottom:16px">繼續學習</h2>
+<p style="color:var(--muted);margin-bottom:24px">下一章學習如何判斷相關「是真的還是偶然」</p>
+<a href="ch3.html" class="btn btn-gold">前往第三章：F 檢定 →</a>
+</section>
+
+</div>
+
+<footer>
+<a href="ch1.html">← 第一章</a>  &nbsp;|&nbsp;  <a href="index.html">回首頁</a>  &nbsp;|&nbsp;  <a href="ch3.html">第三章 →</a><br><br>
+教材製作基於：Abdi, H., Edelman, B., Valentin, D. &amp; Dowling, W. J. (2009). <em>Experimental Design and Analysis for Psychology</em>. Oxford University Press.<br><br>
+© 版權所有　<strong style="color:var(--paper)">葉欲禾（Gary Yu-Ho Yeh）</strong>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{const d=document.documentElement;document.getElementById('progress-bar').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%'});
+
+const wordData=[[3,14],[6,7],[2,11],[6,9],[2,9],[9,4],[6,8],[5,11],[9,5],[4,8],[7,2],[11,4],[5,12],[4,9],[3,8],[9,1],[10,4],[5,13],[4,15],[10,6]];
+const MY=6,MW=8;
+
+function drawScatter(){
+  const c=document.getElementById('scatterCanvas');
+  const W=c.offsetWidth,H=340;c.width=W;c.height=H;
+  const ctx=c.getContext('2d');
+  const pad={l:55,r:20,t:20,b:40};
+  const tx=v=>pad.l+v/16*(W-pad.l-pad.r);
+  const ty=v=>H-pad.b-v/12*(H-pad.t-pad.b);
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(0,0,0,.05)';
+  for(let i=0;i<=16;i+=2){ctx.beginPath();ctx.moveTo(tx(i),pad.t);ctx.lineTo(tx(i),H-pad.b);ctx.stroke();}
+  for(let i=0;i<=12;i+=2){ctx.beginPath();ctx.moveTo(pad.l,ty(i));ctx.lineTo(W-pad.r,ty(i));ctx.stroke();}
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,H-pad.b);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(pad.l,H-pad.b);ctx.lineTo(W-pad.r,H-pad.b);ctx.stroke();
+  ctx.fillStyle='#555';ctx.font='11px JetBrains Mono';ctx.textAlign='center';
+  for(let i=0;i<=16;i+=2)ctx.fillText(i,tx(i),H-pad.b+16);
+  ctx.textAlign='right';
+  for(let i=0;i<=12;i+=2)ctx.fillText(i,pad.l-6,ty(i)+4);
+  ctx.font='12px "Noto Sans TC"';ctx.fillStyle='#444';ctx.textAlign='center';
+  ctx.fillText('釋義行數 W',W/2,H-2);
+  ctx.save();ctx.translate(14,H/2);ctx.rotate(-Math.PI/2);ctx.fillText('字母數 Y',0,0);ctx.restore();
+  wordData.forEach(d=>{
+    ctx.beginPath();ctx.arc(tx(d[1]),ty(d[0]),6,0,2*Math.PI);
+    ctx.fillStyle='#2980b9';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke();
+  });
+}
+
+function drawCentered(){
+  const c=document.getElementById('centeredCanvas');
+  const W=c.offsetWidth,H=340;c.width=W;c.height=H;
+  const ctx=c.getContext('2d');
+  const pad={l:55,r:20,t:20,b:40};
+  const tx=v=>pad.l+v/16*(W-pad.l-pad.r);
+  const ty=v=>H-pad.b-v/12*(H-pad.t-pad.b);
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(0,0,0,.05)';
+  for(let i=0;i<=16;i+=2){ctx.beginPath();ctx.moveTo(tx(i),pad.t);ctx.lineTo(tx(i),H-pad.b);ctx.stroke();}
+  for(let i=0;i<=12;i+=2){ctx.beginPath();ctx.moveTo(pad.l,ty(i));ctx.lineTo(W-pad.r,ty(i));ctx.stroke();}
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,H-pad.b);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(pad.l,H-pad.b);ctx.lineTo(W-pad.r,H-pad.b);ctx.stroke();
+  ctx.fillStyle='#555';ctx.font='11px JetBrains Mono';ctx.textAlign='center';
+  for(let i=0;i<=16;i+=2)ctx.fillText(i,tx(i),H-pad.b+16);
+  ctx.textAlign='right';
+  for(let i=0;i<=12;i+=2)ctx.fillText(i,pad.l-6,ty(i)+4);
+  ctx.setLineDash([6,4]);ctx.strokeStyle='rgba(192,57,43,.5)';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(tx(MW),pad.t);ctx.lineTo(tx(MW),H-pad.b);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(pad.l,ty(MY));ctx.lineTo(W-pad.r,ty(MY));ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='rgba(231,76,60,.5)';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='left';
+  ctx.fillText('Q1: −',tx(MW-3),ty(MY+5));
+  ctx.fillStyle='rgba(46,204,113,.5)';ctx.fillText('Q2: +',tx(MW+1),ty(MY+5));
+  ctx.fillStyle='rgba(46,204,113,.5)';ctx.fillText('Q3: +',tx(MW-3),ty(MY-2));
+  ctx.fillStyle='rgba(231,76,60,.5)';ctx.fillText('Q4: −',tx(MW+1),ty(MY-2));
+  wordData.forEach(d=>{
+    const w=d[1],y=d[0];
+    let color='#2980b9';
+    if(w<MW&&y>MY)color='#e74c3c';
+    else if(w>MW&&y>MY)color='#2ecc71';
+    else if(w<MW&&y<MY)color='#2ecc71';
+    else if(w>MW&&y<MY)color='#e74c3c';
+    ctx.beginPath();ctx.arc(tx(w),ty(y),6,0,2*Math.PI);
+    ctx.fillStyle=color;ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke();
+  });
+  ctx.beginPath();ctx.arc(tx(MW),ty(MY),4,0,2*Math.PI);ctx.fillStyle='#c0392b';ctx.fill();
+}
+
+const baseOutlier=[[1,9],[2,8],[3,6],[4,5],[5,3],[6,2]];
+function pearsonR(data){
+  const n=data.length;
+  let mx=data.reduce((s,p)=>s+p[0],0)/n;
+  let my=data.reduce((s,p)=>s+p[1],0)/n;
+  let sxy=0,sx2=0,sy2=0;
+  data.forEach(p=>{sxy+=(p[0]-mx)*(p[1]-my);sx2+=(p[0]-mx)**2;sy2+=(p[1]-my)**2;});
+  return sxy/Math.sqrt(sx2*sy2);
+}
+function drawOutlier(){
+  const c=document.getElementById('outlierCanvas');
+  const W=c.offsetWidth,H=320;c.width=W;c.height=H;
+  const ctx=c.getContext('2d');
+  const ox=parseFloat(document.getElementById('outlierX').value);
+  const oy=parseFloat(document.getElementById('outlierY').value);
+  document.getElementById('outX').textContent=ox;
+  document.getElementById('outY').textContent=oy;
+  const data=[...baseOutlier,[ox,oy]];
+  const r=pearsonR(data);
+  document.getElementById('rValOutlier').textContent=r.toFixed(2);
+  const pad={l:50,r:20,t:20,b:40};
+  const tx=v=>pad.l+v/11*(W-pad.l-pad.r);
+  const ty=v=>H-pad.b-v/11*(H-pad.t-pad.b);
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(0,0,0,.05)';
+  for(let i=0;i<=11;i++){ctx.beginPath();ctx.moveTo(tx(i),pad.t);ctx.lineTo(tx(i),H-pad.b);ctx.stroke();}
+  for(let i=0;i<=11;i++){ctx.beginPath();ctx.moveTo(pad.l,ty(i));ctx.lineTo(W-pad.r,ty(i));ctx.stroke();}
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,H-pad.b);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(pad.l,H-pad.b);ctx.lineTo(W-pad.r,H-pad.b);ctx.stroke();
+  baseOutlier.forEach(p=>{
+    ctx.beginPath();ctx.arc(tx(p[0]),ty(p[1]),7,0,2*Math.PI);
+    ctx.fillStyle='#2980b9';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+  });
+  ctx.beginPath();ctx.arc(tx(ox),ty(oy),10,0,2*Math.PI);
+  ctx.fillStyle='#c0392b';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2.5;ctx.stroke();
+  ctx.fillStyle='#c0392b';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='left';
+  ctx.fillText('極端值',tx(ox)+13,ty(oy)+4);
+  ctx.fillStyle='#555';ctx.font='10px JetBrains Mono';ctx.textAlign='center';
+  for(let i=0;i<=10;i+=2)ctx.fillText(i,tx(i),H-pad.b+16);
+  ctx.textAlign='right';
+  for(let i=0;i<=10;i+=2)ctx.fillText(i,pad.l-6,ty(i)+4);
+}
+document.getElementById('outlierX').addEventListener('input',drawOutlier);
+document.getElementById('outlierY').addEventListener('input',drawOutlier);
+window.addEventListener('resize',()=>{drawScatter();drawCentered();drawOutlier();});
+setTimeout(()=>{drawScatter();drawCentered();drawOutlier();},100);
+
+const questions=[
+{q:"Pearson 相關係數 r 的取值範圍是？",opts:["0 到 1","0 到 100","−1 到 +1","−∞ 到 +∞"],ans:2,fb:"r 的範圍是 −1 ≤ r ≤ +1（由 Schwartz 不等式保證）。r=±1 是完美相關，r=0 是無線性相關。"},
+{q:"如果 r = 0，下列說法何者正確？",opts:["兩變數毫無關係","兩變數沒有「線性」關係，但可能有非線性關係（如 U 形）","兩變數呈完美負相關","資料有錯誤"],ans:1,fb:"r 只衡量「線性」關係。r=0 不代表「沒關係」，可能存在 U 形等非線性關係。所以必須搭配散佈圖檢查。"},
+{q:"計算交叉乘積（cross-product）的目的是什麼？",opts:["讓計算更複雜","把每個資料點的偏差相加","讓「離原點較遠的點」獲得較大權重","把資料標準化"],ans:2,fb:"交叉乘積 (w×y) 是「水平距離 × 垂直距離」，幾何上等於矩形面積。離原點越遠 → 矩形越大 → 對 SCP 貢獻越大，符合「極端點提供更強相關證據」的直覺。"},
+{q:"為什麼 r 比共變數 cov 更實用？",opts:["r 的計算比 cov 簡單","r 無單位、有固定範圍 [−1, +1]，可跨研究比較","cov 必然為正","r 不需要資料"],ans:1,fb:"共變數仍帶有原始單位，不同研究無法比較。r = cov / (σ_W × σ_Y) 消除單位，又限制在 [−1, +1]，方便解讀與比較。"},
+{q:"「相關 ≠ 因果」這條原則的意思是？",opts:["相關係數的計算不準確","高相關不能保證一個變數導致另一個——可能有共同原因","相關係數沒有用","因果關係不能用統計方法研究"],ans:1,fb:"經典案例：消防車數量 與 火災損失 強烈正相關，但顯然不能說「派消防車造成損失」。背後共同原因是「火災規模」。要建立因果，需要實驗（操弄變數 + 隨機分派）。"},
+{q:"範例中 r = −0.7333，它的 r² 是多少，代表什麼？",opts:["r² = 0.54，代表 54% 的變異是共同的","r² = −0.54，代表負相關","r² = 1.46，代表完美相關","r² = 0.73，代表 73% 的字母可被預測"],ans:0,fb:"r² = (−0.7333)² = 0.54。意思是兩變數共享 54% 的變異。r² 又叫「決定係數」，永遠介於 0 到 1 之間。"},
+{q:"在散佈圖發現極端值（outlier），最不恰當的處理方式是？",opts:["檢查是否為輸入錯誤、儀器故障","直接刪除以美化結果","考慮是否來自不同母群體","嘗試其他統計方法（如穩健統計）"],ans:1,fb:"極端值的處理必須謹慎。「直接刪除」是科學不誠實。正確做法：(1) 追查原因，(2) 若為錯誤則修正，(3) 若是真實但不尋常的觀察值，可考慮報告兩種結果（含/不含）。"},
+{q:"「兒童的智力與大腳趾長度高度相關」是什麼類型的相關？",opts:["因果相關","完美相關","偽相關（Spurious Correlation）","負相關"],ans:2,fb:"這是偽相關。智力與腳趾長度都隨「年齡」增長。年齡是第三變數（共同原因）。當忽略年齡時，兩者看似高度相關，但其實沒有直接因果關係。"}
+];
+function buildQuiz(){
+  const c=document.getElementById('quizContainer');c.innerHTML='';
+  questions.forEach((q,qi)=>{
+    const card=document.createElement('div');card.className='quiz-card';
+    card.innerHTML=`<div class="quiz-q"><span>${qi+1}</span>${q.q}</div><div class="quiz-opts">${q.opts.map((o,oi)=>`<button class="quiz-opt" onclick="answerQ(${qi},${oi})">${String.fromCharCode(65+oi)}. ${o}</button>`).join('')}</div><div class="quiz-feedback" id="qfb${qi}"></div>`;
+    c.appendChild(card);
+  });
+}
+let answered=[],correct=0;
+function answerQ(qi,oi){
+  if(answered.includes(qi))return;answered.push(qi);
+  const card=document.getElementById('quizContainer').children[qi];
+  const opts=card.querySelectorAll('.quiz-opt');
+  const fb=document.getElementById('qfb'+qi);
+  const q=questions[qi];
+  opts.forEach((o,i)=>{o.style.pointerEvents='none';if(i===q.ans)o.classList.add('selected-correct');if(i===oi&&oi!==q.ans)o.classList.add('selected-wrong');});
+  if(oi===q.ans){fb.textContent='✅ '+q.fb;fb.className='quiz-feedback show correct';correct++;}
+  else{fb.innerHTML=`❌ 正確答案是：${String.fromCharCode(65+q.ans)}. ${q.opts[q.ans]}　${q.fb}`;fb.className='quiz-feedback show wrong';}
+  if(answered.length===questions.length){document.getElementById('quizScore').style.display='block';document.getElementById('quizScore').textContent=`🎯 測驗完成！答對 ${correct} / ${questions.length} 題`;}
+}
+function resetQuiz(){answered=[];correct=0;document.getElementById('quizScore').style.display='none';buildQuiz();}
+buildQuiz();
+</script>
+</body>
+</html>
