@@ -47,7 +47,7 @@ window.chaptersData = [
     title: "正交多元迴歸",
     desc: "兩個或以上自變數的迴歸分析。當預測變數彼此正交（不相關）時的處理方法。",
     tags: ["多元迴歸", "正交", "偏迴歸係數"],
-    available: false
+    available: true
   },
   {
     num: "06", file: "ch6.html",
