@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第六章：非正交多元迴歸 | 心理學統計教材</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a2e;--paper:#f8f4ef;--cream:#fdf8f2;--accent:#c0392b;--accent2:#2980b9;--gold:#d4a017;--teal:#1a6b6e;--purple:#6b3fa0;--muted:#6b7280;--border:#d5c9be;--card-bg:#fff;--formula-bg:#1a1a2e;--formula-text:#f0e6d3;--highlight:#fff3cd}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.8}
+.hero{background:var(--ink);color:var(--paper);padding:80px 40px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(255,255,255,.02) 40px,rgba(255,255,255,.02) 41px)}
+.hero-eyebrow{font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500}
+.hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(28px,5vw,52px);font-weight:700;line-height:1.2;margin-bottom:20px}
+.hero h1 span{color:var(--gold)}
+.hero-sub{font-size:15px;color:rgba(248,244,239,.65);max-width:560px;margin:0 auto 40px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.tag{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 16px;font-size:13px;color:var(--paper)}
+nav{position:sticky;top:0;z-index:100;background:rgba(26,26,46,.97);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);padding:0 40px;display:flex;gap:0;overflow-x:auto}
+nav a{display:block;padding:16px 20px;color:rgba(248,244,239,.65);text-decoration:none;font-size:13px;font-weight:500;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+nav a:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+section{padding:64px 0;border-bottom:1px solid var(--border)}
+section:last-of-type{border-bottom:none}
+.section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:36px}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.2);border-radius:4px;padding:3px 8px;flex-shrink:0}
+.section-header h2{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:700;color:var(--ink)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:32px}
+.concept-card{background:var(--card-bg);border-radius:12px;padding:24px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.concept-icon{font-size:28px;margin-bottom:12px}
+.concept-card h3{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;margin-bottom:10px}
+.concept-card p{font-size:14px;color:var(--muted);line-height:1.7}
+.concept-card p+p{margin-top:8px}
+.highlight-box{background:var(--highlight);border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#6b4c00}
+.warn-box{background:rgba(192,57,43,.06);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#7a2a1f}
+.info-box{background:rgba(41,128,185,.06);border-left:4px solid var(--accent2);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#1e5a8a}
+.magic-box{background:linear-gradient(135deg,rgba(107,63,160,0.08),rgba(212,160,23,0.08));border:2px solid var(--purple);border-radius:12px;padding:24px;margin:24px 0;font-size:14px}
+.magic-box .magic-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--purple);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.formula-box{background:var(--formula-bg);border-radius:12px;padding:28px 32px;margin:24px 0;position:relative;overflow:hidden}
+.formula-box::before{content:'FORMULA';position:absolute;top:12px;right:16px;font-size:10px;letter-spacing:3px;color:rgba(255,255,255,.2);font-family:'JetBrains Mono',monospace}
+.formula-box .formula-label{font-size:12px;color:var(--gold);margin-bottom:10px;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.formula-box .formula-main{font-family:'JetBrains Mono',monospace;font-size:20px;color:var(--formula-text);font-weight:600;margin-bottom:12px;word-wrap:break-word;line-height:1.5}
+.formula-box .formula-desc{font-size:13px;color:rgba(240,230,211,.6);line-height:1.7}
+.formula-box .formula-desc strong{color:var(--gold)}
+.chart-wrapper{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px;margin:28px 0}
+.chart-title{font-size:14px;font-weight:600;color:var(--muted);margin-bottom:16px;letter-spacing:.5px}
+canvas{display:block;width:100%}
+.data-table-wrap{overflow-x:auto;margin:24px 0;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--card-bg)}
+thead tr{background:var(--ink)}
+thead th{color:var(--paper);padding:12px 16px;text-align:center;font-weight:600;font-size:13px}
+thead th:first-child{text-align:left}
+tbody tr:nth-child(even){background:var(--cream)}
+tbody td{padding:10px 16px;text-align:center;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:13px}
+tbody td:first-child{text-align:left;font-family:'Noto Sans TC',sans-serif;font-size:13.5px}
+tfoot tr{background:rgba(192,57,43,.08);font-weight:600}
+tfoot td{padding:12px 16px;border-top:2px solid var(--accent);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;text-align:center}
+.prose p{margin-bottom:16px;font-size:15px;line-height:1.85;color:#333}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--ink)}
+.prose em{color:var(--accent);font-style:normal;font-weight:500}
+.steps{counter-reset:step}
+.step{display:flex;gap:20px;margin-bottom:28px;align-items:flex-start}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--gold);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.step-body{flex:1}
+.step-body h4{font-weight:700;font-size:15px;margin-bottom:8px}
+.step-body p{font-size:14px;color:#444;margin-bottom:8px}
+.step-body p:last-child{margin-bottom:0}
+.notions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0}
+.notion-item{background:var(--ink);color:var(--paper);border-radius:8px;padding:14px 18px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px}
+.notion-item::before{content:'◆';color:var(--gold);font-size:10px;flex-shrink:0}
+.formula-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:24px 0}
+.formula-mini{background:var(--ink);border-radius:10px;padding:20px;color:var(--formula-text)}
+.formula-mini .fm-label{font-size:11px;color:var(--gold);letter-spacing:2px;font-family:'JetBrains Mono',monospace;margin-bottom:8px;text-transform:uppercase}
+.formula-mini .fm-eq{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#fff;line-height:1.6;word-wrap:break-word}
+.formula-mini .fm-note{font-size:12px;color:rgba(255,255,255,.5);margin-top:6px;line-height:1.5}
+.quiz-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:20px}
+.quiz-q{font-weight:700;font-size:15px;margin-bottom:16px;line-height:1.6}
+.quiz-q span{display:inline-block;width:26px;height:26px;background:var(--ink);color:var(--gold);border-radius:50%;font-size:13px;text-align:center;line-height:26px;margin-right:8px;font-family:'JetBrains Mono',monospace}
+.quiz-opts{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:12px 18px;cursor:pointer;font-size:14px;transition:all .2s;text-align:left;font-family:'Noto Sans TC',sans-serif}
+.quiz-opt:hover{border-color:var(--accent2);background:rgba(41,128,185,.05)}
+.quiz-opt.selected-correct{border-color:#27ae60;background:rgba(39,174,96,.1);color:#1e8449;font-weight:600}
+.quiz-opt.selected-wrong{border-color:var(--accent);background:rgba(192,57,43,.1);color:var(--accent)}
+.quiz-feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:13.5px;display:none;line-height:1.6}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:rgba(39,174,96,.1);color:#1e8449;border:1px solid rgba(39,174,96,.3)}
+.quiz-feedback.wrong{background:rgba(192,57,43,.08);color:#c0392b;border:1px solid rgba(192,57,43,.2)}
+.btn{display:inline-block;padding:14px 32px;background:var(--ink);color:var(--paper);border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.btn:hover{background:var(--accent);transform:translateY(-2px)}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--accent);color:#fff}
+footer{background:var(--ink);color:rgba(248,244,239,.5);text-align:center;padding:32px;font-size:13px}
+footer a{color:var(--gold);text-decoration:none}
+footer a:hover{text-decoration:underline}
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);z-index:9999;width:0%;transition:width .1s}
+@media(max-width:600px){.hero{padding:48px 20px 40px}nav{padding:0 16px}.container{padding:0 16px}section{padding:48px 0}}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<div class="hero">
+  <div class="hero-eyebrow">第六章 · Chapter 6</div>
+  <h1>非正交<span>多元迴歸</span><br>Non-orthogonal Multiple Regression</h1>
+  <p class="hero-sub">當兩個自變數彼此「有相關」時，事情變得棘手——但也才是真實研究的樣貌。本章學習如何處理「共享變異」的問題。</p>
+  <div class="hero-tags">
+    <span class="tag">🔗 非正交</span>
+    <span class="tag">📊 共享變異</span>
+    <span class="tag">✂️ 半偏相關</span>
+    <span class="tag">🎭 偏相關</span>
+    <span class="tag">⚠️ 多重共線性</span>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" style="color:var(--gold)">← 回首頁</a>
+  <a href="#why">§1 真實世界的麻煩</a>
+  <a href="#example">§2 兒童記憶實例</a>
+  <a href="#compute">§3 計算 a, b, c</a>
+  <a href="#R2">§4 整體 R²</a>
+  <a href="#problem">§5 加總超過 1 的問題</a>
+  <a href="#semipartial">§6 半偏相關</a>
+  <a href="#venn">§7 變異分解</a>
+  <a href="#alt">§8 替代公式</a>
+  <a href="#ftest">§9 F 檢定</a>
+  <a href="#multicol">§10 多重共線性</a>
+  <a href="#partial">§11 偏相關</a>
+  <a href="#formulas">§K 公式整理</a>
+  <a href="#quiz">§Q 測驗</a>
+</nav>
+
+<div class="container">
+
+<!-- §1 -->
+<section id="why">
+<div class="section-header"><span class="section-num">§1</span><h2>為什麼需要這一章？</h2></div>
+
+<div class="prose">
+<p>第五章告訴我們：當兩個自變數<strong>正交</strong>時，多元迴歸超簡單。但現實中，研究者<em>不總能</em>讓自變數正交。</p>
+</div>
+
+<div class="warn-box">
+🚨 <strong>什麼時候不能正交？</strong><br>
+當研究中有「<strong>標籤變數（tag variable）</strong>」時——也就是研究者<em>無法操弄</em>、受試者本身就帶著的特徵（第 1 章提過）。例如：<br><br>
+· 年齡、性別、智商、收入、社經地位、種族⋯⋯<br>
+· 這些變數研究者只能「<em>測量</em>」而非「<em>分派</em>」<br>
+· 它們之間通常彼此相關，無法設計成正交
+</div>
+
+<div class="info-box">
+🎯 <strong>本章核心問題</strong><br>
+當 X 和 T 彼此有相關時，它們對 Y 的解釋會「<strong>重疊</strong>」。<br>
+那麼，每個自變數<em>真正獨有</em>的貢獻是多少？<br><br>
+解答：使用「<strong>半偏相關係數（semi-partial correlation）</strong>」——專門用來分離「共享變異」與「獨特貢獻」的利器。
+</div>
+
+<div class="concept-grid">
+<div class="concept-card" style="border-top:4px solid var(--gold)">
+<div class="concept-icon">😊</div>
+<h3>正交（第5章）</h3>
+<p>X 和 T 的相關 = 0</p>
+<p>· 計算簡單<br>· 解釋直觀<br>· 各變數效果可加</p>
+<p style="color:var(--accent2);font-weight:600;margin-top:8px">r²<sub>Y·X</sub> + r²<sub>Y·T</sub> = R²</p>
+</div>
+<div class="concept-card" style="border-top:4px solid var(--accent)">
+<div class="concept-icon">😰</div>
+<h3>非正交（本章）</h3>
+<p>X 和 T 的相關 ≠ 0</p>
+<p>· 計算複雜<br>· 解釋微妙<br>· 變異有重疊</p>
+<p style="color:var(--accent);font-weight:600;margin-top:8px">r²<sub>Y·X</sub> + r²<sub>Y·T</sub> ≠ R²</p>
+</div>
+</div>
+</section>
+
+<!-- §2 -->
+<section id="example">
+<div class="section-header"><span class="section-num">§2</span><h2>實例：兒童記憶廣度（Hulme et al., 1984）</h2></div>
+
+<div class="concept-card" style="border-left:4px solid var(--accent2);margin-bottom:24px">
+<h3>🧒 研究背景與問題</h3>
+<p style="margin-top:8px">Hulme 等人（1984）想了解：<em>什麼因素決定兒童的短期記憶廣度？</em></p>
+<p>他們找來 4、7、10 歲的兒童，測量：</p>
+<p>· <strong style="color:var(--accent2)">X = 年齡</strong>（歲）<br>
+· <strong style="color:var(--teal)">T = 語速</strong>（每秒能讀出幾個字）<br>
+· <strong style="color:var(--accent)">Y = 記憶廣度</strong>（10 次測試中正確回憶的總字數）</p>
+<p><strong>研究假設</strong>：作者認為「語速」才是決定記憶的真正原因，而「年齡」的效果只是<em>透過語速</em>顯現出來。換句話說：年紀大不一定記得多，是因為「年紀大的小孩通常講話比較快」，才看起來記得多。</p>
+</div>
+
+<div class="warn-box">
+⚠️ <strong>為什麼這個研究「天生」就是非正交？</strong><br>
+因為年齡和語速本來就有相關——<em>年紀越大的小孩，通常語速越快</em>。研究者無法強迫某些 4 歲小孩講超快，或讓 10 歲小孩講超慢。這就是「標籤變數」的宿命。
+</div>
+
+<div class="data-table-wrap"><table>
+<thead><tr><th>受試者</th><th>X 年齡</th><th>T 語速</th><th>Y 記憶字數</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>4</td><td>1</td><td>14</td></tr>
+<tr><td>2</td><td>4</td><td>2</td><td>23</td></tr>
+<tr><td>3</td><td>7</td><td>2</td><td>30</td></tr>
+<tr><td>4</td><td>7</td><td>4</td><td>50</td></tr>
+<tr><td>5</td><td>10</td><td>3</td><td>39</td></tr>
+<tr><td>6</td><td>10</td><td>6</td><td>67</td></tr>
+</tbody>
+<tfoot><tr><td>平均值</td><td>7.00</td><td>3.00</td><td>37.17</td></tr></tfoot>
+</table></div>
+
+<div class="chart-wrapper">
+<div class="chart-title">📊 散佈圖：可以看到 X 和 T 之間明顯相關</div>
+<canvas id="dataCanvas" height="320"></canvas>
+<div style="text-align:center;margin-top:8px;font-size:13px;color:var(--muted)">
+左圖：X（年齡）vs T（語速）顯示<strong>正相關</strong>（r<sub>XT</sub> = 0.75）&nbsp;&nbsp;|&nbsp;&nbsp;右圖：兩者都與 Y 相關
+</div>
+</div>
+
+<div class="info-box">
+🔍 <strong>從散佈圖看出</strong>：<br>
+左圖中年齡和語速明顯正相關（r<sub>XT</sub> = 0.75），這就是「<strong>非正交</strong>」的視覺證據。SCP<sub>XT</sub> = 18 ≠ 0。
+</div>
+</section>
+
+<!-- §3 -->
+<section id="compute">
+<div class="section-header"><span class="section-num">§3</span><h2>計算迴歸平面（公式完整版）</h2></div>
+
+<div class="prose">
+<p>第 5 章的<em>正交簡化公式</em>在這裡<strong>不能用</strong>了！必須回到完整版：</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">完整版斜率 b（X 方向）</div>
+<div class="formula-main">b = (SS<sub>T</sub>·SCP<sub>XY</sub> − SCP<sub>XT</sub>·SCP<sub>TY</sub>) / (SS<sub>X</sub>·SS<sub>T</sub> − SCP<sub>XT</sub>²)</div>
+<div class="formula-desc">
+跟第 5 章公式完全相同，只是這次 SCP<sub>XT</sub> ≠ 0 不能被消掉。<br>
+這個公式的本質：「<strong>把 T 對 X 的影響先扣掉</strong>，再算 X 對 Y 的純效果」。
+</div>
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:24px 0 16px;font-weight:700">🧮 套入範例數值</h3>
+
+<div class="data-table-wrap"><table>
+<thead><tr><th>統計量</th><th>意義</th><th>數值</th></tr></thead>
+<tbody>
+<tr><td>SS<sub>X</sub></td><td>X 的平方和</td><td><strong>36</strong></td></tr>
+<tr><td>SS<sub>T</sub></td><td>T 的平方和</td><td><strong>16</strong></td></tr>
+<tr><td>SS<sub>Y</sub></td><td>Y 的平方和</td><td><strong>1,846.83</strong></td></tr>
+<tr><td>SCP<sub>XY</sub></td><td>X 與 Y 的交叉乘積和</td><td><strong style="color:var(--accent2)">207</strong></td></tr>
+<tr><td>SCP<sub>TY</sub></td><td>T 與 Y 的交叉乘積和</td><td><strong style="color:var(--teal)">170</strong></td></tr>
+<tr><td>SCP<sub>XT</sub></td><td>X 與 T 的交叉乘積和</td><td><strong style="color:var(--accent)">18</strong> ← <em>不是 0！</em></td></tr>
+</tbody>
+</table></div>
+
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div class="step-body">
+<h4>計算 b（年齡的斜率）</h4>
+<p>b = (16 × 207 − 18 × 170) / (36 × 16 − 18²)<br>
+&nbsp;&nbsp;= (3,312 − 3,060) / (576 − 324)<br>
+&nbsp;&nbsp;= 252 / 252 = <strong style="color:var(--accent2);font-size:18px">1.00</strong></p>
+<p style="color:var(--muted)"><em>每多 1 歲，多記 1 個字（控制語速後）</em></p>
+</div></div>
+
+<div class="step"><div class="step-num">2</div><div class="step-body">
+<h4>計算 c（語速的斜率）</h4>
+<p>c = (36 × 170 − 18 × 207) / (36 × 16 − 18²)<br>
+&nbsp;&nbsp;= (6,120 − 3,726) / 252<br>
+&nbsp;&nbsp;= 2,394 / 252 = <strong style="color:var(--teal);font-size:18px">9.50</strong></p>
+<p style="color:var(--muted)"><em>語速每加快 1 字/秒，多記 9.5 個字（控制年齡後）</em></p>
+</div></div>
+
+<div class="step"><div class="step-num">3</div><div class="step-body">
+<h4>計算 a（截距）</h4>
+<p>a = M<sub>Y</sub> − b·M<sub>X</sub> − c·M<sub>T</sub><br>
+&nbsp;&nbsp;= 37.17 − 1 × 7 − 9.5 × 3<br>
+&nbsp;&nbsp;= 37.17 − 7 − 28.5 = <strong style="font-size:18px">1.67</strong></p>
+</div></div>
+
+<div class="step"><div class="step-num">4</div><div class="step-body">
+<h4>寫出迴歸方程式</h4>
+<p style="font-size:18px;font-family:'JetBrains Mono',monospace;color:var(--accent);font-weight:700">Ŷ = 1.67 + 1.00X + 9.50T</p>
+<p>意思：記憶字數 = 1.67 + 1×（年齡）+ 9.5×（語速）</p>
+</div></div>
+</div>
+
+<div class="highlight-box">
+💡 <strong>初步解讀</strong>：兩個斜率都是正的，符合預期：年齡和語速都對記憶有正面影響。但<em>誰才是真正的關鍵？</em>這要看後面的「半偏相關」分析。
+</div>
+</section>
+
+<!-- §4 -->
+<section id="R2">
+<div class="section-header"><span class="section-num">§4</span><h2>整體 R²：兩變數合起來解釋多少？</h2></div>
+
+<div class="formula-box">
+<div class="formula-label">多元決定係數</div>
+<div class="formula-main">R²<sub>Y·XT</sub> = SCP<sub>ŶY</sub>² / (SS<sub>Ŷ</sub> · SS<sub>Y</sub>)</div>
+<div class="formula-desc">本例：R² = 1,822² / (1,822 × 1,846.83) = <strong style="color:var(--gold);font-size:18px">0.9866</strong></div>
+</div>
+
+<div class="highlight-box">
+🎯 <strong>解讀</strong>：年齡和語速合起來解釋了 <strong>98.66%</strong> 的記憶變異！剩餘只有 1.34% 是無法解釋的誤差。模型很強。
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:24px 0 16px;font-weight:700">F 檢定：模型顯著嗎？</h3>
+
+<div class="formula-box">
+<div class="formula-label">整體 F 比值</div>
+<div class="formula-main">F = R²/(1−R²) × (S−K−1)/K</div>
+<div class="formula-desc">
+S = 6, K = 2 → F = 0.9866/0.0134 × 3/2 = 73.63 × 1.5 = <strong>110.50</strong><br>
+查表 F<sub>臨界</sub>(2, 3, α=.05) = 9.55<br>
+110.50 ≫ 9.55 → <strong>拒絕 H₀</strong>，整體模型顯著
+</div>
+</div>
+</section>
+
+<!-- §5 -->
+<section id="problem">
+<div class="section-header"><span class="section-num">§5</span><h2>麻煩來了：加總超過 1！</h2></div>
+
+<div class="prose">
+<p>分別計算 X 和 T 與 Y 的相關平方，看看會發生什麼：</p>
+</div>
+
+<div class="data-table-wrap"><table>
+<thead><tr><th>單獨相關</th><th>計算</th><th>數值</th></tr></thead>
+<tbody>
+<tr><td>r²<sub>Y·X</sub>（年齡單獨解釋）</td><td>207² / (1,846.83 × 36)</td><td><strong style="color:var(--accent2)">0.6445</strong> (64.45%)</td></tr>
+<tr><td>r²<sub>Y·T</sub>（語速單獨解釋）</td><td>170² / (1,846.83 × 16)</td><td><strong style="color:var(--teal)">0.9780</strong> (97.80%)</td></tr>
+<tr><td><strong>兩者相加</strong></td><td>0.6445 + 0.9780</td><td><strong style="color:var(--accent);font-size:16px">1.6225 ❌</strong></td></tr>
+<tr><td><strong>整體 R²</strong></td><td>—</td><td><strong style="color:var(--gold)">0.9866</strong></td></tr>
+</tbody>
+</table></div>
+
+<div class="warn-box">
+🚨 <strong>很怪的事情！</strong><br>
+r²<sub>Y·X</sub> + r²<sub>Y·T</sub> = 1.6225 &gt; R² = 0.9866<br><br>
+變異總和居然 <em>超過 100%</em>！這顯然不合理——任何「比例」都不可能超過 1。<br><br>
+原因是：<strong>X 和 T 之間有相關（r<sub>XT</sub> = 0.75）</strong>，它們各自對 Y 的解釋有<em>重疊</em>。當我們簡單把它們加起來，<strong>重疊的部分被算了兩次</strong>。
+</div>
+
+<div class="magic-box">
+<div class="magic-title">📐 對比第 5 章</div>
+第 5 章正交時：0.6489 + 0.2884 = 0.9373 ≈ R² ✓<br>
+第 6 章非正交時：0.6445 + 0.9780 = 1.6225 ≫ R² ❌<br><br>
+<strong>關鍵差異</strong>：正交時，X 和 T 對 Y 的解釋「無重疊」，可以乾淨切割；非正交時，它們的解釋「重疊」，必須用新工具來分離。
+</div>
+</section>
+
+<!-- §6 -->
+<section id="semipartial">
+<div class="section-header"><span class="section-num">§6</span><h2>半偏相關：本章的英雄</h2></div>
+
+<div class="prose">
+<p>為了解決「重疊計算兩次」的問題，我們需要一個新概念：</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">半偏相關（Semi-partial Correlation）</div>
+<div class="formula-main">r²<sub>Y·X|T</sub>　讀作「Y 與 X，<em>扣除 T 影響後</em>的相關平方」</div>
+<div class="formula-desc">
+這代表「<strong>X 對 Y 的獨特貢獻</strong>」——也就是 T 解釋不了、只有 X 能解釋的部分。<br>
+別名：「<strong>part correlation</strong>」<br>
+為什麼叫「半」偏？因為我們只<em>從 X 中</em>扣除 T 的影響，沒有從 Y 中也扣除。
+</div>
+</div>
+
+<div class="info-box">
+🎬 <strong>用劇場比喻</strong>：<br>
+想像 X（年齡）和 T（語速）是兩位演員，Y（記憶）是票房。<br>
+· 一般相關 r²<sub>Y·X</sub>：年齡「<em>掛名</em>」的票房（但其實有語速幫忙）<br>
+· 半偏相關 r²<sub>Y·X|T</sub>：把語速的功勞扣掉後，年齡<em>純粹</em>能帶來的票房
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">🔧 怎麼算半偏相關？三步驟</h3>
+
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div class="step-body">
+<h4>把 X 用 T 來預測</h4>
+<p>先計算：「如果只用語速 T，能預測年齡 X 嗎？」</p>
+<p>X̂<sub>T</sub> = a<sub>X·T</sub> + b<sub>X·T</sub>·T<br>
+b<sub>X·T</sub> = SCP<sub>XT</sub> / SS<sub>T</sub> = 18 / 16 = <strong>1.125</strong><br>
+a<sub>X·T</sub> = M<sub>X</sub> − 1.125 × M<sub>T</sub> = 7 − 1.125 × 3 = <strong>3.625</strong></p>
+<p style="color:var(--muted)"><em>用語速預測年齡的方程式：X̂<sub>T</sub> = 3.625 + 1.125 × T</em></p>
+</div></div>
+
+<div class="step"><div class="step-num">2</div><div class="step-body">
+<h4>計算「殘差」：X 中扣除 T 解釋後的部分</h4>
+<p>e<sub>X·T</sub> = X − X̂<sub>T</sub>　（X 的實際值減去用 T 預測的值）</p>
+<p>這個殘差代表「<strong>X 中無法被 T 解釋的部分</strong>」，也就是 X 的「獨特成分」。</p>
+<p style="color:var(--muted);font-size:13px"><em>關鍵性質：殘差 e<sub>X·T</sub> 與 T 完全不相關（這是迴歸的數學性質）</em></p>
+</div></div>
+
+<div class="step"><div class="step-num">3</div><div class="step-body">
+<h4>計算 Y 與這個「乾淨的 X」的相關</h4>
+<p>r²<sub>Y·X|T</sub> = SCP<sub>Y·eX·T</sub>² / (SS<sub>Y</sub> · SS<sub>eX·T</sub>)<br>
+本例：r²<sub>Y·X|T</sub> = 15.75² / (1,846.83 × 15.75) = <strong style="color:var(--accent2);font-size:18px">0.0085</strong></p>
+<p>同樣地，T 對 Y 的獨特貢獻：r²<sub>Y·T|X</sub> = <strong style="color:var(--teal);font-size:18px">0.3421</strong></p>
+</div></div>
+</div>
+
+<div class="warn-box">
+💥 <strong>結果太震撼！</strong><br>
+· 年齡「看起來」解釋了 64.45% 的記憶變異<br>
+· 但<em>扣掉語速的影響後</em>，年齡<strong>真正獨自貢獻的只有 0.85%</strong>！<br><br>
+這完美驗證了原作者的假設：<em>年齡之所以看起來有影響，是因為它和語速相關。扣掉語速後，年齡本身幾乎沒影響。</em>
+</div>
+</section>
+
+<!-- §7 -->
+<section id="venn">
+<div class="section-header"><span class="section-num">§7</span><h2>變異分解：用 Venn 圖看懂</h2></div>
+
+<div class="prose">
+<p>把 Y 的整個變異拆解成四個部分：</p>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🎨 變異分解圖：四個區塊的故事</div>
+<canvas id="vennCanvas" height="380"></canvas>
+<div style="text-align:center;margin-top:8px;font-size:13px;color:var(--muted)">
+左：自變數 X 與 T 的 Venn 圖（重疊區為共享變異）&nbsp;&nbsp;|&nbsp;&nbsp;右：Y 的變異分解
+</div>
+</div>
+
+<div class="data-table-wrap"><table>
+<thead><tr><th>變異來源</th><th>符號</th><th>比例</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td style="color:var(--accent2)">X 獨特貢獻</td><td>r²<sub>Y·X|T</sub></td><td><strong>0.85%</strong></td><td>扣掉 T 後，X 還能解釋的部分</td></tr>
+<tr><td style="color:var(--teal)">T 獨特貢獻</td><td>r²<sub>Y·T|X</sub></td><td><strong>34.21%</strong></td><td>扣掉 X 後，T 還能解釋的部分</td></tr>
+<tr><td style="color:var(--purple)">X 與 T 共享</td><td>R² − (兩者半偏和)</td><td><strong>63.60%</strong></td><td>兩變數共同解釋（無法歸功於誰）</td></tr>
+<tr><td style="color:var(--accent)">無法解釋</td><td>1 − R²</td><td><strong>1.34%</strong></td><td>誤差項</td></tr>
+</tfoot>
+<tfoot><tr><td>合計</td><td>—</td><td><strong>100.00%</strong></td><td>—</td></tr></tfoot>
+</table></div>
+
+<div class="formula-box">
+<div class="formula-label">變異分解的公式（重要）</div>
+<div class="formula-main">Y 的變異 = X 獨特 + T 獨特 + 共享 + 殘差</div>
+<div class="formula-desc">
+1 = r²<sub>Y·X|T</sub> + r²<sub>Y·T|X</sub> + 共享 + (1 − R²)<br>
+本例：1 = 0.0085 + 0.3421 + 0.6360 + 0.0134 ✓<br><br>
+<strong>共享變異 = R² − (r²<sub>Y·X|T</sub> + r²<sub>Y·T|X</sub>)</strong><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0.9866 − 0.3506 = 0.6360
+</div>
+</div>
+
+<div class="info-box">
+🧐 <strong>看到了嗎？共享變異佔了 63.60%！</strong><br>
+這意味著 X 和 T 共同解釋的部分非常大。也就是說：<em>「年齡 ∩ 語速」這個重疊部分</em>，是解釋記憶力的主要力量。<br><br>
+這也是為什麼簡單的 r²<sub>Y·X</sub> 會「灌水」——它包含了 X 獨特的 0.85% <em>加上</em> 共享的 63.60% = 約 64.45%。
+</div>
+</section>
+
+<!-- §8 -->
+<section id="alt">
+<div class="section-header"><span class="section-num">§8</span><h2>半偏相關的替代公式</h2></div>
+
+<div class="prose">
+<p>不想跑「先預測 X、算殘差、再算相關」三大步嗎？有更快的公式：</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">替代公式 1：從整體 R² 減</div>
+<div class="formula-main">r²<sub>Y·X|T</sub> = R²<sub>Y·XT</sub> − r²<sub>Y·T</sub></div>
+<div class="formula-desc">
+意思：X 的獨特貢獻 = 「兩個變數合起來的解釋」− 「T 自己能解釋的」<br>
+本例：r²<sub>Y·X|T</sub> = 0.9866 − 0.9780 = <strong>0.0086</strong>（與前面 0.0085 一致）
+</div>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">替代公式 2：只用三組相關係數</div>
+<div class="formula-main">r²<sub>Y·X|T</sub> = (r<sub>Y·X</sub> − r<sub>Y·T</sub>·r<sub>X·T</sub>)² / (1 − r²<sub>X·T</sub>)</div>
+<div class="formula-desc">
+本例：r<sub>X·T</sub> = 0.75, r<sub>Y·X</sub> = 0.8028, r<sub>Y·T</sub> = 0.989<br>
+r²<sub>Y·X|T</sub> = (0.8028 − 0.989×0.75)² / (1 − 0.75²)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = (0.8028 − 0.7418)² / 0.4375 ≈ <strong>0.0085</strong>
+</div>
+</div>
+
+<div class="highlight-box">
+💡 <strong>實用建議</strong>：手算時用替代公式 1 最快——只要先算出 R² 和兩個單獨相關 r²，扣一下就完成。電腦會自動處理。
+</div>
+</section>
+
+<!-- §9 -->
+<section id="ftest">
+<div class="section-header"><span class="section-num">§9</span><h2>F 檢定：獨特貢獻顯著嗎？</h2></div>
+
+<div class="prose">
+<p>跟前面類似，半偏相關也可以做 F 檢定，判斷該變數的「獨特貢獻」是否顯著：</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">半偏相關的 F 比值</div>
+<div class="formula-main">F<sub>Y·X|T</sub> = r²<sub>Y·X|T</sub> / (1 − R²<sub>Y·XT</sub>) × (S − K − 1)</div>
+<div class="formula-desc">
+ν<sub>1</sub> = 1，ν<sub>2</sub> = S − K − 1<br>
+注意：分母是 (1 − R²<sub>Y·XT</sub>)，不是 (1 − r²<sub>Y·X|T</sub>)！這代表用整體模型的殘差作為基準。
+</div>
+</div>
+
+<div class="data-table-wrap"><table>
+<thead><tr><th>檢定</th><th>計算</th><th>F 值</th><th>查表臨界值<br>(α=.05, df=1, 3)</th><th>結論</th></tr></thead>
+<tbody>
+<tr><td>年齡的獨特效果</td><td>0.0085/(1−0.9866)×3</td><td><strong>1.91</strong></td><td>10.13</td><td style="color:var(--muted)">❌ 不顯著</td></tr>
+<tr><td>語速的獨特效果</td><td>0.3421/(1−0.9866)×3</td><td><strong style="color:var(--accent)">76.59</strong></td><td>10.13</td><td style="color:#27ae60;font-weight:600">✅ 顯著</td></tr>
+</tbody>
+</table></div>
+
+<div class="magic-box">
+<div class="magic-title">🎯 戲劇性的結論</div>
+研究最終發現：<br><br>
+<strong>· 語速</strong>：F = 76.59，p &lt; .05，<em>真的</em>能獨立預測記憶<br>
+<strong>· 年齡</strong>：F = 1.91，p &gt; .05，<em>無法</em>獨立預測記憶<br><br>
+這完全支持了 Hulme 等人的原始假設：「<strong>年齡的影響是假象</strong>——它<em>只是</em>透過語速來影響記憶。如果兩個小孩語速相同，他們的記憶差不多，年齡不重要。」
+</div>
+
+<div class="info-box">
+🔬 <strong>這就是「控制變數」的力量！</strong><br>
+半偏相關就是統計學版的「控制變數」。它讓我們在不能用實驗操弄的情況下，仍能分離出每個變數的<em>純效果</em>。<br><br>
+這個技巧在心理學、社會學、流行病學的觀察研究中極為重要。
+</div>
+</section>
+
+<!-- §10 -->
+<section id="multicol">
+<div class="section-header"><span class="section-num">§10</span><h2>陷阱：多重共線性（Multicollinearity）</h2></div>
+
+<div class="prose">
+<p>非正交多元迴歸有一個特別危險的陷阱：</p>
+</div>
+
+<div class="warn-box">
+🚨 <strong>什麼是多重共線性？</strong><br>
+當某個自變數「<em>幾乎可以被其他自變數完全預測</em>」時，就稱為多重共線性。<br><br>
+極端例子：如果 X 和 T 的相關 r<sub>X·T</sub> = 1（完美相關），半偏相關公式會變成：<br>
+r²<sub>Y·X|T</sub> = (...)² / (1 − 1²) = (...)² / <strong>0</strong> ← <em>除以 0！</em>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">為什麼是死亡陷阱</div>
+<div class="formula-main">當 r²<sub>X·T</sub> → 1，分母 (1 − r²<sub>X·T</sub>) → 0</div>
+<div class="formula-desc">
+即使不到完美相關，只要「非常相關」（如 r &gt; 0.9），分母就會變得<strong>非常小</strong>。<br>
+微小的數值波動會被放大成劇烈變化，結果<em>不可靠</em>。
+</div>
+</div>
+
+<div class="concept-grid">
+<div class="concept-card">
+<div class="concept-icon">🚧</div>
+<h3>後果</h3>
+<p>· 斜率估計極不穩定<br>
+· 標準誤暴增<br>
+· F 檢定可能拒絕不該拒絕的<br>
+· 結論完全不可信</p>
+</div>
+<div class="concept-card">
+<div class="concept-icon">🔍</div>
+<h3>怎麼診斷？</h3>
+<p>· 檢查兩兩變數相關矩陣<br>
+· 計算 VIF（變異膨脹因子）<br>
+· VIF &gt; 10 通常代表有問題<br>
+· 看條件指標（CI）</p>
+</div>
+<div class="concept-card">
+<div class="concept-icon">🛠️</div>
+<h3>怎麼處理？</h3>
+<p>· 移除高度相關的變數<br>
+· 合併成複合變數<br>
+· 使用主成分分析<br>
+· 使用 ridge regression</p>
+</div>
+</div>
+
+<div class="highlight-box">
+💡 <strong>實務建議</strong>：在跑多元迴歸之前，先檢查自變數兩兩之間的相關係數。如果發現有 |r| &gt; 0.8，就要警覺，可能有共線性問題。
+</div>
+</section>
+
+<!-- §11 -->
+<section id="partial">
+<div class="section-header"><span class="section-num">§11</span><h2>加碼：偏相關（Partial Correlation）</h2></div>
+
+<div class="prose">
+<p>還有一個跟半偏相關「很像但不一樣」的概念，順便認識一下：</p>
+</div>
+
+<div class="concept-grid">
+<div class="concept-card" style="border-top:4px solid var(--accent2)">
+<div class="concept-icon">✂️</div>
+<h3>半偏相關 r²<sub>Y·X|T</sub></h3>
+<p style="margin-top:8px"><strong>只從 X 扣掉 T</strong></p>
+<p>· 把 X 中由 T 解釋的部分扣掉</p>
+<p>· Y 保持原樣</p>
+<p style="margin-top:8px;color:var(--accent2);font-weight:600;font-size:13px">「半」= 只處理一半（只處理自變數）</p>
+</div>
+<div class="concept-card" style="border-top:4px solid var(--purple)">
+<div class="concept-icon">✂️✂️</div>
+<h3>偏相關 r²<sub>(Y·X)|T</sub></h3>
+<p style="margin-top:8px"><strong>從 X 和 Y 都扣掉 T</strong></p>
+<p>· 把 X 中由 T 解釋的部分扣掉</p>
+<p>· <em>也</em>把 Y 中由 T 解釋的部分扣掉</p>
+<p style="margin-top:8px;color:var(--purple);font-weight:600;font-size:13px">「全偏」= 兩邊都處理</p>
+</div>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">偏相關公式</div>
+<div class="formula-main">r²<sub>(Y·X)|T</sub> = (r<sub>Y·X</sub> − r<sub>Y·T</sub>·r<sub>X·T</sub>)² / [(1 − r²<sub>Y·T</sub>)(1 − r²<sub>X·T</sub>)]</div>
+<div class="formula-desc">
+跟半偏公式比，只差<strong>分母多了一個</strong> (1 − r²<sub>Y·T</sub>) 項<br>
+本例：r²<sub>(Y·X)|T</sub> = (0.8028 − 0.989×0.75)² / [(1 − 0.989²)(1 − 0.75²)] ≈ <strong>0.3894</strong>
+</div>
+</div>
+
+<div class="info-box">
+🤔 <strong>什麼時候用哪個？</strong><br><br>
+<strong>半偏相關</strong>：當你想問「<em>X 對整個 Y 的獨特貢獻是多少？</em>」(更常用於迴歸分析)<br><br>
+<strong>偏相關</strong>：當你想問「<em>X 與 Y 之間的純粹關係是什麼？</em>」(扣除 T 的共同影響後，X 與 Y 的『真實』相關)<br><br>
+心理學研究中，半偏相關（即「control for」）使用更頻繁。
+</div>
+</section>
+
+<!-- §K -->
+<section id="formulas">
+<div class="section-header"><span class="section-num">§K</span><h2>關鍵公式整理</h2></div>
+
+<div class="formula-grid">
+<div class="formula-mini"><div class="fm-label">完整斜率 b</div><div class="fm-eq">b = (SS_T·SCP_XY − SCP_XT·SCP_TY) / (SS_X·SS_T − SCP_XT²)</div></div>
+<div class="formula-mini"><div class="fm-label">完整斜率 c</div><div class="fm-eq">c = (SS_X·SCP_TY − SCP_XT·SCP_XY) / (SS_X·SS_T − SCP_XT²)</div></div>
+<div class="formula-mini"><div class="fm-label">半偏相關（殘差法）</div><div class="fm-eq">r²_Y·X|T = SCP_Y·eXT² / (SS_Y × SS_eXT)</div></div>
+<div class="formula-mini"><div class="fm-label">半偏相關（替代1：增量法）</div><div class="fm-eq">r²_Y·X|T = R²_Y·XT − r²_Y·T</div><div class="fm-note">最常用：直接從 R² 減</div></div>
+<div class="formula-mini"><div class="fm-label">半偏相關（替代2：r 公式）</div><div class="fm-eq">r²_Y·X|T = (r_Y·X − r_Y·T·r_X·T)² / (1 − r²_X·T)</div></div>
+<div class="formula-mini"><div class="fm-label">偏相關</div><div class="fm-eq">r²_(Y·X)|T = (r_Y·X − r_Y·T·r_X·T)² / [(1 − r²_Y·T)(1 − r²_X·T)]</div></div>
+<div class="formula-mini"><div class="fm-label">變異分解</div><div class="fm-eq">1 = r²_Y·X|T + r²_Y·T|X + 共享 + 殘差</div></div>
+<div class="formula-mini"><div class="fm-label">共享變異</div><div class="fm-eq">共享 = R² − (r²_Y·X|T + r²_Y·T|X)</div></div>
+<div class="formula-mini"><div class="fm-label">F 檢定（半偏）</div><div class="fm-eq">F_Y·X|T = r²_Y·X|T / (1 − R²_Y·XT) × (S − K − 1)</div><div class="fm-note">ν₁=1, ν₂=S−K−1</div></div>
+<div class="formula-mini"><div class="fm-label">3 個 IV 的情況</div><div class="fm-eq">r²_Y·X|TQ = R²_Y·XTQ − R²_Y·TQ</div></div>
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">📌 關鍵概念</h3>
+<div class="notions-grid">
+<div class="notion-item">非正交多元迴歸</div>
+<div class="notion-item">變異重疊</div>
+<div class="notion-item">半偏相關</div>
+<div class="notion-item">part correlation（同義詞）</div>
+<div class="notion-item">獨特貢獻</div>
+<div class="notion-item">殘差法</div>
+<div class="notion-item">增量解釋</div>
+<div class="notion-item">替代公式</div>
+<div class="notion-item">偏相關</div>
+<div class="notion-item">多重共線性</div>
+<div class="notion-item">控制變數</div>
+<div class="notion-item">變異分解</div>
+</div>
+</section>
+
+<!-- 測驗 -->
+<section id="quiz">
+<div class="section-header"><span class="section-num">§Q</span><h2>複習測驗</h2></div>
+<div id="quizContainer"></div>
+<div style="text-align:center;margin-top:32px">
+<button onclick="resetQuiz()" class="btn">🔄 重新作答</button>
+<div id="quizScore" style="margin-top:16px;font-size:16px;font-weight:700;color:var(--teal);display:none"></div>
+</div>
+</section>
+
+<section style="text-align:center;border-bottom:none">
+<h2 style="font-family:'Noto Serif TC',serif;margin-bottom:16px">繼續學習</h2>
+<p style="color:var(--muted);margin-bottom:24px">下一章進入「<em>變異數分析（ANOVA）</em>」——這是心理學最常用的統計方法</p>
+<a href="ch7.html" class="btn btn-gold">前往第七章：單因子 ANOVA →</a>
+</section>
+
+</div>
+
+<footer>
+<a href="ch5.html">← 第五章</a>  &nbsp;|&nbsp;  <a href="index.html">回首頁</a>  &nbsp;|&nbsp;  <a href="ch7.html">第七章 →</a><br><br>
+教材製作基於：Abdi, H., Edelman, B., Valentin, D. &amp; Dowling, W. J. (2009). <em>Experimental Design and Analysis for Psychology</em>. Oxford University Press.<br><br>
+© 版權所有　<strong style="color:var(--paper)">葉欲禾（Gary Yu-Ho Yeh）</strong>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{const d=document.documentElement;document.getElementById('progress-bar').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%'});
+
+// Data
+const X=[4,4,7,7,10,10],T=[1,2,2,4,3,6],Y=[14,23,30,50,39,67];
+
+// ── 散佈圖：X vs T 和 X/T vs Y ──
+function drawData(){
+  const c=document.getElementById('dataCanvas');
+  const W=c.offsetWidth,H=320;c.width=W;c.height=H;
+  const ctx=c.getContext('2d');
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  
+  // Two side-by-side panels
+  const panelW=W/2-10;
+  
+  // Panel 1: X vs T
+  drawPanel(ctx,0,0,panelW,H,X,T,'年齡 X','語速 T',[2,12],[0,7]);
+  
+  // Panel 2: 3D-style: X axis, color by T, y axis Y
+  drawPanel2(ctx,panelW+20,0,panelW,H,X,Y,T,'年齡 X','記憶 Y',[2,12],[0,80]);
+}
+
+function drawPanel(ctx,x0,y0,W,H,xData,yData,xLab,yLab,xR,yR){
+  const pad={l:50,r:15,t:25,b:40};
+  const tx=v=>x0+pad.l+(v-xR[0])/(xR[1]-xR[0])*(W-pad.l-pad.r);
+  const ty=v=>y0+H-pad.b-(v-yR[0])/(yR[1]-yR[0])*(H-pad.t-pad.b);
+  
+  // Grid
+  ctx.strokeStyle='rgba(0,0,0,.05)';
+  for(let i=xR[0];i<=xR[1];i+=2){ctx.beginPath();ctx.moveTo(tx(i),y0+pad.t);ctx.lineTo(tx(i),y0+H-pad.b);ctx.stroke();}
+  for(let i=yR[0];i<=yR[1];i++){ctx.beginPath();ctx.moveTo(x0+pad.l,ty(i));ctx.lineTo(x0+W-pad.r,ty(i));ctx.stroke();}
+  
+  // Axes
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(x0+pad.l,y0+pad.t);ctx.lineTo(x0+pad.l,y0+H-pad.b);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x0+pad.l,y0+H-pad.b);ctx.lineTo(x0+W-pad.r,y0+H-pad.b);ctx.stroke();
+  
+  // Points
+  xData.forEach((xv,i)=>{
+    ctx.beginPath();ctx.arc(tx(xv),ty(yData[i]),7,0,2*Math.PI);
+    ctx.fillStyle='#2980b9';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+  });
+  
+  // Trend line for X vs T (showing correlation)
+  let mx=xData.reduce((s,v)=>s+v,0)/xData.length;
+  let my=yData.reduce((s,v)=>s+v,0)/yData.length;
+  let sxy=0,sxx=0;
+  xData.forEach((v,i)=>{sxy+=(v-mx)*(yData[i]-my);sxx+=(v-mx)**2;});
+  let b=sxy/sxx,a=my-b*mx;
+  ctx.strokeStyle='#c0392b';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(tx(xR[0]),ty(a+b*xR[0]));ctx.lineTo(tx(xR[1]),ty(a+b*xR[1]));ctx.stroke();
+  
+  // Labels
+  ctx.fillStyle='#444';ctx.font='12px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText(xLab,x0+W/2,y0+H-8);
+  ctx.save();ctx.translate(x0+12,y0+H/2);ctx.rotate(-Math.PI/2);ctx.fillText(yLab,0,0);ctx.restore();
+  ctx.fillStyle='#555';ctx.font='10px JetBrains Mono';ctx.textAlign='center';
+  for(let i=xR[0];i<=xR[1];i+=2)ctx.fillText(i,tx(i),y0+H-pad.b+15);
+  ctx.textAlign='right';
+  for(let i=yR[0];i<=yR[1];i++)ctx.fillText(i,x0+pad.l-4,ty(i)+3);
+  
+  // Title
+  ctx.fillStyle='#c0392b';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';
+  ctx.fillText('r = 0.75（正相關）',x0+W/2,y0+pad.t-8);
+}
+
+function drawPanel2(ctx,x0,y0,W,H,xData,yData,tData,xLab,yLab,xR,yR){
+  const pad={l:50,r:15,t:25,b:40};
+  const tx=v=>x0+pad.l+(v-xR[0])/(xR[1]-xR[0])*(W-pad.l-pad.r);
+  const ty=v=>y0+H-pad.b-(v-yR[0])/(yR[1]-yR[0])*(H-pad.t-pad.b);
+  
+  ctx.strokeStyle='rgba(0,0,0,.05)';
+  for(let i=xR[0];i<=xR[1];i+=2){ctx.beginPath();ctx.moveTo(tx(i),y0+pad.t);ctx.lineTo(tx(i),y0+H-pad.b);ctx.stroke();}
+  for(let i=yR[0];i<=yR[1];i+=20){ctx.beginPath();ctx.moveTo(x0+pad.l,ty(i));ctx.lineTo(x0+W-pad.r,ty(i));ctx.stroke();}
+  
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(x0+pad.l,y0+pad.t);ctx.lineTo(x0+pad.l,y0+H-pad.b);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x0+pad.l,y0+H-pad.b);ctx.lineTo(x0+W-pad.r,y0+H-pad.b);ctx.stroke();
+  
+  // Points colored by T
+  const tMax=Math.max(...tData),tMin=Math.min(...tData);
+  xData.forEach((xv,i)=>{
+    const norm=(tData[i]-tMin)/(tMax-tMin);
+    const r2=Math.floor(255*norm),g=Math.floor(180-norm*100),b2=Math.floor(50+(1-norm)*150);
+    ctx.beginPath();ctx.arc(tx(xv),ty(yData[i]),8,0,2*Math.PI);
+    ctx.fillStyle=`rgb(${r2},${g},${b2})`;ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    // Label T value
+    ctx.fillStyle='#000';ctx.font='bold 10px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('T='+tData[i],tx(xv),ty(yData[i])-13);
+  });
+  
+  // Labels
+  ctx.fillStyle='#444';ctx.font='12px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText(xLab,x0+W/2,y0+H-8);
+  ctx.save();ctx.translate(x0+12,y0+H/2);ctx.rotate(-Math.PI/2);ctx.fillText(yLab,0,0);ctx.restore();
+  ctx.fillStyle='#555';ctx.font='10px JetBrains Mono';ctx.textAlign='center';
+  for(let i=xR[0];i<=xR[1];i+=2)ctx.fillText(i,tx(i),y0+H-pad.b+15);
+  ctx.textAlign='right';
+  for(let i=yR[0];i<=yR[1];i+=20)ctx.fillText(i,x0+pad.l-4,ty(i)+3);
+  
+  ctx.fillStyle='#444';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='center';
+  ctx.fillText('顏色 = T 語速（紅=高）',x0+W/2,y0+pad.t-8);
+}
+
+// ── Venn 圖 ──
+function drawVenn(){
+  const c=document.getElementById('vennCanvas');
+  const W=c.offsetWidth,H=380;c.width=W;c.height=H;
+  const ctx=c.getContext('2d');
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  
+  // Left: Venn diagram of X and T
+  const cx1=W*0.18,cy=H/2,r=70;
+  const cx2=cx1+r*0.9;
+  
+  ctx.font='bold 13px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillStyle='#333';ctx.fillText('IV 之間（X 與 T）',(cx1+cx2)/2,30);
+  
+  // X circle
+  ctx.fillStyle='rgba(41,128,185,0.4)';
+  ctx.beginPath();ctx.arc(cx1,cy,r,0,2*Math.PI);ctx.fill();
+  ctx.strokeStyle='#2980b9';ctx.lineWidth=2;ctx.stroke();
+  
+  // T circle
+  ctx.fillStyle='rgba(26,107,110,0.4)';
+  ctx.beginPath();ctx.arc(cx2,cy,r,0,2*Math.PI);ctx.fill();
+  ctx.strokeStyle='#1a6b6e';ctx.lineWidth=2;ctx.stroke();
+  
+  ctx.fillStyle='#2980b9';ctx.font='bold 14px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('X 年齡',cx1-r*0.5,cy);
+  ctx.fillStyle='#1a6b6e';
+  ctx.fillText('T 語速',cx2+r*0.5,cy);
+  
+  ctx.fillStyle='#6b3fa0';ctx.font='bold 12px "Noto Sans TC"';
+  ctx.fillText('共享',(cx1+cx2)/2,cy-8);
+  ctx.fillText('56%',(cx1+cx2)/2,cy+8);
+  
+  // Right: Y variance decomposition as horizontal bar
+  const barX=W*0.45,barY=H/2-80,barW=W*0.5,barH=160;
+  
+  ctx.font='bold 13px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillStyle='#333';ctx.fillText('Y（記憶）的變異分解',barX+barW/2,30);
+  
+  // Segments
+  const segs=[
+    {label:'X 獨特',pct:0.0085,color:'#2980b9'},
+    {label:'共享',pct:0.636,color:'#6b3fa0'},
+    {label:'T 獨特',pct:0.3421,color:'#1a6b6e'},
+    {label:'誤差',pct:0.0134,color:'#c0392b'}
+  ];
+  let curY=barY;
+  segs.forEach(s=>{
+    const h=barH*s.pct;
+    if(h<2){
+      ctx.fillStyle=s.color;ctx.fillRect(barX,curY,barW,Math.max(h,1));
+    }else{
+      ctx.fillStyle=s.color;ctx.fillRect(barX,curY,barW,h);
+    }
+    // Label
+    if(h>15){
+      ctx.fillStyle='#fff';ctx.font='bold 11px "Noto Sans TC"';ctx.textAlign='center';
+      ctx.fillText(s.label+' '+(s.pct*100).toFixed(1)+'%',barX+barW/2,curY+h/2+4);
+    }else{
+      // Place label outside
+      ctx.fillStyle=s.color;ctx.font='bold 10px "Noto Sans TC"';ctx.textAlign='left';
+      ctx.fillText(s.label+' '+(s.pct*100).toFixed(1)+'%',barX+barW+8,curY+h/2+4);
+    }
+    curY+=h;
+  });
+  
+  // Border
+  ctx.strokeStyle='#333';ctx.lineWidth=2;
+  ctx.strokeRect(barX,barY,barW,barH);
+  
+  // Total label
+  ctx.fillStyle='#333';ctx.font='11px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('100% = SS_total',barX+barW/2,barY+barH+20);
+  
+  // Arrow from Venn to bar
+  ctx.strokeStyle='#6b3fa0';ctx.lineWidth=2;ctx.setLineDash([5,3]);
+  ctx.beginPath();
+  ctx.moveTo((cx1+cx2)/2,cy+15);
+  ctx.lineTo(barX-15,barY+barH*(0.0085+0.636/2));
+  ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='#6b3fa0';ctx.font='italic 10px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('預測 →',(cx1+cx2)/2+30,cy+30);
+}
+
+window.addEventListener('resize',()=>{drawData();drawVenn();});
+setTimeout(()=>{drawData();drawVenn();},100);
+
+// ── 測驗 ──
+const questions=[
+{q:"什麼情況會讓研究者「無法」設計成正交多元迴歸？",
+opts:["研究者太懶","樣本量太小","當有「標籤變數」（如年齡、性別）時，無法隨機分派","儀器不夠精準"],
+ans:2,
+fb:"當涉及「標籤變數」（受試者天生具有的特徵）時，無法控制其相關性。例如年齡和語速本來就正相關，研究者只能測量、不能操控，所以必然是非正交。"},
+
+{q:"在非正交多元迴歸中，r²_Y·X + r²_Y·T 通常會：",
+opts:["等於 R²_Y·XT","大於 R²_Y·XT（因為共享變異被算了兩次）","小於 R²_Y·XT","等於 1"],
+ans:1,
+fb:"非正交時，X 和 T 對 Y 的解釋有重疊。簡單相加會把「重疊部分」算兩次。本章範例：r²_Y·X + r²_Y·T = 0.6445 + 0.9780 = 1.6225 > R² = 0.9866。"},
+
+{q:"「半偏相關 r²_Y·X|T」代表什麼？",
+opts:["X 與 T 的相關","Y 與 X 的一般相關","Y 與「扣掉 T 影響後的 X」的相關，代表 X 對 Y 的獨特貢獻","X 變數變化的一半"],
+ans:2,
+fb:"半偏相關 = 把 X 中能被 T 解釋的部分扣掉後，剩下「X 獨特」的部分與 Y 的相關。它代表 X 在控制了 T 之後的純效果。"},
+
+{q:"為什麼叫「半」偏相關？",
+opts:["只考慮一半的樣本","因為只算一半","因為只從自變數 X 扣掉 T 的影響，Y 保持原樣","因為精確度只有一半"],
+ans:2,
+fb:"「半」是相對於「偏相關」而言。偏相關會從 X 和 Y 都扣掉 T 的影響；半偏相關只從 X 扣掉，所以只「處理一半」。"},
+
+{q:"在 Hulme 等人的範例中，半偏相關分析顯示：年齡 r²_Y·X|T = 0.0085 不顯著。這告訴我們什麼？",
+opts:["年齡完全沒影響","樣本太小","年齡看似有效（r²_Y·X = 0.64）但<em>扣掉語速後</em>，年齡本身幾乎無獨特貢獻，影響其實是來自語速","年齡負相關"],
+ans:2,
+fb:"這是本章最戲劇性的結論：年齡的影響其實是「假象」——它透過語速影響記憶。當語速被控制後，年齡的純效果幾乎為 0。這就是「控制變數」的力量。"},
+
+{q:"計算「共享變異」（X 和 T 共同解釋的部分）的公式是？",
+opts:["r²_Y·X + r²_Y·T","R²_Y·XT − (r²_Y·X|T + r²_Y·T|X)","r_X·T × r_Y·X","SS_X / SS_T"],
+ans:1,
+fb:"共享變異 = 整體解釋 − 兩個獨特貢獻。本例：0.9866 − (0.0085 + 0.3421) = 0.636。意思是有 63.6% 的 Y 變異是被 X 和 T 「共同」解釋的，無法單獨歸給誰。"},
+
+{q:"半偏相關的「替代公式 1」（增量法）r²_Y·X|T = R² − r²_Y·T 的意義是？",
+opts:["這是錯誤的公式","X 的獨特貢獻 = 「整體模型解釋」− 「只用 T 能解釋的部分」，也就是加入 X 帶來的『增量解釋』","沒有實際意義","只用在大樣本"],
+ans:1,
+fb:"這個公式直觀地說：「如果原本只用 T，現在加入 X 後，R² 多上升了多少？」這個『增量』就是 X 的獨特貢獻。是手算最快的方法。"},
+
+{q:"「多重共線性」會發生在什麼時候？",
+opts:["樣本太大","某個自變數可以被其他自變數幾乎完全預測","研究設計很好時","變數很少時"],
+ans:1,
+fb:"當 X 和 T 高度相關（如 r > 0.9），半偏相關公式的分母 (1 − r²_X·T) 接近 0，會造成計算極度不穩定。這是非正交多元迴歸的危險陷阱。"},
+
+{q:"假設兩個自變數的相關 r_X·T = 1（完美相關），會發生什麼？",
+opts:["結果最好","半偏相關公式分母 = 1 − 1² = 0，發生「除以 0」錯誤，無法計算","R² 一定是 1","結論最可靠"],
+ans:1,
+fb:"當 r_X·T = 1，T 可以完美預測 X，兩變數實質上是同一個變數的兩個版本。公式分母為 0，數學上無解。實務上 r > 0.9 就已經很危險了。"},
+
+{q:"半偏相關（semi-partial）與偏相關（partial）的差別是？",
+opts:["完全相同","半偏：只從 X 扣 T；偏：從 X 和 Y 都扣 T","半偏使用一半樣本","偏相關更準確"],
+ans:1,
+fb:"半偏：r²_Y·X|T 只從 X 扣除 T，Y 維持原樣。偏：r²_(Y·X)|T 從 X 和 Y 都扣除 T 的影響。心理學迴歸分析中更常用半偏相關。"}
+];
+
+function buildQuiz(){
+  const c=document.getElementById('quizContainer');c.innerHTML='';
+  questions.forEach((q,qi)=>{
+    const card=document.createElement('div');card.className='quiz-card';
+    card.innerHTML=`<div class="quiz-q"><span>${qi+1}</span>${q.q}</div><div class="quiz-opts">${q.opts.map((o,oi)=>`<button class="quiz-opt" onclick="answerQ(${qi},${oi})">${String.fromCharCode(65+oi)}. ${o}</button>`).join('')}</div><div class="quiz-feedback" id="qfb${qi}"></div>`;
+    c.appendChild(card);
+  });
+}
+let answered=[],correct=0;
+function answerQ(qi,oi){
+  if(answered.includes(qi))return;answered.push(qi);
+  const card=document.getElementById('quizContainer').children[qi];
+  const opts=card.querySelectorAll('.quiz-opt');
+  const fb=document.getElementById('qfb'+qi);
+  const q=questions[qi];
+  opts.forEach((o,i)=>{o.style.pointerEvents='none';if(i===q.ans)o.classList.add('selected-correct');if(i===oi&&oi!==q.ans)o.classList.add('selected-wrong');});
+  if(oi===q.ans){fb.innerHTML='✅ '+q.fb;fb.className='quiz-feedback show correct';correct++;}
+  else{fb.innerHTML=`❌ 正確答案是：${String.fromCharCode(65+q.ans)}. ${q.opts[q.ans]}　${q.fb}`;fb.className='quiz-feedback show wrong';}
+  if(answered.length===questions.length){document.getElementById('quizScore').style.display='block';document.getElementById('quizScore').textContent=`🎯 測驗完成！答對 ${correct} / ${questions.length} 題`;}
+}
+function resetQuiz(){answered=[];correct=0;document.getElementById('quizScore').style.display='none';buildQuiz();}
+buildQuiz();
+</script>
+</body>
+</html>

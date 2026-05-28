@@ -54,7 +54,7 @@ window.chaptersData = [
     title: "非正交多元迴歸",
     desc: "更真實的多元迴歸情境：當預測變數之間彼此相關時，如何分離各自的獨特貢獻。",
     tags: ["共線性", "型 I/II/III 平方和", "半偏相關"],
-    available: false
+    available: true
   },
 
   // ─── PART 3：單因子變異數分析（第 7-14 章）───
