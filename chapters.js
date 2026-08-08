@@ -60,59 +60,59 @@ window.chaptersData = [
   // ─── PART 3：單因子變異數分析（第 7-14 章）───
   {
     num: "07", file: "ch7.html",
-    title: "單因子 ANOVA：直觀法",
-    desc: "變異數分析的入門：用直觀的方式理解 F 比值的計算與意義。",
-    tags: ["ANOVA", "F 比值", "組間/組內變異"],
-    available: false
+    title: "單因子 ANOVA：直觀法與 F 的計算",
+    desc: "從心像記憶實驗出發，把變異拆成「組間」與「組內」兩塊，親手造出 F 比值。平方和分割、自由度與均方的完整推導。",
+    tags: ["組間/組內變異", "平方和分割", "自由度", "F 比值"],
+    available: true
   },
   {
     num: "08", file: "ch8.html",
     title: "單因子 ANOVA：檢定與效果量",
-    desc: "完整的單因子 ANOVA 流程，包含計算公式、檢定步驟與效果量指標。",
-    tags: ["η²", "ω²", "效果量", "檢定力"],
-    available: false
+    desc: "統計檢定六步驟、F 分配與臨界值、S(A) 記號、Romeo &amp; Juliet 四組實例，以及效果量 R²／η² 與檢定力粗算。",
+    tags: ["F 分配", "S(A) 記號", "效果量 R²", "檢定力"],
+    available: true
   },
   {
     num: "09", file: "ch9.html",
     title: "單因子 ANOVA：迴歸觀點",
-    desc: "從迴歸分析的角度重新理解 ANOVA：兩者其實是同一個一般線性模型的不同呈現。",
-    tags: ["GLM", "虛擬編碼", "迴歸與 ANOVA"],
-    available: false
+    desc: "揭穿一個秘密：ANOVA 與迴歸是同一個東西。用組平均當預測變數，b = 1、a = 0、Ŷ = M_a·，兩套記號完整對照。",
+    tags: ["平均數模型", "GLM", "虛擬編碼", "記號對照"],
+    available: true
   },
   {
     num: "10", file: "ch10.html",
     title: "單因子 ANOVA：分數模型",
-    desc: "用分數模型（Score Model）描述每筆觀察值的組成：總平均 + 處理效果 + 誤差。",
-    tags: ["分數模型", "固定效果", "隨機效果"],
-    available: false
+    desc: "一個分數由總平均＋處理效果＋誤差組成。期望均方 EMS 證明了 H₀ 下 F ≈ 1，並解鎖不偏效果量 ω² 與 ρ²。",
+    tags: ["分數模型", "期望均方 EMS", "固定/隨機因子", "ω² 與 ρ²"],
+    available: true
   },
   {
     num: "11", file: "ch11.html",
     title: "ANOVA 的基本假設",
-    desc: "變異數分析背後的三大假設：常態性、變異數同質性、獨立性。如何檢驗與處理違反假設。",
-    tags: ["常態性", "變異數同質性", "穩健統計"],
-    available: false
+    desc: "常態性、變異數同質性、獨立性三大假設。O'Brien 檢定、Lilliefors 常態性檢定，以及違反時的分數轉換策略。",
+    tags: ["常態性", "變異數同質性", "O'Brien 檢定", "Lilliefors"],
+    available: true
   },
   {
     num: "12", file: "ch12.html",
     title: "單因子 ANOVA：計畫性正交比較",
-    desc: "事前規劃的對比分析。當有特定假設時，如何使用正交對比進行更精細的檢定。",
-    tags: ["正交對比", "計畫性比較", "對比係數"],
-    available: false
+    desc: "omnibus F 只說「有差異」。對比分析把研究假設直接翻譯成權重，切開實驗效果——含 α 膨脹、Šidák 校正與趨勢分析。",
+    tags: ["對比 ψ", "正交性", "Šidák 校正", "趨勢分析"],
+    available: true
   },
   {
     num: "13", file: "ch13.html",
     title: "單因子 ANOVA：計畫性非正交比較",
-    desc: "當對比之間相關時的處理方式，以及多重比較的型 I 錯誤校正。",
-    tags: ["非正交對比", "Bonferroni 校正", "多重比較"],
-    available: false
+    desc: "當對立理論的預測互相重疊，古典法會重複計算功勞。用第六章的半偏相關評估每個理論「獨有」的解釋力。",
+    tags: ["非正交對比", "Dunnett 檢定", "半偏相關", "理論競賽"],
+    available: true
   },
   {
     num: "14", file: "ch14.html",
     title: "單因子 ANOVA：事後比較",
-    desc: "ANOVA 顯著後的後續分析：Tukey HSD、Scheffé、Newman-Keuls 等多種事後檢定方法。",
-    tags: ["事後檢定", "Tukey HSD", "Scheffé"],
-    available: false
+    desc: "看完資料才決定要比什麼？你的比較家族其實包含所有可能的比較。Scheffé、Tukey、Newman–Keuls 三種保護策略。",
+    tags: ["事後比較", "Scheffé", "Tukey HSD", "Newman–Keuls"],
+    available: true
   },
 
   // ─── PART 4：多因子設計(第 15-21 章)───

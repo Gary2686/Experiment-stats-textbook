@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第十三章：計畫性非正交比較 | 心理學統計教材</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a2e;--paper:#f8f4ef;--cream:#fdf8f2;--accent:#c0392b;--accent2:#2980b9;--gold:#d4a017;--teal:#1a6b6e;--purple:#6b3fa0;--muted:#6b7280;--border:#d5c9be;--card-bg:#fff;--formula-bg:#1a1a2e;--formula-text:#f0e6d3;--highlight:#fff3cd}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.8}
+.hero{background:var(--ink);color:var(--paper);padding:80px 40px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(255,255,255,.02) 40px,rgba(255,255,255,.02) 41px)}
+.hero-eyebrow{font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500}
+.hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(28px,5vw,52px);font-weight:700;line-height:1.2;margin-bottom:20px}
+.hero h1 span{color:var(--gold)}
+.hero-sub{font-size:15px;color:rgba(248,244,239,.65);max-width:560px;margin:0 auto 40px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.tag{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 16px;font-size:13px;color:var(--paper)}
+nav{position:sticky;top:0;z-index:100;background:rgba(26,26,46,.97);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);padding:0 40px;display:flex;gap:0;overflow-x:auto}
+nav a{display:block;padding:16px 20px;color:rgba(248,244,239,.65);text-decoration:none;font-size:13px;font-weight:500;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+nav a:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+section{padding:64px 0;border-bottom:1px solid var(--border)}
+section:last-of-type{border-bottom:none}
+.section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:36px}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.2);border-radius:4px;padding:3px 8px;flex-shrink:0}
+.section-header h2{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:700;color:var(--ink)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:32px}
+.concept-card{background:var(--card-bg);border-radius:12px;padding:24px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.concept-icon{font-size:28px;margin-bottom:12px}
+.concept-card h3{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;margin-bottom:10px}
+.concept-card p{font-size:14px;color:var(--muted);line-height:1.7}
+.concept-card p+p{margin-top:8px}
+.highlight-box{background:var(--highlight);border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#6b4c00}
+.warn-box{background:rgba(192,57,43,.06);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#7a2a1f}
+.info-box{background:rgba(41,128,185,.06);border-left:4px solid var(--accent2);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#1e5a8a}
+.magic-box{background:linear-gradient(135deg,rgba(107,63,160,0.08),rgba(212,160,23,0.08));border:2px solid var(--purple);border-radius:12px;padding:24px;margin:24px 0;font-size:14px}
+.magic-box .magic-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--purple);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.formula-box{background:var(--formula-bg);border-radius:12px;padding:28px 32px;margin:24px 0;position:relative;overflow:hidden}
+.formula-box::before{content:'FORMULA';position:absolute;top:12px;right:16px;font-size:10px;letter-spacing:3px;color:rgba(255,255,255,.2);font-family:'JetBrains Mono',monospace}
+.formula-box .formula-label{font-size:12px;color:var(--gold);margin-bottom:10px;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.formula-box .formula-main{font-family:'JetBrains Mono',monospace;font-size:20px;color:var(--formula-text);font-weight:600;margin-bottom:12px;word-wrap:break-word;line-height:1.5}
+.formula-box .formula-desc{font-size:13px;color:rgba(240,230,211,.6);line-height:1.7}
+.formula-box .formula-desc strong{color:var(--gold)}
+.chart-wrapper{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px;margin:28px 0}
+.chart-title{font-size:14px;font-weight:600;color:var(--muted);margin-bottom:16px;letter-spacing:.5px}
+canvas{display:block;width:100%}
+.data-table-wrap{overflow-x:auto;margin:24px 0;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--card-bg)}
+thead tr{background:var(--ink)}
+thead th{color:var(--paper);padding:12px 16px;text-align:center;font-weight:600;font-size:13px}
+thead th:first-child{text-align:left}
+tbody tr:nth-child(even){background:var(--cream)}
+tbody td{padding:10px 16px;text-align:center;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:13px}
+tbody td:first-child{text-align:left;font-family:'Noto Sans TC',sans-serif;font-size:13.5px}
+tfoot tr{background:rgba(192,57,43,.08);font-weight:600}
+tfoot td{padding:12px 16px;border-top:2px solid var(--accent);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;text-align:center}
+.prose p{margin-bottom:16px;font-size:15px;line-height:1.85;color:#333}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--ink)}
+.prose em{color:var(--accent);font-style:normal;font-weight:500}
+.steps{counter-reset:step}
+.step{display:flex;gap:20px;margin-bottom:28px;align-items:flex-start}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--gold);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.step-body{flex:1}
+.step-body h4{font-weight:700;font-size:15px;margin-bottom:8px}
+.step-body p{font-size:14px;color:#444;margin-bottom:8px}
+.step-body p:last-child{margin-bottom:0}
+.notions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0}
+.notion-item{background:var(--ink);color:var(--paper);border-radius:8px;padding:14px 18px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px}
+.notion-item::before{content:'◆';color:var(--gold);font-size:10px;flex-shrink:0}
+.formula-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:24px 0}
+.formula-mini{background:var(--ink);border-radius:10px;padding:20px;color:var(--formula-text)}
+.formula-mini .fm-label{font-size:11px;color:var(--gold);letter-spacing:2px;font-family:'JetBrains Mono',monospace;margin-bottom:8px;text-transform:uppercase}
+.formula-mini .fm-eq{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#fff;line-height:1.6;word-wrap:break-word}
+.formula-mini .fm-note{font-size:12px;color:rgba(255,255,255,.5);margin-top:6px;line-height:1.5}
+.quiz-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:20px}
+.quiz-q{font-weight:700;font-size:15px;margin-bottom:16px;line-height:1.6}
+.quiz-q span{display:inline-block;width:26px;height:26px;background:var(--ink);color:var(--gold);border-radius:50%;font-size:13px;text-align:center;line-height:26px;margin-right:8px;font-family:'JetBrains Mono',monospace}
+.quiz-opts{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:12px 18px;cursor:pointer;font-size:14px;transition:all .2s;text-align:left;font-family:'Noto Sans TC',sans-serif}
+.quiz-opt:hover{border-color:var(--accent2);background:rgba(41,128,185,.05)}
+.quiz-opt.selected-correct{border-color:#27ae60;background:rgba(39,174,96,.1);color:#1e8449;font-weight:600}
+.quiz-opt.selected-wrong{border-color:var(--accent);background:rgba(192,57,43,.1);color:var(--accent)}
+.quiz-feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:13.5px;display:none;line-height:1.6}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:rgba(39,174,96,.1);color:#1e8449;border:1px solid rgba(39,174,96,.3)}
+.quiz-feedback.wrong{background:rgba(192,57,43,.08);color:#c0392b;border:1px solid rgba(192,57,43,.2)}
+.btn{display:inline-block;padding:14px 32px;background:var(--ink);color:var(--paper);border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.btn:hover{background:var(--accent);transform:translateY(-2px)}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--accent);color:#fff}
+footer{background:var(--ink);color:rgba(248,244,239,.5);text-align:center;padding:32px;font-size:13px}
+footer a{color:var(--gold);text-decoration:none}
+footer a:hover{text-decoration:underline}
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);z-index:9999;width:0%;transition:width .1s}
+@media(max-width:600px){.hero{padding:48px 20px 40px}nav{padding:0 16px}.container{padding:0 16px}section{padding:48px 0}}
+.ctrl-row{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:14px 0;padding:16px;background:var(--cream);border-radius:8px;border:1px solid var(--border)}
+.ctrl-row label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:500}
+.ctrl-row input[type=range]{width:170px;accent-color:var(--accent)}
+.ctrl-val{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--accent);font-weight:700;min-width:48px;display:inline-block}
+.mini-btn{background:var(--cream);border:2px solid var(--border);border-radius:8px;padding:9px 15px;cursor:pointer;font-size:12.5px;font-weight:600;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.mini-btn:hover{border-color:var(--accent2)}
+.mini-btn.active{background:var(--ink);color:var(--gold);border-color:var(--ink)}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:18px 0}
+.stat-box{border-radius:10px;padding:16px;text-align:center;border:2px solid}
+.stat-box .sb-l{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.stat-box .sb-v{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700}
+.stat-box .sb-n{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.5}
+.contrast-table td.cpos{background:rgba(192,57,43,.1);color:#c0392b;font-weight:700}
+.contrast-table td.cneg{background:rgba(41,128,185,.1);color:#2980b9;font-weight:700}
+.contrast-table td.czero{color:#bbb}
+.orth-matrix{border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:12.5px;margin:0 auto}
+.orth-matrix th{background:var(--ink);color:var(--paper);padding:8px 12px;font-size:12px}
+.orth-matrix td{padding:9px 14px;text-align:center;border:1px solid var(--border);min-width:56px}
+.orth-matrix td.ok{background:rgba(39,174,96,.18);color:#14532d;font-weight:700}
+.orth-matrix td.bad{background:rgba(192,57,43,.18);color:#c0392b;font-weight:700}
+.orth-matrix td.diag{background:var(--cream);color:#999}
+.theory-card{border-radius:12px;padding:20px;border:2px solid;margin-bottom:14px}
+.theory-card h4{font-family:'Noto Serif TC',serif;font-size:16px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.theory-card .tc-w{font-family:'JetBrains Mono',monospace;font-size:14px;background:rgba(0,0,0,.04);padding:8px 12px;border-radius:6px;margin:10px 0;font-weight:700}
+.theory-card p{font-size:13.5px;line-height:1.8;color:#444}
+.th-1{background:rgba(192,57,43,.05);border-color:var(--accent)}
+.th-2{background:rgba(41,128,185,.05);border-color:var(--accent2)}
+.th-3{background:rgba(107,63,160,.05);border-color:var(--purple)}
+.cmp-table tr.rej td{background:rgba(39,174,96,.1)}
+.cmp-table tr.keep td{background:#f6f3ee;color:#888}
+.venn-note{font-size:13px;color:var(--muted);text-align:center;margin-top:8px}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<div class="hero">
+  <div class="hero-eyebrow">第十三章 · Chapter 13</div>
+  <h1>計畫性<span>非正交比較</span><br>Planned Non-orthogonal Comparisons</h1>
+  <p class="hero-sub">真實的對立理論常常互相重疊，寫成對比就不正交了。這時「每個理論<em>各自獨特</em>的解釋力是多少？」——第六章的半偏相關，在這裡回來救場。</p>
+  <div class="hero-tags">
+    <span class="tag">🔗 對比重疊</span>
+    <span class="tag">🔧 Šidák 不等式</span>
+    <span class="tag">🎯 Dunnett 檢定</span>
+    <span class="tag">✂️ 半偏相關</span>
+    <span class="tag">🏛️ 理論競賽</span>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" style="color:var(--gold)">← 回首頁</a>
+  <a href="#why">§1 非正交是常態</a>
+  <a href="#classic">§2 古典解法</a>
+  <a href="#uneven">§3 不平均分配 α</a>
+  <a href="#example">§4 古典法實例</a>
+  <a href="#dunnett">§5 Dunnett 檢定</a>
+  <a href="#regression">§6 迴歸觀點回歸</a>
+  <a href="#orthreg">§7 正交版本</a>
+  <a href="#nonorth">§8 三個理論打擂台</a>
+  <a href="#semipartial">§9 半偏相關揭曉</a>
+  <a href="#compare">§10 兩種結論的對照</a>
+  <a href="#formulas">§K 公式整理</a>
+  <a href="#quiz">§Q 測驗</a>
+</nav>
+
+<div class="container">
+
+<!-- §1 -->
+<section id="why">
+<div class="section-header"><span class="section-num">§1</span><h2>為什麼真實研究裡的對比常常不正交？</h2></div>
+
+<div class="prose">
+<p>第十二章的正交對比很美：SS 乾淨切割、彼此獨立、加起來剛好等於 SS<sub>A</sub>。<strong>但那需要運氣。</strong></p>
+<p>實務上，你的比較往往來自<strong>幾個互相競爭的理論</strong>，而不同理論對同一批資料的預測<em>本來就會部分重疊</em>。例如：</p>
+</div>
+
+<div class="concept-grid">
+<div class="concept-card" style="border-top:4px solid var(--accent)">
+<div class="concept-icon">🅰️</div>
+<h3>理論 A 預測</h3>
+<p>「只有<strong>第 1 組</strong>會特別好，其他三組差不多。」<br>
+<span style="font-family:'JetBrains Mono',monospace;color:var(--accent)">C = (3, −1, −1, −1)</span></p>
+</div>
+<div class="concept-card" style="border-top:4px solid var(--accent2)">
+<div class="concept-icon">🅱️</div>
+<h3>理論 B 預測</h3>
+<p>「<strong>第 1、2 組</strong>都會好，第 3、4 組較差。」<br>
+<span style="font-family:'JetBrains Mono',monospace;color:var(--accent2)">C = (1, 1, −1, −1)</span></p>
+</div>
+</div>
+
+<div class="prose">
+<p>檢查正交性：(3)(1) + (−1)(1) + (−1)(−1) + (−1)(−1) = 3 − 1 + 1 + 1 = <strong>4 ≠ 0</strong>。</p>
+<p style="text-align:center;font-size:16px;font-weight:600;color:var(--accent);padding:14px;background:rgba(192,57,43,.06);border-radius:10px">
+兩個理論<strong>不正交</strong>——它們的預測有重疊。<br>兩者都主張「第 1 組會好」。
+</p>
+</div>
+
+<div class="warn-box">
+🚨 <strong>非正交帶來兩個問題</strong><br><br>
+<strong>① α 膨脹</strong>（第十二章就有）：做越多比較，型 I 錯誤越容易發生。<br><br>
+<strong>② 功勞歸屬不清</strong>（本章的重點）：如果兩個理論都能「解釋」同一塊資料，那麼<em>誰才是真正的功臣</em>？<br>
+古典方法對每個對比<strong>分開評估</strong>，好像它是家族裡唯一的對比一樣——結果就是<strong>同一塊變異被重複計算好幾次</strong>。<br><br>
+<span style="font-weight:700">👉 這正是第六章「非正交多元迴歸／共享變異」的老問題，換了個舞台重演。</span>
+</div>
+
+<div class="info-box">
+🧭 <strong>本章的兩條路線</strong>：<br>
+・<strong>古典途徑</strong>（§2–§5）：接受「重複計算」，只在 α 水準上做校正。Šidák、Bonferroni、Dunnett。<br>
+・<strong>現代途徑</strong>（§6–§10）：用<strong>多元迴歸與半偏相關</strong>，直接算出每個理論「<em>獨有</em>」的解釋力。<br><br>
+<em>兩者對同一批資料可能給出<strong>完全相反</strong>的結論——§10 會看到這個震撼的對照。</em>
+</div>
+</section>
+
+<!-- §2 -->
+<section id="classic">
+<div class="section-header"><span class="section-num">§2</span><h2>古典解法：從等式變成不等式</h2></div>
+
+<div class="prose">
+<p>第十二章的 Šidák 公式，是在「各比較互相獨立」的前提下推導的。<strong>非正交時這個前提破了</strong>，等式就退化成不等式：</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">Šidák 不等式（非正交情形）</div>
+<div class="formula-main" style="font-size:16px">α[PF] ≤ 1 − (1 − α[PC])<sup>C</sup></div>
+<div class="formula-desc">
+只能給出 α[PF] 的<strong>上界</strong>（最壞情況）。真實的 α[PF] 一定比這個小。<br><br>
+<strong>Bonferroni 不等式</strong>：α[PF] &lt; C · α[PC]<br><br>
+三者的完整關係：<span style="color:var(--gold)">α[PF] ≤ 1 − (1 − α[PC])<sup>C</sup> &lt; C·α[PC]</span>
+</div>
+</div>
+
+<div class="highlight-box">
+🛡️ <strong>不等式其實是好事</strong>：既然真實錯誤率比公式算出來的還小，那麼<strong>照著公式校正就一定安全</strong>——這叫<em>保守（conservative）</em>的檢定。代價是可能漏掉一些真實效果（型 II 錯誤增加）。<br><br>
+所以校正公式跟第十二章<em>完全一樣</em>，只是它的性質從「精確」變成「保守」：<br>
+<span style="font-family:'JetBrains Mono',monospace">α[PC] ≈ 1 − (1 − α[PF])<sup>1/C</sup>　或　α[PC] ≈ α[PF] / C</span>
+</div>
+</section>
+
+<!-- §3 -->
+<section id="uneven">
+<div class="section-header"><span class="section-num">§3</span><h2>Bonferroni 的隱藏優點：α 可以不平均分配</h2></div>
+
+<div class="prose">
+<p>Bonferroni 雖然比 Šidák 保守，但有一個 Šidák 給不了的彈性：因為它是<strong>加法</strong>關係，你可以把 α[PF] 這塊餅<em>切成不等份</em>。</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">Bonferroni 的加法性質</div>
+<div class="formula-main" style="font-size:15px">α[PF] ≈ α[PC]₁ + α[PC]₂ + … + α[PC]<sub>C</sub></div>
+<div class="formula-desc">只要各份加起來等於 α[PF]，怎麼分都可以。</div>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🍰 α 分配器：把 .05 分給三個比較（拖動滑桿）</div>
+<div class="ctrl-row">
+  <div><label>比較 1（最重要）</label><input type="range" id="a1" min="0.005" max="0.04" step="0.001" value="0.04" oninput="drawAlloc()"><span class="ctrl-val" id="a1v">.040</span></div>
+  <div><label>比較 2</label><input type="range" id="a2" min="0.001" max="0.03" step="0.001" value="0.005" oninput="drawAlloc()"><span class="ctrl-val" id="a2v">.005</span></div>
+  <button class="mini-btn" onclick="document.getElementById('a1').value=0.04;document.getElementById('a2').value=0.005;drawAlloc()">↺ 課本範例</button>
+  <button class="mini-btn" onclick="document.getElementById('a1').value=0.0167;document.getElementById('a2').value=0.0167;drawAlloc()">平均分配</button>
+</div>
+<canvas id="allocCanvas" height="180"></canvas>
+<div id="allocNote" style="margin-top:12px"></div>
+</div>
+
+<div class="warn-box">
+⚠️ <strong>唯一的鐵律：必須事前決定</strong><br>
+不平均分配只有在<strong>看資料之前</strong>就決定好，統計上才有效（Rosenthal &amp; Rosnow, 1985）。<br>
+如果你先看了結果、發現某個比較 p = .03 剛好差一點，才回頭把 α 多分一點給它——<em>那就是 p-hacking</em>，整個校正的意義就沒了。
+</div>
+</section>
+
+<!-- §4 -->
+<section id="example">
+<div class="section-header"><span class="section-num">§4</span><h2>古典法實例：四個非正交假設</h2></div>
+
+<div class="prose">
+<p>假設 Bransford 當初設計 Romeo and Juliet 實驗時，心裡有四個研究假設（注意這裡的組別順序與第八章不同，依課本第十三章的排列）：</p>
+</div>
+
+<div class="data-table-wrap">
+<table class="contrast-table">
+<thead><tr><th>對比</th><th>研究假設</th><th>事前脈絡<br><small>M=7.00</small></th><th>部分脈絡<br><small>M=4.20</small></th><th>事後脈絡<br><small>M=3.20</small></th><th>無脈絡<br><small>M=3.00</small></th></tr></thead>
+<tbody>
+<tr><td><strong>ψ₁</strong></td><td>任何脈絡都有效果</td><td class="cpos">+1</td><td class="cpos">+1</td><td class="cpos">+1</td><td class="cneg">−3</td></tr>
+<tr><td><strong>ψ₂</strong></td><td>事後給的脈絡也有效果</td><td class="czero">0</td><td class="czero">0</td><td class="cpos">+1</td><td class="cneg">−1</td></tr>
+<tr><td><strong>ψ₃</strong></td><td>事前脈絡強於其他所有條件</td><td class="cpos">+3</td><td class="cneg">−1</td><td class="cneg">−1</td><td class="cneg">−1</td></tr>
+<tr><td><strong>ψ₄</strong></td><td>部分脈絡與事前脈絡不同</td><td class="cpos">+1</td><td class="cneg">−1</td><td class="czero">0</td><td class="czero">0</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">⊥ 正交性檢查：這一家族<strong>不是</strong>正交的（紅色格子 ≠ 0）</div>
+<div style="overflow-x:auto"><table class="orth-matrix" id="orthTable"></table></div>
+<div id="orthNote" style="margin-top:14px"></div>
+</div>
+
+<div class="highlight-box">
+🔢 <strong>另一個線索</strong>：這裡有 <strong>4 個</strong>對比，但 A − 1 = <strong>3</strong>。<br>
+超過 A − 1 個對比<strong>必然</strong>無法全部互相正交——就像三維空間裡放不下四個互相垂直的向量。
+</div>
+
+<div class="prose">
+<p>校正：C = 4、α[PF] = .05 → α[PC] = 1 − .95<sup>1/4</sup> = <strong>.0127</strong>。查表得 ν₂ = 16 時 <strong>F<sub>critical, Šidák</sub> = 7.86</strong>（就是 F(1,16) 在 α = .0127 的臨界值）。</p>
+</div>
+
+<div class="data-table-wrap">
+<table class="cmp-table">
+<thead><tr><th>對比</th><th>SS<sub>ψ</sub></th><th>F<sub>ψ</sub> = SS<sub>ψ</sub>/2.35</th><th>vs 7.86</th><th>結論</th></tr></thead>
+<tbody>
+<tr class="keep"><td>ψ₁：任何脈絡有效果</td><td>12.15</td><td>5.17</td><td>&lt;</td><td>保留 H₀</td></tr>
+<tr class="keep"><td>ψ₂：事後脈絡有效果</td><td>0.10</td><td>0.04</td><td>&lt;</td><td>保留 H₀</td></tr>
+<tr class="rej"><td>ψ₃：事前脈絡最強</td><td>46.80</td><td><strong>19.92</strong></td><td>&gt;</td><td style="color:#1e8449;font-weight:700">拒絕 H₀ ✓</td></tr>
+<tr class="rej"><td>ψ₄：部分 vs 事前</td><td>19.60</td><td><strong>8.34</strong></td><td>&gt;</td><td style="color:#1e8449;font-weight:700">拒絕 H₀ ✓</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="info-box">
+👀 <strong>注意 ψ₁ 的命運</strong>：F = 5.17。如果它是<em>唯一</em>的比較，臨界值只有 4.49，它就顯著了。但因為身處 4 個比較的家族中，門檻被抬到 7.86，於是<strong>沒能過關</strong>。<br>
+<em>這就是多重比較校正的代價：保護了型 I 錯誤，犧牲了檢定力。</em>
+</div>
+</section>
+
+<!-- §5 -->
+<section id="dunnett">
+<div class="section-header"><span class="section-num">§5</span><h2>特例：全部實驗組都跟同一個控制組比（Dunnett 檢定）</h2></div>
+
+<div class="prose">
+<p>有一種非正交比較非常常見：<strong>幾個實驗組，全部拿去跟同一個控制組比</strong>。這在實務上很經濟——不必為每個實驗條件各養一個控制組。</p>
+</div>
+
+<div class="data-table-wrap">
+<table class="contrast-table">
+<thead><tr><th>比較</th><th>事前脈絡</th><th>部分脈絡</th><th>事後脈絡</th><th>無脈絡（控制）</th></tr></thead>
+<tbody>
+<tr><td>ψ₁</td><td class="cpos">+1</td><td class="czero">0</td><td class="czero">0</td><td class="cneg">−1</td></tr>
+<tr><td>ψ₂</td><td class="czero">0</td><td class="cpos">+1</td><td class="czero">0</td><td class="cneg">−1</td></tr>
+<tr><td>ψ₃</td><td class="czero">0</td><td class="czero">0</td><td class="cpos">+1</td><td class="cneg">−1</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🔍 這些比較的重疊有多少？可以算出來！</div>
+<p style="line-height:1.9">任兩個比較都<strong>共用控制組</strong>，所以必然不正交。檢查 ψ₁ 與 ψ₂：<br>
+<span style="font-family:'JetBrains Mono',monospace">(1)(0) + (0)(1) + (0)(0) + (−1)(−1) = 1 ≠ 0</span></p>
+<p style="line-height:1.9;margin-top:10px">而且<strong>任兩個比較的相關恆為 .5</strong>（課本留作練習：ΣC₁C₂ / √(ΣC₁²·ΣC₂²) = 1/√(2×2) = .5）。</p>
+<p style="line-height:1.9;margin-top:12px;padding:12px;background:rgba(107,63,160,.08);border-radius:8px;font-weight:600;color:var(--purple)">
+💡 關鍵洞見：因為重疊的程度<em>已知且固定</em>，統計學家可以算出<strong>精確</strong>的 α[PF]，不必用 Šidák 的保守上界。<br>這套精確的臨界值表就是 <strong>Dunnett 檢定</strong>。</p>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">⚖️ Dunnett vs Šidák：臨界值的比較（Romeo &amp; Juliet，A = 4、ν₂ = 16、α[PF] = .05）</div>
+<canvas id="dunnettCanvas" height="210"></canvas>
+</div>
+
+<div class="data-table-wrap">
+<table class="cmp-table">
+<thead><tr><th>實驗組（vs 無脈絡）</th><th>SS<sub>comp</sub></th><th>F<sub>comp</sub></th><th>Dunnett 臨界值 6.71</th><th>結論</th></tr></thead>
+<tbody>
+<tr class="rej"><td>事前脈絡（M = 7.00）</td><td>40.00</td><td><strong>17.02</strong></td><td>&gt;</td><td style="color:#1e8449;font-weight:700">拒絕 H₀ ✓</td></tr>
+<tr class="keep"><td>部分脈絡（M = 4.20）</td><td>3.60</td><td>1.53</td><td>&lt;</td><td>保留判斷</td></tr>
+<tr class="keep"><td>事後脈絡（M = 3.20）</td><td>0.10</td><td>0.04</td><td>&lt;</td><td>保留判斷</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box">
+🎯 <strong>為什麼 Dunnett 比 Šidák 好用？</strong>因為它的臨界值<strong>更低</strong>（6.71 &lt; 7.10），所以<strong>更容易拒絕 H₀</strong>——檢定力更高。<br>
+原因很直觀：Šidák 假設最壞情況（比較之間可能完全獨立），Dunnett 知道實際重疊是 .5，於是不必那麼保守。<br><br>
+<em>💡 課本的小考題：當 A = 2 時，Dunnett 的臨界值會等於標準 F(1, A(S−1)) 的臨界值。為什麼？<br>👉 因為只有一個比較，沒有多重比較問題，自然不需要任何校正。</em>
+</div>
+</section>
+
+<!-- §6 -->
+<section id="regression">
+<div class="section-header"><span class="section-num">§6</span><h2>轉場：迴歸觀點回來了</h2></div>
+
+<div class="prose">
+<p>古典途徑只在 α 水準上打補丁，但沒有回答那個更根本的問題：<strong>當兩個理論的預測重疊時，各自「獨有」的貢獻是多少？</strong></p>
+<p>第九章說過：只要用「跟自變數自由度一樣多」的預測變數，ANOVA 就等於多元迴歸。而<strong>對比的權重 C<sub>a</sub> 正是天然的預測變數</strong>。於是——</p>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🔗 三個學過的東西在此匯流</div>
+<p style="line-height:2;font-size:15px">
+・<strong>第六章</strong>：非正交多元迴歸 → 用<strong>半偏相關</strong>算每個預測變數的獨特貢獻<br>
+・<strong>第九章</strong>：ANOVA 就是迴歸，用 A − 1 個預測變數<br>
+・<strong>第十二章</strong>：對比就是一組權重
+</p>
+<p style="line-height:1.95;margin-top:14px;padding:14px;background:rgba(107,63,160,.1);border-radius:8px;font-weight:700;color:var(--purple);font-size:15px">
+把對比當成預測變數丟進多元迴歸 → 用半偏相關評估每個理論的<em>獨特</em>解釋力。<br>
+非正交對比的問題，就是第六章共線性問題的一個特例。
+</p>
+</div>
+
+<div class="info-box">
+📋 <strong>用對比當預測變數的兩個條件</strong>（課本明列）：<br>
+① 對比的<strong>個數</strong> = 自變數的自由度（A − 1）<br>
+② 這組對比<strong>不能多重共線</strong>——沒有任何一個對比可以由其他對比組合而成（技術上叫「線性獨立」）<br><br>
+<em>注意：不共線 ≠ 正交。正交是更嚴格的要求（不但獨立，還互相垂直）。</em>
+</div>
+</section>
+
+<!-- §7 -->
+<section id="orthreg">
+<div class="section-header"><span class="section-num">§7</span><h2>暖身：正交對比的迴歸版本</h2></div>
+
+<div class="prose">
+<p>先用一組<strong>正交</strong>對比跑一次，確認迴歸法與第十二章的答案完全相同。資料是 Romeo and Juliet（SS<sub>Y</sub> = 88.55、MS<sub>S(A)</sub> = 2.35、S = 5）。</p>
+</div>
+
+<div class="data-table-wrap">
+<table class="contrast-table">
+<thead><tr><th>對比</th><th>事前脈絡</th><th>部分脈絡</th><th>事後脈絡</th><th>無脈絡</th><th>SCP<sub>Y·Ca</sub></th><th>SS<sub>Ca</sub></th><th>r²<sub>Y·Ca</sub></th></tr></thead>
+<tbody>
+<tr><td>ψ₁（1,2 vs 3,4）</td><td class="cpos">+1</td><td class="cpos">+1</td><td class="cneg">−1</td><td class="cneg">−1</td><td>25</td><td>20</td><td><strong>.3529</strong></td></tr>
+<tr><td>ψ₂（1 vs 2）</td><td class="cpos">+1</td><td class="cneg">−1</td><td class="czero">0</td><td class="czero">0</td><td>14</td><td>10</td><td><strong>.2213</strong></td></tr>
+<tr><td>ψ₃（3 vs 4）</td><td class="czero">0</td><td class="czero">0</td><td class="cpos">+1</td><td class="cneg">−1</td><td>1</td><td>10</td><td><strong>.0011</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">每個對比與依變數的相關（就是簡單迴歸）</div>
+<div class="formula-main" style="font-size:15px">r²<sub>Y·Ca</sub> = (SCP<sub>Y·Ca</sub>)² ／ (SS<sub>Y</sub> × SS<sub>Ca</sub>)</div>
+<div class="formula-desc">
+ψ₁：25² ／ (88.55 × 20) = 625 ／ 1771 = <strong>.3529</strong><br>
+ψ₂：14² ／ (88.55 × 10) = 196 ／ 885.5 = <strong>.2213</strong><br>
+ψ₃：1² ／ (88.55 × 10) = 1 ／ 885.5 = <strong>.0011</strong>
+</div>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">✨ 正交的禮物：可以直接相加</div>
+<div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:var(--purple);margin:14px 0">
+R²<sub>Y·A</sub> = .3529 + .2213 + .0011 = <strong>.5754</strong>
+</div>
+<p style="line-height:1.9">正是第八、九章算出的那個 R²！<strong>因為正交 ⟹ 沒有重疊 ⟹ 直接加總</strong>。這就是第五章「正交多元迴歸」的核心優勢。</p>
+<p style="line-height:1.9;margin-top:10px">連 omnibus F 都能從 R² 直接算出來：<br>
+<span style="font-family:'JetBrains Mono',monospace">F = [.5754／(1−.5754)] × (16／3) = <strong>7.227</strong></span> ✓</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">各對比的 F（迴歸版公式）</div>
+<div class="formula-main" style="font-size:15px">F<sub>Y·Ca,i</sub> = [r²<sub>Y·Ca,i</sub> ／ (1 − R²<sub>Y·A</sub>)] × (df<sub>residual</sub> ／ df<sub>contrast</sub>)</div>
+<div class="formula-desc">
+ψ₁：(.3529 ／ .4246) × 16 = <strong>13.30</strong>　→ &gt; 4.49（未校正）也 &gt; 7.10（Šidák）✓ 顯著<br>
+ψ₂：(.2213 ／ .4246) × 16 = <strong>8.34</strong>　→ 兩個門檻都過 ✓ 顯著<br>
+ψ₃：(.0011 ／ .4246) × 16 = <strong>0.04</strong>　→ ns<br><br>
+<span style="color:var(--gold)">結論與第十二章的傳統算法完全一致。迴歸法只是換個角度講同一件事。</span>
+</div>
+</div>
+
+<div class="info-box">
+🔍 <strong>注意分母是 (1 − R²<sub>Y·A</sub>)</strong>，也就是<strong>整個模型</strong>沒解釋掉的部分，而不是「1 − 這個對比的 r²」。因為誤差項要用完整模型的殘差——這用上了全部資訊，是誤差最好的估計。
+</div>
+</section>
+
+<!-- §8 -->
+<section id="nonorth">
+<div class="section-header"><span class="section-num">§8</span><h2>正戲：三個理論打擂台</h2></div>
+
+<div class="prose">
+<p>現在假設（為了論證的美感）Romeo and Juliet 實驗是為了檢驗<strong>三個互相競爭的理論</strong>而設計的：</p>
+</div>
+
+<div class="theory-card th-1">
+<h4>🅰️ Bransford 的理論（整合理論）</h4>
+<p>只有<strong>事前拿到脈絡</strong>的人，才能在聽故事的當下把內容跟長期知識整合起來。所以第 1 組應該優於其他三組，而其他三組彼此差不多。</p>
+<div class="tc-w">ψ₁ = 3μ₁ − μ₂ − μ₃ − μ₄　→　C = (3, −1, −1, −1)</div>
+</div>
+
+<div class="theory-card th-2">
+<h4>🅱️ 心像理論</h4>
+<p>只要在學習時提供<strong>任何具體的畫面</strong>，就能幫助學習。第 1 組（完整圖）與第 2 組（部分圖）都拿到了畫面，所以應該優於第 3、4 組。</p>
+<div class="tc-w">ψ₂ = μ₁ + μ₂ − μ₃ − μ₄　→　C = (1, 1, −1, −1)</div>
+</div>
+
+<div class="theory-card th-3">
+<h4>🅲 提取線索理論</h4>
+<p>脈絡的作用發生在<strong>提取（回想）階段</strong>，不是編碼階段。所以只要在編碼時段有拿到脈絡（不管是聽故事之前還是之後），都應該有幫助——第 1、3 組優於第 2、4 組。</p>
+<div class="tc-w">ψ₃ = μ₁ − μ₂ + μ₃ − μ₄　→　C = (1, −1, 1, −1)</div>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">📊 三個理論的預測 vs 實際資料（點按鈕切換理論）</div>
+<div class="ctrl-row" style="justify-content:center">
+  <button class="mini-btn active" onclick="showTheory(0,this)">🅰️ Bransford</button>
+  <button class="mini-btn" onclick="showTheory(1,this)">🅱️ 心像理論</button>
+  <button class="mini-btn" onclick="showTheory(2,this)">🅲 提取線索</button>
+</div>
+<canvas id="theoryCanvas" height="290"></canvas>
+<div id="theoryNote" style="margin-top:12px"></div>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">⊥ 三個理論的對比矩陣：全部不正交（預測互相重疊）</div>
+<div style="overflow-x:auto"><table class="orth-matrix" id="orthTable2"></table></div>
+<div id="orthNote2" style="margin-top:14px"></div>
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:17px;margin:26px 0 12px;font-weight:700">古典途徑的答案</h3>
+
+<div class="data-table-wrap">
+<table>
+<thead><tr><th>理論</th><th>SCP<sub>Y·Ca</sub></th><th>SS<sub>Ca</sub></th><th>r²<sub>Y·Ca</sub>（零階）</th><th>F</th><th>vs 4.49（未校正）</th><th>vs 7.10（Šidák）</th></tr></thead>
+<tbody>
+<tr style="background:rgba(39,174,96,.08)"><td>🅰️ Bransford</td><td>53</td><td>60</td><td><strong>.5287</strong></td><td><strong>19.92</strong></td><td style="color:#1e8449;font-weight:700">✓</td><td style="color:#1e8449;font-weight:700">✓</td></tr>
+<tr style="background:rgba(39,174,96,.08)"><td>🅱️ 心像理論</td><td>25</td><td>20</td><td><strong>.3529</strong></td><td><strong>13.30</strong></td><td style="color:#1e8449;font-weight:700">✓</td><td style="color:#1e8449;font-weight:700">✓</td></tr>
+<tr><td>🅲 提取線索</td><td>15</td><td>20</td><td><strong>.1270</strong></td><td><strong>4.79</strong></td><td style="color:#1e8449;font-weight:700">✓</td><td style="color:#888">✗</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="warn-box">
+🤨 <strong>發現問題了嗎？</strong>三個 r² 加起來 = .5287 + .3529 + .1270 = <strong>1.0086</strong>——<strong>超過 1 了！</strong><br><br>
+但整個模型的 R² 明明只有 .5754。這正是第六章講的<strong>共享變異被重複計算</strong>：同一塊資料被三個理論各自「認領」了一次。<br><br>
+<span style="font-weight:700">👉 所以「三個理論都顯著」這個結論，其實非常可疑。它們可能只是在爭奪同一塊變異的功勞。</span>
+</div>
+</section>
+
+<!-- §9 -->
+<section id="semipartial">
+<div class="section-header"><span class="section-num">§9</span><h2>半偏相關揭曉：誰真的有獨特貢獻？</h2></div>
+
+<div class="prose">
+<p>第六章的工具終於派上用場。<strong>半偏相關</strong>問的是：<em>「扣掉其他理論能解釋的部分之後，這個理論還剩下多少獨有的解釋力？」</em></p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">半偏相關與它的 F 檢定（課本 13.15 式）</div>
+<div class="formula-main" style="font-size:15px">r²<sub>Y·C₁|C₂C₃</sub> = R²<sub>Y·C₁C₂C₃</sub> − R²<sub>Y·C₂C₃</sub>　　F = [r²<sub>Y·C₁|C₂C₃</sub> ／ (1 − R²<sub>Y·A</sub>)] × df<sub>residual</sub></div>
+<div class="formula-desc">
+就是第六章的「增量法」：<strong>把全模型的 R² 減掉「拿掉這個變數後」的 R²</strong>，差額就是它的獨特貢獻。<br>
+<span style="color:rgba(240,230,211,.6)">課本說這個手算「冗長到不打算示範」，建議交給軟體。本頁的數值已用多元迴歸重新驗算，與課本一致。</span>
+</div>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🎯 零階 r²（各自宣稱的）vs 半偏 r²（實際獨有的）</div>
+<canvas id="spCanvas" height="280"></canvas>
+<div class="venn-note">左邊淺色 = 這個理論宣稱能解釋的　｜　右邊深色 = 扣掉其他理論後真正獨有的</div>
+</div>
+
+<div class="data-table-wrap">
+<table>
+<thead><tr><th>理論</th><th>零階 r²<br><small>（自己宣稱）</small></th><th>半偏 r²<br><small>（真正獨有）</small></th><th>被別人「共享」掉</th><th>半偏 F</th><th>vs 4.49</th><th>結論</th></tr></thead>
+<tbody>
+<tr class="keep"><td>🅰️ Bransford</td><td>.5287</td><td><strong>.0954</strong></td><td style="color:var(--accent)">.4333（82%）</td><td>3.60</td><td>&lt;</td><td>保留 H₀</td></tr>
+<tr class="keep"><td>🅱️ 心像理論</td><td>.3529</td><td><strong>.0406</strong></td><td style="color:var(--accent)">.3123（88%）</td><td>1.53</td><td>&lt;</td><td>保留 H₀</td></tr>
+<tr class="keep"><td>🅲 提取線索</td><td>.1270</td><td><strong>.0011</strong></td><td style="color:var(--accent)">.1259（99%）</td><td>0.04</td><td>&lt;</td><td>保留 H₀</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">😲 結論大逆轉</div>
+<p style="line-height:1.95;font-size:15px">
+古典途徑：<strong>三個理論全部顯著</strong>（甚至 Šidák 校正後還有兩個活著）。<br>
+半偏相關：<strong>一個都不顯著</strong>（連臨界值 4.49 都過不了）。
+</p>
+<p style="line-height:1.95;margin-top:14px;padding:14px;background:rgba(107,63,160,.1);border-radius:8px;font-weight:600;color:var(--purple)">
+📖 <strong>課本給的結論措辭非常精準</strong>：<br>
+「每個理論都<em>大致上</em>與資料相符，但<strong>沒有任何一個理論能比『其他競爭理論的組合』更好地預測這個結果</strong>（至少在這個樣本數之下）。」
+</p>
+<p style="line-height:1.95;margin-top:12px">換句話說：三個理論都在解釋<strong>同一塊</strong>變異（就是「事前脈絡組表現特別好」這件事）。<em>資料無法分辨它們誰對誰錯。</em></p>
+</div>
+</section>
+
+<!-- §10 -->
+<section id="compare">
+<div class="section-header"><span class="section-num">§10</span><h2>兩種途徑的對照：該用哪一個？</h2></div>
+
+<div class="data-table-wrap">
+<table>
+<thead><tr><th style="width:16%"></th><th>古典途徑</th><th>迴歸／半偏相關途徑</th></tr></thead>
+<tbody>
+<tr><td><strong>怎麼算</strong></td><td>每個對比<em>分開</em>算 r²，好像它是家族中唯一的對比</td><td>把所有對比放進同一個多元迴歸，算<strong>半偏</strong> r²</td></tr>
+<tr><td><strong>怎麼處理重疊</strong></td><td>不處理——只在 α 水準上校正</td><td>直接扣掉：每個對比只認領<strong>獨有</strong>的部分</td></tr>
+<tr><td><strong>回答的問題</strong></td><td>「這個理論<em>能不能</em>解釋資料？」</td><td>「這個理論<em>比其他理論多解釋了什麼</em>？」</td></tr>
+<tr><td><strong>r² 加總</strong></td><td>可能 &gt; 1（重複計算）</td><td>≤ R²<sub>Y·A</sub>（不重複）</td></tr>
+<tr><td><strong>檢定力</strong></td><td>較高（也較容易得到假陽性）</td><td>較低（較保守、也較誠實）</td></tr>
+<tr><td><strong>適用時機</strong></td><td>各比較各自獨立成立，不必互相排除</td><td><strong>對立理論競賽</strong>——想知道誰能被淘汰</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box">
+🎯 <strong>課本明確的建議</strong>（章末四點）：<br>
+① 用對比分析或多元迴歸分析實驗，<strong>完全等價</strong>。<br>
+② <strong>正交</strong>的世界輕鬆得多——設計實驗時盡量讓假設彼此正交。<br>
+③ 雖然傳統上還沒被強制要求，<strong>校正 α 水準是個好主意</strong>。<br>
+④ 面對事前的非正交對比，<strong>用半偏相關評估它們往往是更好的策略</strong>。
+</div>
+
+<div class="magic-box">
+<div class="magic-title">💡 更深一層的體會</div>
+<p style="line-height:1.95">這一章其實在教一件超越統計技術的事：</p>
+<p style="line-height:1.95;margin-top:10px;padding:14px;background:rgba(107,63,160,.08);border-radius:8px;font-size:15px;font-weight:600;color:var(--purple)">
+「我的理論能解釋這筆資料」是一個<strong>很低</strong>的標準。<br>
+「我的理論能解釋<em>其他理論解釋不了的部分</em>」才是真正的科學貢獻。
+</p>
+<p style="line-height:1.95;margin-top:12px">半偏相關就是這個標準的量化版本。當你在論文中主張某個新機制時，審稿人真正想問的其實是：<em>「扣掉既有理論能說的，你還多說了什麼？」</em></p>
+<p style="line-height:1.95;margin-top:12px">📌 順帶一提，課本結尾那句「<em>至少在這個樣本數之下</em>」也是重要提醒：半偏相關的檢定力較低，<strong>樣本不足時很容易全軍覆沒</strong>。想做理論競賽，樣本數要事前算好（第八章 §9）。</p>
+</div>
+</section>
+
+<!-- §K -->
+<section id="formulas">
+<div class="section-header"><span class="section-num">§K</span><h2>關鍵公式整理</h2></div>
+
+<div class="formula-grid">
+<div class="formula-mini"><div class="fm-label">Šidák 不等式（非正交）</div><div class="fm-eq">α[PF] ≤ 1 − (1 − α[PC])<sup>C</sup></div><div class="fm-note">只給上界，故校正是保守的</div></div>
+<div class="formula-mini"><div class="fm-label">Bonferroni 不等式</div><div class="fm-eq">α[PF] &lt; C · α[PC]</div><div class="fm-note">可不平均分配</div></div>
+<div class="formula-mini"><div class="fm-label">三者關係</div><div class="fm-eq">α[PF] ≤ 1−(1−α[PC])<sup>C</sup> &lt; C·α[PC]</div></div>
+<div class="formula-mini"><div class="fm-label">對比與 Y 的零階相關</div><div class="fm-eq">r²<sub>Y·Ca</sub> = (SCP<sub>Y·Ca</sub>)² / (SS<sub>Y</sub>·SS<sub>Ca</sub>)</div></div>
+<div class="formula-mini"><div class="fm-label">正交時 R² 可加</div><div class="fm-eq">R²<sub>Y·A</sub> = Σ r²<sub>Y·Ca,i</sub></div><div class="fm-note">僅限正交</div></div>
+<div class="formula-mini"><div class="fm-label">對比的 F（迴歸版）</div><div class="fm-eq">F = [r²<sub>Y·Ca,i</sub> / (1 − R²<sub>Y·A</sub>)] × (df<sub>res</sub>/df<sub>contrast</sub>)</div></div>
+<div class="formula-mini"><div class="fm-label">半偏相關（增量法）</div><div class="fm-eq">r²<sub>Y·C₁|C₂C₃</sub> = R²<sub>Y·C₁C₂C₃</sub> − R²<sub>Y·C₂C₃</sub></div></div>
+<div class="formula-mini"><div class="fm-label">半偏相關的 F</div><div class="fm-eq">F = [r²<sub>Y·C₁|C₂C₃</sub> / (1 − R²<sub>Y·A</sub>)] × df<sub>residual</sub></div></div>
+<div class="formula-mini"><div class="fm-label">Dunnett 的比較間相關</div><div class="fm-eq">r = 1/√(2×2) = .5</div><div class="fm-note">共用控制組所致</div></div>
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">📌 關鍵概念</h3>
+<div class="notions-grid">
+<div class="notion-item">非正交比較</div>
+<div class="notion-item">比較家族</div>
+<div class="notion-item">Šidák 不等式</div>
+<div class="notion-item">Bonferroni 不等式</div>
+<div class="notion-item">α 的不平均分配</div>
+<div class="notion-item">Dunnett 檢定</div>
+<div class="notion-item">保守檢定</div>
+<div class="notion-item">零階 r² vs 半偏 r²</div>
+<div class="notion-item">共享變異</div>
+<div class="notion-item">獨特貢獻</div>
+<div class="notion-item">多重共線性</div>
+<div class="notion-item">理論競賽</div>
+</div>
+</section>
+
+<!-- 測驗 -->
+<section id="quiz">
+<div class="section-header"><span class="section-num">§Q</span><h2>複習測驗</h2></div>
+<div id="quizContainer"></div>
+<div style="text-align:center;margin-top:32px">
+<button onclick="resetQuiz()" class="btn">🔄 重新作答</button>
+<div id="quizScore" style="margin-top:16px;font-size:16px;font-weight:700;color:var(--teal);display:none"></div>
+</div>
+</section>
+
+<section style="text-align:center;border-bottom:none">
+<h2 style="font-family:'Noto Serif TC',serif;margin-bottom:16px">繼續學習</h2>
+<p style="color:var(--muted);margin-bottom:24px">前兩章的比較都是<em>事前</em>計畫好的。但如果你是看完資料才決定要比什麼呢？下一章處理這個更棘手的情況</p>
+<a href="ch14.html" class="btn btn-gold">前往第十四章：事後比較 →</a>
+</section>
+
+</div>
+
+<footer>
+<a href="ch12.html">← 第十二章</a>  &nbsp;|&nbsp;  <a href="index.html">回首頁</a>  &nbsp;|&nbsp;  <a href="ch14.html">第十四章 →</a><br><br>
+教材製作基於：Abdi, H., Edelman, B., Valentin, D. &amp; Dowling, W. J. (2009). <em>Experimental Design and Analysis for Psychology</em>. Oxford University Press.<br><br>
+© 版權所有　<strong style="color:var(--paper)">葉欲禾（Gary Yu-Ho Yeh）</strong>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{const d=document.documentElement;document.getElementById('progress-bar').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%'});
+
+const gN=['事前脈絡','部分脈絡','事後脈絡','無脈絡'];
+const gM=[7.00,4.20,3.20,3.00];
+const MSW=2.35,S=5,SSY=88.55,R2FULL=.5754;
+
+// ═══ §3 α 分配器 ═══
+function drawAlloc(){
+  let a1=+document.getElementById('a1').value, a2=+document.getElementById('a2').value;
+  let a3=0.05-a1-a2;
+  if(a3<0.001){a3=0.001;a2=Math.max(0.001,0.05-a1-a3);document.getElementById('a2').value=a2;}
+  document.getElementById('a1v').textContent=a1.toFixed(3).replace(/^0/,'');
+  document.getElementById('a2v').textContent=a2.toFixed(3).replace(/^0/,'');
+  const c=document.getElementById('allocCanvas');const W=c.offsetWidth;c.width=W;const H=180;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const pad=40,pw=W-pad*2,y=54,h=56;
+  const parts=[{v:a1,col:'#c0392b',n:'比較 1'},{v:a2,col:'#2980b9',n:'比較 2'},{v:a3,col:'#6b3fa0',n:'比較 3'}];
+  let x=pad;
+  parts.forEach(p=>{
+    const w=pw*p.v/0.05;
+    ctx.fillStyle=p.col;ctx.fillRect(x,y,w,h);
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.strokeRect(x,y,w,h);ctx.lineWidth=1;
+    if(w>72){ctx.fillStyle='#fff';ctx.font='bold 13px "Noto Sans TC"';ctx.textAlign='center';
+      ctx.fillText(p.n,x+w/2,y+24);
+      ctx.font='bold 13px JetBrains Mono';ctx.fillText('α='+p.v.toFixed(4).replace(/^0/,''),x+w/2,y+43);}
+    x+=w;
+  });
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2;ctx.strokeRect(pad,y,pw,h);ctx.lineWidth=1;
+  ctx.fillStyle='#1a1a2e';ctx.font='bold 14px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('α[PF] 總額 = .05',pad+pw/2,y-14);
+  ctx.fillStyle='#666';ctx.font='12px "Noto Sans TC"';
+  ctx.fillText('三份加起來 = '+(a1+a2+a3).toFixed(4)+'　（必須事前決定！）',pad+pw/2,y+h+26);
+  document.getElementById('allocNote').innerHTML=
+    '<div class="info-box" style="margin:0">📖 <strong>怎麼用</strong>：比較 1 用 α = '+a1.toFixed(4)+' 檢定（門檻較寬鬆，因為你事前判斷它最重要）、'+
+    '比較 2 用 '+a2.toFixed(4)+'、比較 3 用 '+a3.toFixed(4)+'。整體型 I 錯誤率仍控制在 .05。<br>'+
+    '<strong>Šidák 做不到這件事</strong>——它是乘法關係，切不出不等份。這是 Bonferroni 唯一勝過 Šidák 的地方。</div>';
+}
+
+// ═══ 正交矩陣通用 ═══
+function buildMatrix(tableId,noteId,set){
+  const t=document.getElementById(tableId);
+  let h='<thead><tr><th></th>'+set.map(p=>'<th>'+p.n+'</th>').join('')+'</tr></thead><tbody>';
+  set.forEach((p,i)=>{
+    h+='<tr><th>'+p.n+'</th>';
+    set.forEach((q,j)=>{
+      if(i===j)h+='<td class="diag">—</td>';
+      else{const v=p.C.reduce((a,c,k)=>a+c*q.C[k],0);
+        h+='<td class="'+(v===0?'ok':'bad')+'" onclick="showCell(\''+noteId+'\','+i+','+j+',\''+tableId+'\')" style="cursor:pointer">'+v+'</td>';}
+    });
+    h+='</tr>';
+  });
+  t.innerHTML=h+'</tbody>';
+}
+const SETS={};
+function showCell(noteId,i,j,tableId){
+  const set=SETS[tableId];
+  const p=set[i],q=set[j];
+  const prods=p.C.map((c,k)=>c*q.C[k]);
+  const v=prods.reduce((a,b)=>a+b,0);
+  document.getElementById(noteId).innerHTML=
+    '<div class="'+(v===0?'info-box':'warn-box')+'" style="margin:0"><strong>'+p.n+' × '+q.n+'</strong>：<br>'+
+    '<span style="font-family:JetBrains Mono,monospace;font-size:13.5px">'+
+    p.C.map((c,k)=>'('+c+')('+q.C[k]+')').join(' + ')+' = <strong>'+v+'</strong></span><br>'+
+    (v===0?'✅ 正交：這兩個對比問的問題完全不重疊。':'❌ <strong>不正交</strong>：乘積和 = '+v+' ≠ 0，兩個對比的預測有重疊——它們會爭奪同一塊變異的功勞。')+
+    '</div>';
+}
+
+// ═══ §5 Dunnett vs Šidák ═══
+function drawDunnett(){
+  const c=document.getElementById('dunnettCanvas');const W=c.offsetWidth;c.width=W;const H=210;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const rows=[{n:'未校正 F(1,16)',v:4.49,col:'#888',d:'單一比較，不管家族'},
+              {n:'Dunnett',v:6.71,col:'#1e8449',d:'知道重疊 = .5，精確計算'},
+              {n:'Šidák',v:7.10,col:'#c0392b',d:'假設最壞情況，較保守'}];
+  const x0=150,bw=W-x0-110,max=8.5;
+  rows.forEach((r,i)=>{
+    const y=30+i*54,h=34;
+    ctx.fillStyle='#444';ctx.font='bold 13px "Noto Sans TC"';ctx.textAlign='right';
+    ctx.fillText(r.n,x0-12,y+h/2+5);
+    ctx.fillStyle='#f0ece5';ctx.fillRect(x0,y,bw,h);
+    ctx.fillStyle=r.col;ctx.fillRect(x0,y,bw*r.v/max,h);
+    ctx.strokeStyle='#1a1a2e';ctx.strokeRect(x0,y,bw,h);
+    ctx.fillStyle='#1a1a2e';ctx.font='bold 14px JetBrains Mono';ctx.textAlign='left';
+    ctx.fillText(r.v.toFixed(2),x0+bw*r.v/max+8,y+h/2+5);
+    ctx.fillStyle='#888';ctx.font='11.5px "Noto Sans TC"';
+    ctx.fillText(r.d,x0+bw*r.v/max+56,y+h/2+5);
+  });
+  ctx.fillStyle='#666';ctx.font='12px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('臨界值越低 → 越容易拒絕 H₀ → 檢定力越高',x0+bw/2,H-8);
+}
+
+// ═══ §8 三理論 ═══
+const theories=[
+  {n:'🅰️ Bransford（整合理論）',C:[3,-1,-1,-1],col:'#c0392b',
+   d:'預測「只有第 1 組特別好，其他三組差不多」。實際資料：7.00 vs (4.20, 3.20, 3.00)——<strong>吻合度很高</strong>，零階 r² = .5287。'},
+  {n:'🅱️ 心像理論',C:[1,1,-1,-1],col:'#2980b9',
+   d:'預測「第 1、2 組（有畫面）優於第 3、4 組」。實際：(7.00, 4.20) vs (3.20, 3.00)——<strong>也吻合</strong>，零階 r² = .3529。但注意它的成功有很大一部分靠的還是「第 1 組很高」。'},
+  {n:'🅲 提取線索理論',C:[1,-1,1,-1],col:'#6b3fa0',
+   d:'預測「第 1、3 組（編碼時有脈絡）優於第 2、4 組」。實際：(7.00, 3.20) vs (4.20, 3.00)——<strong>勉強吻合</strong>，零階 r² = .1270。第 3 組表現其實不好，全靠第 1 組撐著。'}
+];
+let curTh=0;
+function showTheory(k,btn){curTh=k;
+  if(btn){btn.parentElement.querySelectorAll('.mini-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+  drawTheory();}
+function drawTheory(){
+  const t=theories[curTh];
+  const c=document.getElementById('theoryCanvas');const W=c.offsetWidth;c.width=W;const H=290;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const pad={l:48,r:24,t:32,b:52},pw=W-pad.l-pad.r,ph=H-pad.t-pad.b;
+  const yOf=v=>pad.t+ph*(1-(v-2)/6);
+  ctx.strokeStyle='#eee';ctx.fillStyle='#aaa';ctx.font='11px JetBrains Mono';ctx.textAlign='right';
+  for(let v=2;v<=8;v+=2){const y=yOf(v);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();ctx.fillText(v,pad.l-6,y+4);}
+  const bw=pw/4;
+  gM.forEach((m,i)=>{
+    const cx=pad.l+bw*i+bw/2;
+    // 實際資料長條
+    ctx.fillStyle='#d5c9be';
+    ctx.fillRect(cx-bw*0.3,yOf(m),bw*0.6,yOf(2)-yOf(m));
+    ctx.fillStyle='#1a1a2e';ctx.font='bold 13px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText(m.toFixed(2),cx,yOf(m)-8);
+    ctx.fillStyle='#555';ctx.font='12px "Noto Sans TC"';
+    ctx.fillText(gN[i],cx,H-pad.b+18);
+    // 理論預測（權重畫成標記）
+    const cw=t.C[i];
+    ctx.fillStyle=cw>0?t.col:'#999';
+    ctx.font='bold 13px JetBrains Mono';
+    ctx.fillText('C='+cw,cx,H-pad.b+36);
+  });
+  // 預測方向線：把權重換算成預測高度
+  const mC=t.C.reduce((a,b)=>a+b,0)/4;
+  const sdC=Math.sqrt(t.C.reduce((a,b)=>a+(b-mC)**2,0)/4);
+  const predY=t.C.map(cv=>4.35+(cv-mC)/sdC*1.4);
+  ctx.beginPath();
+  predY.forEach((v,i)=>{const cx=pad.l+bw*i+bw/2;i===0?ctx.moveTo(cx,yOf(v)):ctx.lineTo(cx,yOf(v));});
+  ctx.strokeStyle=t.col;ctx.lineWidth=3;ctx.setLineDash([7,4]);ctx.stroke();ctx.setLineDash([]);ctx.lineWidth=1;
+  predY.forEach((v,i)=>{const cx=pad.l+bw*i+bw/2;
+    ctx.fillStyle=t.col;ctx.beginPath();ctx.arc(cx,yOf(v),6,0,7);ctx.fill();});
+  ctx.strokeStyle='#333';ctx.beginPath();ctx.moveTo(pad.l,yOf(2));ctx.lineTo(W-pad.r,yOf(2));ctx.stroke();
+  ctx.textAlign='left';ctx.font='12px "Noto Sans TC"';
+  ctx.fillStyle='#8a7f74';ctx.fillRect(pad.l+6,12,13,10);ctx.fillText('實際平均',pad.l+24,21);
+  ctx.fillStyle=t.col;ctx.fillRect(pad.l+110,15,16,4);ctx.fillText('理論預測的形狀',pad.l+132,21);
+  document.getElementById('theoryNote').innerHTML='<div class="info-box" style="margin:0"><strong>'+t.n+'</strong>：'+t.d+'</div>';
+}
+
+// ═══ §9 半偏相關對照圖 ═══
+const spData=[
+  {n:'🅰️ Bransford',zero:.5287,semi:.0954,F:3.60,col:'#c0392b'},
+  {n:'🅱️ 心像理論',zero:.3529,semi:.0406,F:1.53,col:'#2980b9'},
+  {n:'🅲 提取線索',zero:.1270,semi:.0011,F:0.04,col:'#6b3fa0'}
+];
+function drawSP(){
+  const c=document.getElementById('spCanvas');const W=c.offsetWidth;c.width=W;const H=280;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const x0=130,bw=W-x0-70,max=.6;
+  ctx.fillStyle='#666';ctx.font='12px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('零階 r²（宣稱的解釋力）　vs　半偏 r²（扣掉其他理論後真正獨有的）',x0+bw/2,18);
+  spData.forEach((d,i)=>{
+    const y=40+i*76,h=26;
+    ctx.fillStyle='#444';ctx.font='bold 13px "Noto Sans TC"';ctx.textAlign='right';
+    ctx.fillText(d.n,x0-12,y+30);
+    // 零階
+    ctx.fillStyle=d.col;ctx.globalAlpha=.3;
+    ctx.fillRect(x0,y,bw*d.zero/max,h);ctx.globalAlpha=1;
+    ctx.strokeStyle=d.col;ctx.strokeRect(x0,y,bw*d.zero/max,h);
+    ctx.fillStyle=d.col;ctx.font='bold 12.5px JetBrains Mono';ctx.textAlign='left';
+    ctx.fillText(d.zero.toFixed(4),x0+bw*d.zero/max+7,y+18);
+    // 半偏
+    ctx.fillStyle=d.col;
+    ctx.fillRect(x0,y+h+6,Math.max(bw*d.semi/max,2),h);
+    ctx.fillStyle='#1a1a2e';ctx.font='bold 12.5px JetBrains Mono';
+    ctx.fillText(d.semi.toFixed(4)+'　F = '+d.F.toFixed(2)+(d.F<4.49?'　ns':'　*'),x0+Math.max(bw*d.semi/max,2)+7,y+h+24);
+  });
+  // 臨界值標示
+  ctx.fillStyle='#888';ctx.font='11.5px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('（半偏 F 的臨界值 = 4.49；三者皆未達到）',x0+bw/2,H-10);
+}
+
+// ═══ 測驗 ═══
+const quizData=[
+ {q:'兩個對比 C₁=(3,−1,−1,−1) 與 C₂=(1,1,−1,−1) 是否正交？',
+  opts:['是，因為兩者的權重和都是 0','否，乘積和 = 4 ≠ 0，兩者的預測有重疊','無法判斷','要看樣本數'],
+  ans:1,fb:'(3)(1)+(−1)(1)+(−1)(−1)+(−1)(−1) = 3−1+1+1 = 4 ≠ 0。權重和為 0 只是「合法對比」的條件，正交需要的是「兩個對比的權重乘積和 = 0」。'},
+ {q:'非正交時，Šidák 公式從等式變成不等式 α[PF] ≤ 1−(1−α[PC])^C。這代表什麼？',
+  opts:['公式失效，不能使用','公式給出的是最壞情況的上界，照著校正一定安全（保守）','必須改用 Bonferroni','α[PF] 會超過 1'],
+  ans:1,fb:'真實的 α[PF] 一定小於這個上界，所以照著校正是「保守」的——保護了型 I 錯誤，代價是檢定力下降、較容易漏掉真效果。'},
+ {q:'Bonferroni 相較於 Šidák，唯一的優勢是什麼？',
+  opts:['計算結果更精確','因為是加法關係，可以把 α[PF] 不平均分配給各個比較','檢定力更高','適用於更多設計'],
+  ans:1,fb:'α[PF] ≈ α[PC]₁+α[PC]₂+…，所以可以把 .05 切成 .04+.005+.005。Šidák 是乘法關係，切不出不等份。但務必事前決定，否則就是 p-hacking。'},
+ {q:'Dunnett 檢定為什麼比 Šidák 更容易拒絕 H₀？',
+  opts:['它不校正多重比較','因為共用控制組的比較之間相關恆為 .5，重疊程度已知，可算出精確的 α[PF]，不必用保守的上界','它的樣本數要求較低','它使用不同的誤差項'],
+  ans:1,fb:'Šidák 假設最壞情況；Dunnett 知道實際的重疊結構（相關 = .5），所以能給出精確而非保守的臨界值。Romeo & Juliet 中：6.71 < 7.10。'},
+ {q:'三個非正交對比的零階 r² 加起來 = 1.0086，但模型的 R² 只有 .5754。這說明什麼？',
+  opts:['計算錯誤','同一塊變異被三個對比重複認領了，這就是共享變異問題','應該增加樣本數','r² 本來就可以超過 1'],
+  ans:1,fb:'正是第六章的共線性問題。每個對比被「當成家族中唯一的對比」分開評估，導致重疊的部分被算了好幾次。所以「三個理論都顯著」這個結論非常可疑。'},
+ {q:'半偏相關 r²_Y·C₁|C₂C₃ 回答的是什麼問題？',
+  opts:['這個對比能不能解釋資料','扣掉其他對比能解釋的部分後，這個對比還剩多少獨有的解釋力','三個對比合起來能解釋多少','這個對比的樣本數是否足夠'],
+  ans:1,fb:'半偏相關 = R²(全模型) − R²(拿掉這個變數)。它衡量的是「獨特增量貢獻」，正是第六章的增量法。這才是理論競賽真正該問的問題。'},
+ {q:'Romeo & Juliet 的三理論分析中，古典法說三個理論都顯著，半偏相關卻說一個都不顯著。正確的結論是？',
+  opts:['半偏相關算錯了','古典法比較可靠','每個理論都大致與資料相符，但沒有任何一個能比其他理論的組合更好地預測結果','應該重做實驗'],
+  ans:2,fb:'這正是課本的措辭。三個理論都在解釋「事前脈絡組表現特別好」這同一塊變異，資料無法分辨誰對誰錯。課本還加了但書：「至少在這個樣本數之下」——半偏相關檢定力較低。'},
+ {q:'課本建議：面對事前計畫的非正交對比，較好的策略是？',
+  opts:['只用 Šidák 校正就好','用半偏相關評估每個對比的獨特貢獻','放棄這些對比，改做事後比較','增加對比的數量'],
+  ans:1,fb:'課本章末四點建議之一。古典法只在 α 水準上打補丁，沒回答「誰的貢獻是獨有的」。半偏相關直接處理重疊，特別適合對立理論競賽的情境。'}
+];
+let score=0,answered=0;
+function renderQuiz(){
+  const ct=document.getElementById('quizContainer');ct.innerHTML='';
+  quizData.forEach((q,qi)=>{
+    const card=document.createElement('div');card.className='quiz-card';
+    card.innerHTML='<div class="quiz-q"><span>'+(qi+1)+'</span>'+q.q+'</div>';
+    const opts=document.createElement('div');opts.className='quiz-opts';
+    q.opts.forEach((o,oi)=>{
+      const b=document.createElement('button');b.className='quiz-opt';b.textContent=String.fromCharCode(65+oi)+'. '+o;
+      b.onclick=()=>{
+        if(card.dataset.done)return;card.dataset.done='1';
+        const fb=card.querySelector('.quiz-feedback');
+        if(oi===q.ans){b.classList.add('selected-correct');fb.className='quiz-feedback show correct';fb.innerHTML='✅ 正確！'+q.fb;score++;}
+        else{b.classList.add('selected-wrong');opts.children[q.ans].classList.add('selected-correct');fb.className='quiz-feedback show wrong';fb.innerHTML='❌ 正解是 '+String.fromCharCode(65+q.ans)+'。'+q.fb;}
+        answered++;
+        if(answered===quizData.length){const s=document.getElementById('quizScore');s.style.display='block';s.textContent='🎉 完成！得分：'+score+' / '+quizData.length;}
+      };
+      opts.appendChild(b);
+    });
+    card.appendChild(opts);
+    const fb=document.createElement('div');fb.className='quiz-feedback';card.appendChild(fb);
+    ct.appendChild(card);
+  });
+}
+function resetQuiz(){score=0;answered=0;document.getElementById('quizScore').style.display='none';renderQuiz();}
+
+// init
+SETS['orthTable']=[{n:'ψ₁',C:[1,1,1,-3]},{n:'ψ₂',C:[0,0,1,-1]},{n:'ψ₃',C:[3,-1,-1,-1]},{n:'ψ₄',C:[1,-1,0,0]}];
+SETS['orthTable2']=[{n:'🅰️',C:[3,-1,-1,-1]},{n:'🅱️',C:[1,1,-1,-1]},{n:'🅲',C:[1,-1,1,-1]}];
+function drawAll(){drawAlloc();drawDunnett();drawTheory();drawSP();}
+window.addEventListener('resize',drawAll);
+buildMatrix('orthTable','orthNote',SETS['orthTable']);
+buildMatrix('orthTable2','orthNote2',SETS['orthTable2']);
+showCell('orthNote',0,2,'orthTable');
+showCell('orthNote2',0,1,'orthTable2');
+renderQuiz();drawAll();
+</script>
+</body>
+</html>

@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第七章：單因子 ANOVA — 直觀法與 F 的計算 | 心理學統計教材</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a2e;--paper:#f8f4ef;--cream:#fdf8f2;--accent:#c0392b;--accent2:#2980b9;--gold:#d4a017;--teal:#1a6b6e;--purple:#6b3fa0;--muted:#6b7280;--border:#d5c9be;--card-bg:#fff;--formula-bg:#1a1a2e;--formula-text:#f0e6d3;--highlight:#fff3cd}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.8}
+.hero{background:var(--ink);color:var(--paper);padding:80px 40px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(255,255,255,.02) 40px,rgba(255,255,255,.02) 41px)}
+.hero-eyebrow{font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500}
+.hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(28px,5vw,52px);font-weight:700;line-height:1.2;margin-bottom:20px}
+.hero h1 span{color:var(--gold)}
+.hero-sub{font-size:15px;color:rgba(248,244,239,.65);max-width:560px;margin:0 auto 40px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.tag{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 16px;font-size:13px;color:var(--paper)}
+nav{position:sticky;top:0;z-index:100;background:rgba(26,26,46,.97);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);padding:0 40px;display:flex;gap:0;overflow-x:auto}
+nav a{display:block;padding:16px 20px;color:rgba(248,244,239,.65);text-decoration:none;font-size:13px;font-weight:500;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+nav a:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+section{padding:64px 0;border-bottom:1px solid var(--border)}
+section:last-of-type{border-bottom:none}
+.section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:36px}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.2);border-radius:4px;padding:3px 8px;flex-shrink:0}
+.section-header h2{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:700;color:var(--ink)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:32px}
+.concept-card{background:var(--card-bg);border-radius:12px;padding:24px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.concept-icon{font-size:28px;margin-bottom:12px}
+.concept-card h3{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;margin-bottom:10px}
+.concept-card p{font-size:14px;color:var(--muted);line-height:1.7}
+.concept-card p+p{margin-top:8px}
+.highlight-box{background:var(--highlight);border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#6b4c00}
+.warn-box{background:rgba(192,57,43,.06);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#7a2a1f}
+.info-box{background:rgba(41,128,185,.06);border-left:4px solid var(--accent2);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#1e5a8a}
+.magic-box{background:linear-gradient(135deg,rgba(107,63,160,0.08),rgba(212,160,23,0.08));border:2px solid var(--purple);border-radius:12px;padding:24px;margin:24px 0;font-size:14px}
+.magic-box .magic-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--purple);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.formula-box{background:var(--formula-bg);border-radius:12px;padding:28px 32px;margin:24px 0;position:relative;overflow:hidden}
+.formula-box::before{content:'FORMULA';position:absolute;top:12px;right:16px;font-size:10px;letter-spacing:3px;color:rgba(255,255,255,.2);font-family:'JetBrains Mono',monospace}
+.formula-box .formula-label{font-size:12px;color:var(--gold);margin-bottom:10px;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.formula-box .formula-main{font-family:'JetBrains Mono',monospace;font-size:20px;color:var(--formula-text);font-weight:600;margin-bottom:12px;word-wrap:break-word;line-height:1.5}
+.formula-box .formula-desc{font-size:13px;color:rgba(240,230,211,.6);line-height:1.7}
+.formula-box .formula-desc strong{color:var(--gold)}
+.chart-wrapper{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px;margin:28px 0}
+.chart-title{font-size:14px;font-weight:600;color:var(--muted);margin-bottom:16px;letter-spacing:.5px}
+canvas{display:block;width:100%}
+.data-table-wrap{overflow-x:auto;margin:24px 0;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--card-bg)}
+thead tr{background:var(--ink)}
+thead th{color:var(--paper);padding:12px 16px;text-align:center;font-weight:600;font-size:13px}
+thead th:first-child{text-align:left}
+tbody tr:nth-child(even){background:var(--cream)}
+tbody td{padding:10px 16px;text-align:center;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:13px}
+tbody td:first-child{text-align:left;font-family:'Noto Sans TC',sans-serif;font-size:13.5px}
+tfoot tr{background:rgba(192,57,43,.08);font-weight:600}
+tfoot td{padding:12px 16px;border-top:2px solid var(--accent);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;text-align:center}
+.prose p{margin-bottom:16px;font-size:15px;line-height:1.85;color:#333}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--ink)}
+.prose em{color:var(--accent);font-style:normal;font-weight:500}
+.steps{counter-reset:step}
+.step{display:flex;gap:20px;margin-bottom:28px;align-items:flex-start}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--gold);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.step-body{flex:1}
+.step-body h4{font-weight:700;font-size:15px;margin-bottom:8px}
+.step-body p{font-size:14px;color:#444;margin-bottom:8px}
+.step-body p:last-child{margin-bottom:0}
+.notions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0}
+.notion-item{background:var(--ink);color:var(--paper);border-radius:8px;padding:14px 18px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px}
+.notion-item::before{content:'◆';color:var(--gold);font-size:10px;flex-shrink:0}
+.formula-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:24px 0}
+.formula-mini{background:var(--ink);border-radius:10px;padding:20px;color:var(--formula-text)}
+.formula-mini .fm-label{font-size:11px;color:var(--gold);letter-spacing:2px;font-family:'JetBrains Mono',monospace;margin-bottom:8px;text-transform:uppercase}
+.formula-mini .fm-eq{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#fff;line-height:1.6;word-wrap:break-word}
+.formula-mini .fm-note{font-size:12px;color:rgba(255,255,255,.5);margin-top:6px;line-height:1.5}
+.quiz-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:20px}
+.quiz-q{font-weight:700;font-size:15px;margin-bottom:16px;line-height:1.6}
+.quiz-q span{display:inline-block;width:26px;height:26px;background:var(--ink);color:var(--gold);border-radius:50%;font-size:13px;text-align:center;line-height:26px;margin-right:8px;font-family:'JetBrains Mono',monospace}
+.quiz-opts{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:12px 18px;cursor:pointer;font-size:14px;transition:all .2s;text-align:left;font-family:'Noto Sans TC',sans-serif}
+.quiz-opt:hover{border-color:var(--accent2);background:rgba(41,128,185,.05)}
+.quiz-opt.selected-correct{border-color:#27ae60;background:rgba(39,174,96,.1);color:#1e8449;font-weight:600}
+.quiz-opt.selected-wrong{border-color:var(--accent);background:rgba(192,57,43,.1);color:var(--accent)}
+.quiz-feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:13.5px;display:none;line-height:1.6}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:rgba(39,174,96,.1);color:#1e8449;border:1px solid rgba(39,174,96,.3)}
+.quiz-feedback.wrong{background:rgba(192,57,43,.08);color:#c0392b;border:1px solid rgba(192,57,43,.2)}
+.btn{display:inline-block;padding:14px 32px;background:var(--ink);color:var(--paper);border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.btn:hover{background:var(--accent);transform:translateY(-2px)}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--accent);color:#fff}
+footer{background:var(--ink);color:rgba(248,244,239,.5);text-align:center;padding:32px;font-size:13px}
+footer a{color:var(--gold);text-decoration:none}
+footer a:hover{text-decoration:underline}
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);z-index:9999;width:0%;transition:width .1s}
+@media(max-width:600px){.hero{padding:48px 20px 40px}nav{padding:0 16px}.container{padding:0 16px}section{padding:48px 0}}
+.split-demo{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:24px 0}
+.split-card{border-radius:12px;padding:20px;border:2px solid;text-align:center}
+.split-card .sc-lab{font-size:13px;font-weight:600;margin-bottom:6px}
+.split-card .sc-val{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700}
+.split-card .sc-note{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5}
+.sc-total{border-color:var(--ink);background:rgba(26,26,46,.05)}
+.sc-between{border-color:var(--accent);background:rgba(192,57,43,.06)}
+.sc-within{border-color:var(--accent2);background:rgba(41,128,185,.06)}
+.subj-table td.hl-a{background:rgba(192,57,43,.14)!important}
+.subj-table td.hl-b{background:rgba(41,128,185,.14)!important}
+.anova-table td:first-child{font-weight:600}
+.anova-table tr.hl{background:rgba(212,160,23,.16)!important}
+.ctrl-row{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin:16px 0;padding:16px;background:var(--cream);border-radius:8px;border:1px solid var(--border)}
+.ctrl-row label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:500}
+.ctrl-row input[type=range]{width:190px;accent-color:var(--accent)}
+.ctrl-val{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--accent);font-weight:700;min-width:48px;display:inline-block}
+.mini-btn{background:var(--cream);border:2px solid var(--border);border-radius:8px;padding:9px 16px;cursor:pointer;font-size:13px;font-weight:600;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.mini-btn:hover{border-color:var(--accent2)}
+.mini-btn.active{background:var(--ink);color:var(--gold);border-color:var(--ink)}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<div class="hero">
+  <div class="hero-eyebrow">第七章 · Chapter 7</div>
+  <h1>單因子 ANOVA<br><span>直觀法與 F 的計算</span></h1>
+  <p class="hero-sub">當我們有兩組、三組、甚至更多組要比較時，怎麼判斷「組間的差異」不只是隨機波動？本章從一個記憶實驗出發，把「變異」拆成兩塊，親手造出 F 比值。</p>
+  <div class="hero-tags">
+    <span class="tag">📊 組間 vs 組內</span>
+    <span class="tag">✂️ 平方和分割</span>
+    <span class="tag">🎯 自由度</span>
+    <span class="tag">📐 均方 MS</span>
+    <span class="tag">⚖️ F 比值</span>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" style="color:var(--gold)">← 回首頁</a>
+  <a href="#why">§1 為什麼需要 ANOVA</a>
+  <a href="#example">§2 心像記憶實驗</a>
+  <a href="#idea">§3 兩種變異的直覺</a>
+  <a href="#notation">§4 記號系統</a>
+  <a href="#split">§5 距離的分割</a>
+  <a href="#ss">§6 三個平方和</a>
+  <a href="#proof">§7 為什麼可以相加</a>
+  <a href="#df">§8 自由度</a>
+  <a href="#compute">§9 完整計算</a>
+  <a href="#play">§10 F 遊樂場</a>
+  <a href="#formulas">§K 公式整理</a>
+  <a href="#quiz">§Q 測驗</a>
+</nav>
+
+<div class="container">
+
+<!-- §1 -->
+<section id="why">
+<div class="section-header"><span class="section-num">§1</span><h2>為什麼需要 ANOVA？</h2></div>
+
+<div class="prose">
+<p>前面六章我們一直在處理「<em>兩個連續變數的關係</em>」——相關、迴歸、多元迴歸。但心理學實驗最常見的問題其實長這樣：</p>
+<p style="text-align:center;font-size:17px;font-weight:600;color:var(--accent)">「我把受試者分成幾組、給不同的處理，這些組的平均數真的不一樣嗎？」</p>
+<p>這時候自變數不是連續的數字，而是<strong>類別</strong>（實驗組 / 控制組、四種學習情境……）。<strong>變異數分析（Analysis of Variance, ANOVA）</strong>就是為了回答這個問題而生的。</p>
+</div>
+
+<div class="concept-grid">
+<div class="concept-card">
+<div class="concept-icon">🎲</div>
+<h3>核心難題：隨機波動</h3>
+<p>就算兩組真的沒有差別，抽樣誤差也會讓兩組平均數「看起來」不一樣。所以看到 10 分 vs 4 分，不能直接下結論。</p>
+<p style="margin-top:8px;color:var(--accent);font-weight:600">我們需要一把尺，量出「這個差距相對於隨機波動而言，算不算大」。</p>
+</div>
+<div class="concept-card">
+<div class="concept-icon">💡</div>
+<h3>Fisher 的答案</h3>
+<p>把資料中的變異拆成兩塊：一塊<strong>可能</strong>來自自變數（組與組之間的差異），一塊<strong>只能</strong>來自誤差（同組內部人與人的差異）。</p>
+<p style="margin-top:8px;color:var(--teal);font-weight:600">兩者相除 → 這就是 F。</p>
+</div>
+<div class="concept-card">
+<div class="concept-icon">🔗</div>
+<h3>其實是老朋友</h3>
+<p>第三章的 F 檢定、第四章迴歸的 F 比值，跟本章的 F 是<em>同一個</em> Fisher's F。第九章會證明：ANOVA 根本就是一種迴歸。</p>
+<p style="margin-top:8px;color:var(--purple);font-weight:600">換了一件衣服的老朋友。</p>
+</div>
+</div>
+
+<div class="info-box">
+📖 <strong>本章的目標很單純</strong>：不談檢定、不談顯著、不談 p 值——那是第八章的事。本章只做一件事：<strong>把 F 這個數字造出來，並且完全理解它每一塊零件的意義。</strong>
+</div>
+</section>
+
+<!-- §2 -->
+<section id="example">
+<div class="section-header"><span class="section-num">§2</span><h2>實例：心像法能幫助記憶嗎？</h2></div>
+
+<div class="prose">
+<p>受試者要背 20 組配對詞（例如「beauty–carrot」），24 小時後測驗，看能正確回想幾組。10 位受試者<strong>隨機分派</strong>成兩組（每組 5 人）：</p>
+</div>
+
+<div class="concept-grid">
+<div class="concept-card" style="border-left:4px solid var(--accent2)">
+<h3>控制組 a₁（無心像）</h3>
+<p style="font-size:14.5px;color:#333">指導語只說：「請盡你所能把這些配對詞背起來。」</p>
+</div>
+<div class="concept-card" style="border-left:4px solid var(--accent)">
+<h3>實驗組 a₂（用心像）</h3>
+<p style="font-size:14.5px;color:#333">教導受試者把兩個字<strong>畫成互動的圖像</strong>。例如「piano–cigar」→ 想像一台鋼琴，琴鍵是牙齒，正在咬著雪茄抽。</p>
+</div>
+</div>
+
+<div class="prose">
+<p><strong>自變數 A</strong>＝學習方式（2 個水準）；<strong>依變數 Y</strong>＝24 小時後正確回想的配對詞數量。實驗結果（課本刻意設計成「漂亮的數字」）：</p>
+</div>
+
+<div class="data-table-wrap">
+<table class="subj-table">
+<thead><tr><th>受試者</th><th>控制組 a₁</th><th>實驗組 a₂</th></tr></thead>
+<tbody>
+<tr><td>s = 1</td><td>1</td><td>8</td></tr>
+<tr><td>s = 2</td><td>2</td><td>8</td></tr>
+<tr><td>s = 3</td><td>5</td><td>9</td></tr>
+<tr><td>s = 4</td><td>6</td><td>11</td></tr>
+<tr><td>s = 5</td><td>6</td><td>14</td></tr>
+</tbody>
+<tfoot>
+<tr><td style="text-align:left">組總和 Y<sub>a·</sub></td><td>20</td><td>50</td></tr>
+<tr><td style="text-align:left">組平均 M<sub>a·</sub></td><td>4.00</td><td>10.00</td></tr>
+</tfoot>
+</table>
+</div>
+
+<div class="highlight-box">
+🔢 <strong>總平均（grand mean）</strong>：M<sub>··</sub> = Y<sub>··</sub> ／ (A × S) = 70 ／ 10 = <strong>7.00</strong><br>
+控制組分數落在 1–6，實驗組落在 8–14。兩組看起來差很多——但「看起來」不算數，我們要把它<em>量化</em>。
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">📊 兩組分數的直方圖（藍＝控制組、紅＝實驗組；虛線是三條平均數）</div>
+<canvas id="histCanvas" height="300"></canvas>
+<div class="info-box" style="margin-top:14px;margin-bottom:0">
+👀 <strong>先用眼睛讀圖</strong>：如果我只告訴你某人在實驗組、要你猜他的分數，最好的猜測是<strong>該組平均（10）</strong>；如果我連組別都不告訴你，最好的猜測只能是<strong>總平均（7）</strong>。<br>
+這個「知道組別讓猜測變準多少」的差距，正是 ANOVA 要量的東西。
+</div>
+</div>
+</section>
+
+<!-- §3 -->
+<section id="idea">
+<div class="section-header"><span class="section-num">§3</span><h2>直觀：資料裡有兩種變異</h2></div>
+
+<div class="prose">
+<p>觀察資料，你會看到兩種「不一樣」：</p>
+</div>
+
+<div class="concept-grid">
+<div class="concept-card" style="border-top:4px solid var(--accent)">
+<div class="concept-icon">↔️</div>
+<h3>組間變異（between-group）</h3>
+<p>控制組平均 4、實驗組平均 10——<strong>組與組之間</strong>的差異。</p>
+<p style="margin-top:10px;padding:10px;background:rgba(192,57,43,.07);border-radius:6px;font-size:13px;color:#7a2a1f">
+可能來自 <strong>兩個</strong>來源：<br>① 自變數真的有效果<br>② 隨機誤差（抽樣波動、個別差異）
+</p>
+</div>
+<div class="concept-card" style="border-top:4px solid var(--accent2)">
+<div class="concept-icon">↕️</div>
+<h3>組內變異（within-group）</h3>
+<p>控制組內部：1、2、5、6、6——<strong>同一組裡面</strong>人跟人的差異。</p>
+<p style="margin-top:10px;padding:10px;background:rgba(41,128,185,.07);border-radius:6px;font-size:13px;color:#1e5a8a">
+只可能來自 <strong>一個</strong>來源：<br>隨機誤差<br><em>（因為他們接受完全相同的處理！）</em>
+</p>
+</div>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🪄 神來一筆：把兩者相除</div>
+<p style="line-height:1.9">既然組內變異是「純誤差」的估計值，而組間變異是「效果 + 誤差」，那把兩者相除：</p>
+<div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;margin:18px 0;color:var(--purple)">
+F = 組間變異 ／ 組內變異 = (效果 + 誤差) ／ 誤差
+</div>
+<p style="line-height:1.9">
+• <strong>若自變數沒有效果</strong>：分子分母都在估計同一個東西（誤差），F 應該<em>接近 1</em>。<br>
+• <strong>若自變數有效果</strong>：分子多了一塊，F 會<em>大於 1</em>；效果越強，F 越大。
+</p>
+</div>
+
+<div class="info-box">
+🪙 <strong>為什麼是「接近 1」而不是「剛好 1」？</strong><br>
+拿一枚硬幣丟 50 次算出正面比例，再丟 50 次再算一次——兩個數字都在估計同一個機率，但幾乎不會完全相同。<strong>兩個獨立的估計值，通常接近但不相等</strong>。所以即使沒有效果，F 也會在 1 附近上下浮動。<em>究竟浮動到多大才算「不尋常」？那是第八章的問題。</em>
+</div>
+
+<div class="warn-box">
+⚠️ <strong>為什麼要「相除」而不是「相減」？</strong><br>
+如果用減法，答案會隨著<strong>測量單位</strong>改變（用公分測跟用公尺測，差值差 100 倍）。相同單位的兩個量<em>相除</em>之後單位互相消掉——這正是第二章相關係數用的同一招。
+</div>
+</section>
+
+<!-- §4 -->
+<section id="notation">
+<div class="section-header"><span class="section-num">§4</span><h2>先把記號講清楚</h2></div>
+
+<div class="prose">
+<p>接下來的公式會一直用到這套記號。它看起來嚇人，其實只有幾個規則，而且會一路用到第二十二章。</p>
+</div>
+
+<div class="data-table-wrap">
+<table>
+<thead><tr><th style="width:16%">記號</th><th style="width:30%">意思</th><th>本例的值</th></tr></thead>
+<tbody>
+<tr><td><strong>𝒜</strong></td><td>自變數的名字（花體大寫）</td><td>學習方式</td></tr>
+<tr><td><strong>A</strong></td><td>自變數的水準數（正體大寫）</td><td>A = 2</td></tr>
+<tr><td><strong>a</strong></td><td>第 a 個水準（小寫）</td><td>a = 1 或 2</td></tr>
+<tr><td><strong>𝒮</strong></td><td>受試者因子</td><td>—</td></tr>
+<tr><td><strong>S</strong></td><td>每組的受試者人數</td><td>S = 5</td></tr>
+<tr><td><strong>Y<sub>as</sub></strong></td><td>第 a 組第 s 位受試者的分數</td><td>Y<sub>2,5</sub> = 14</td></tr>
+<tr><td><strong>Y<sub>a·</sub></strong></td><td>第 a 組所有人的總和（點＝已被加總掉的下標）</td><td>Y<sub>1·</sub> = 20</td></tr>
+<tr><td><strong>Y<sub>··</sub></strong></td><td>全部人的總和</td><td>Y<sub>··</sub> = 70</td></tr>
+<tr><td><strong>M<sub>a·</sub></strong></td><td>第 a 組平均 = Y<sub>a·</sub> ／ S</td><td>M<sub>1·</sub> = 4</td></tr>
+<tr><td><strong>M<sub>··</sub></strong></td><td>總平均 = Y<sub>··</sub> ／ (A×S)</td><td>M<sub>··</sub> = 7</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box">
+🔑 <strong>「點」的規則（據說出自愛因斯坦！）</strong>：下標中的<strong>點（·）代表「這個下標已經被加總掉了」</strong>。<br>
+所以 Y<sub>a·</sub> 讀作「固定第 a 組、把 s 全部加起來」；Y<sub>··</sub> 讀作「a 和 s 都加起來」。有些課本用 + 號代替點（Y<sub>a+</sub>），意思完全相同。
+</div>
+
+<div class="info-box">
+⚖️ <strong>平衡設計（balanced design）</strong>：每組人數都相同（本例都是 5 人）。本書幾乎所有範例都是平衡設計，因為公式會簡潔很多。總人數 = A × S = 2 × 5 = 10。
+</div>
+</section>
+
+<!-- §5 -->
+<section id="split">
+<div class="section-header"><span class="section-num">§5</span><h2>關鍵一步：把「距離」拆成兩段</h2></div>
+
+<div class="prose">
+<p>ANOVA 的全部魔法都藏在下面這個小學程度的等式裡。以控制組第 1 位受試者為例（Y<sub>1,1</sub> = 1）：</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">距離的分割 · 這是全章最重要的一行</div>
+<div class="formula-main">(Y<sub>as</sub> − M<sub>··</sub>) = (Y<sub>as</sub> − M<sub>a·</sub>) + (M<sub>a·</sub> − M<sub>··</sub>)</div>
+<div class="formula-desc">
+代入 Y<sub>1,1</sub> = 1、M<sub>1·</sub> = 4、M<sub>··</sub> = 7：<br>
+(1 − 7) = (1 − 4) + (4 − 7) → <strong>−6 = −3 + (−3)</strong> ✓<br><br>
+<strong>左邊</strong>：這個人離「全體平均」多遠（總距離）<br>
+<strong>右邊第一項</strong>：他離「自己這組平均」多遠 → <strong>組內偏差</strong>（純誤差）<br>
+<strong>右邊第二項</strong>：他那組的平均離「全體平均」多遠 → <strong>組間偏差</strong>（效果＋誤差）
+</div>
+</div>
+
+<div class="prose">
+<p>證明只需要小學算術——中間的 M<sub>a·</sub> 一加一減就消掉了：</p>
+<p style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:15px;background:var(--cream);padding:14px;border-radius:8px;border:1px solid var(--border)">
+(Y<sub>as</sub> − <span style="color:var(--accent)">M<sub>a·</sub></span>) + (<span style="color:var(--accent)">M<sub>a·</sub></span> − M<sub>··</sub>) = Y<sub>as</sub> − M<sub>··</sub>
+</p>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🎯 互動：點選任何一位受試者，看他的距離怎麼被拆成兩段</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px" id="subjBtns"></div>
+<canvas id="splitCanvas" height="260"></canvas>
+<div id="splitExplain" class="highlight-box" style="margin-bottom:0"></div>
+</div>
+</section>
+
+<!-- §6 -->
+<section id="ss">
+<div class="section-header"><span class="section-num">§6</span><h2>從「一個人的距離」到「全體的變異」：三個平方和</h2></div>
+
+<div class="prose">
+<p>一個人的距離拆好了，但我們要的是<strong>全體</strong>的變異。直覺會說「把所有距離加起來」——可惜行不通：<em>離均差的總和永遠是 0</em>（因為平均數就在正中央，正負剛好抵消）。</p>
+<p>解法跟第二章算變異數時一模一樣：<strong>先平方，再相加</strong>。於是三個距離變成三個平方和（Sum of Squares, SS）：</p>
+</div>
+
+<div class="formula-grid">
+<div class="formula-mini">
+<div class="fm-label">總平方和</div>
+<div class="fm-eq">SS<sub>total</sub> = ΣΣ (Y<sub>as</sub> − M<sub>··</sub>)²</div>
+<div class="fm-note">每個人離總平均多遠</div>
+</div>
+<div class="formula-mini">
+<div class="fm-label">組內平方和（誤差）</div>
+<div class="fm-eq">SS<sub>within</sub> = ΣΣ (Y<sub>as</sub> − M<sub>a·</sub>)²</div>
+<div class="fm-note">每個人離自己組平均多遠</div>
+</div>
+<div class="formula-mini">
+<div class="fm-label">組間平方和（效果）</div>
+<div class="fm-eq">SS<sub>between</sub> = S · Σ (M<sub>a·</sub> − M<sub>··</sub>)²</div>
+<div class="fm-note">乘 S 是因為同組每個人的組間偏差都一樣，共 S 份</div>
+</div>
+</div>
+
+<div class="info-box">
+🤔 <strong>為什麼 SS<sub>between</sub> 可以把 S 提到前面？</strong><br>
+(M<sub>a·</sub> − M<sub>··</sub>) 只跟「組」有關，同一組裡的 5 個人這個值都一樣。所以「加 5 次」＝「乘以 5」：<br>
+ΣΣ (M<sub>a·</sub> − M<sub>··</sub>)² = S · Σ (M<sub>a·</sub> − M<sub>··</sub>)²
+</div>
+
+<div class="magic-box">
+<div class="magic-title">✨ 變異數分析的基本定理</div>
+<div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--purple);margin:16px 0">
+SS<sub>total</sub> = SS<sub>within</sub> + SS<sub>between</sub>
+</div>
+<p style="line-height:1.9">距離可以相加不稀奇（那是代數恆等式），但<strong>平方之後居然還能相加</strong>——這件事一點都不理所當然！（想想看：3² + 4² ≠ 7²）能成立是因為兩種偏差<em>互不相關</em>，下一節證明給你看。</p>
+<p style="line-height:1.9;margin-top:10px">本例：<strong>138 = 48 + 90</strong> ✓</p>
+</div>
+
+<div class="split-demo">
+<div class="split-card sc-total"><div class="sc-lab">SS<sub>total</sub></div><div class="sc-val">138</div><div class="sc-note">全部的變異</div></div>
+<div class="split-card sc-between"><div class="sc-lab">SS<sub>between</sub>（效果）</div><div class="sc-val">90</div><div class="sc-note">佔 65.2%</div></div>
+<div class="split-card sc-within"><div class="sc-lab">SS<sub>within</sub>（誤差）</div><div class="sc-val">48</div><div class="sc-note">佔 34.8%</div></div>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🥧 變異的分割（第八章會告訴你，紅色那塊佔的比例就是效果量 R²）</div>
+<canvas id="pieCanvas" height="200"></canvas>
+</div>
+</section>
+
+<!-- §7 -->
+<section id="proof">
+<div class="section-header"><span class="section-num">§7</span><h2>為什麼平方和可以相加？（想跳過可以，但很值得看）</h2></div>
+
+<div class="prose">
+<p>把分割式兩邊平方再加總：</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">展開平方項</div>
+<div class="formula-main" style="font-size:15px">SS<sub>total</sub> = ΣΣ[(Y<sub>as</sub>−M<sub>a·</sub>) + (M<sub>a·</sub>−M<sub>··</sub>)]²</div>
+<div class="formula-desc">
+用 (x+y)² = x² + y² + 2xy 展開：<br><br>
+= ΣΣ(Y<sub>as</sub>−M<sub>a·</sub>)² &nbsp;+&nbsp; ΣΣ(M<sub>a·</sub>−M<sub>··</sub>)² &nbsp;+&nbsp; <span style="color:#ff8c8c">2·ΣΣ(Y<sub>as</sub>−M<sub>a·</sub>)(M<sub>a·</sub>−M<sub>··</sub>)</span><br><br>
+＝ SS<sub>within</sub> ＋ SS<sub>between</sub> ＋ <span style="color:#ff8c8c">交叉項</span><br><br>
+<strong>關鍵：那個交叉項等於 0！</strong>所以剩下的就是漂亮的可加性。
+</div>
+</div>
+
+<div class="prose">
+<p>證明交叉項為零的核心，是這個簡單的事實：<strong>同一組內，所有人的分數加起來等於「組平均 × 人數」</strong>，即 Σ<sub>s</sub> Y<sub>as</sub> = S·M<sub>a·</sub>。把它代進展開式，正負項會兩兩對消：</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">交叉項的消滅過程</div>
+<div class="formula-main" style="font-size:14px">(S·ΣM²<sub>a·</sub>) − (S·M<sub>··</sub>·ΣM<sub>a·</sub>) − (S·ΣM²<sub>a·</sub>) + (S·M<sub>··</sub>·ΣM<sub>a·</sub>) = 0</div>
+<div class="formula-desc">第 1 項與第 3 項對消、第 2 項與第 4 項對消 → <strong>結果為 0</strong> ✓</div>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🔍 這個 0 的深層意義（別小看它！）</div>
+<p style="line-height:1.9">還記得第二章嗎？<strong>交叉乘積和（SCP）正是相關係數的分子。</strong>這裡的交叉項就是「組內偏差」與「組間偏差」的交叉乘積和——</p>
+<p style="line-height:1.9;margin-top:10px;padding:12px;background:rgba(107,63,160,.08);border-radius:8px">
+交叉項 = 0 &nbsp;⟹&nbsp; <strong>r（組內偏差, 組間偏差）= 0</strong><br>
+⟹ 這兩種變異來源<strong>完全獨立、毫不重疊</strong>
+</p>
+<p style="line-height:1.9;margin-top:10px">用第五章的話說：它們是<strong>正交的</strong>！這正是變異可以乾淨相加的理由，也是為什麼 ANOVA 能把功勞明確歸給不同來源。（第六章那種「非正交」的麻煩，在平衡的實驗設計中不會發生——這是<em>隨機分派 + 等組人數</em>換來的禮物。）</p>
+</div>
+</section>
+
+<!-- §8 -->
+<section id="df">
+<div class="section-header"><span class="section-num">§8</span><h2>自由度：這些平方和各由幾個「自由」的數字組成？</h2></div>
+
+<div class="prose">
+<p>平方和的大小會隨著<strong>資料筆數</strong>膨脹——20 個人的 SS 天生就比 10 個人大，直接比較不公平。所以要「除以某個東西」把它變成平均，那個東西就是<strong>自由度（degrees of freedom, df）</strong>。</p>
+</div>
+
+<div class="highlight-box">
+🎓 <strong>什麼是自由度？</strong>「可以自由變動的數值個數」。<br><br>
+舉例：6 個數字的<em>總和已知</em>是 30。前 5 個你愛填什麼就填什麼（1,1,1,1,1），但<strong>第 6 個就不自由了</strong>——它必須是 25。所以 6 個數字在「總和固定」的約束下，只有 <strong>5 個自由度</strong>。<br><br>
+通則：<strong>df ＝ 獨立觀察值個數 − 需要估計的母體參數個數</strong>。每估計一個參數（例如平均數），就「花掉」一個自由度。
+</div>
+
+<div class="data-table-wrap">
+<table>
+<thead><tr><th style="width:20%">來源</th><th style="width:24%">公式</th><th style="width:14%">本例</th><th>為什麼</th></tr></thead>
+<tbody>
+<tr><td><strong>組間</strong></td><td>df<sub>between</sub> = A − 1</td><td>2 − 1 = <strong>1</strong></td><td>有 A 個組平均，但算它們的離差需要先估「總平均」→ 花掉 1 個</td></tr>
+<tr><td><strong>組內</strong></td><td>df<sub>within</sub> = A(S − 1)</td><td>2 × 4 = <strong>8</strong></td><td>共 A×S 個觀察值，但要先估 A 個組平均 → 花掉 A 個</td></tr>
+<tr><td><strong>總和</strong></td><td>df<sub>total</sub> = AS − 1</td><td>10 − 1 = <strong>9</strong></td><td>共 A×S 個觀察值，估總平均花掉 1 個</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">自由度也可以相加</div>
+<div class="formula-main">df<sub>total</sub> = df<sub>within</sub> + df<sub>between</sub></div>
+<div class="formula-desc">
+代數上：AS − 1 = (AS − A) + (A − 1) ✓<br>
+本例：9 = 8 + 1 ✓ <span style="color:var(--gold)">（可以拿來檢查自己有沒有算錯！）</span>
+</div>
+</div>
+
+<div class="prose">
+<p>把平方和除以自由度，得到一種「平均變異」，稱為<strong>均方（Mean Square, MS）</strong>：</p>
+</div>
+
+<div class="formula-grid">
+<div class="formula-mini">
+<div class="fm-label">組間均方</div>
+<div class="fm-eq">MS<sub>between</sub> = SS<sub>between</sub> ／ (A − 1)</div>
+<div class="fm-note">效果＋誤差的估計</div>
+</div>
+<div class="formula-mini">
+<div class="fm-label">組內均方</div>
+<div class="fm-eq">MS<sub>within</sub> = SS<sub>within</sub> ／ A(S − 1)</div>
+<div class="fm-note">純誤差的估計，又叫 MS<sub>error</sub></div>
+</div>
+</div>
+
+<div class="warn-box">
+⚠️ <strong>超級常見錯誤：均方「不能」相加！</strong><br><br>
+平方和可以相加：SS<sub>total</sub> = SS<sub>within</sub> + SS<sub>between</sub> ✓<br>
+自由度可以相加：df<sub>total</sub> = df<sub>within</sub> + df<sub>between</sub> ✓<br>
+<strong style="color:var(--accent)">但均方不行</strong>：MS<sub>total</sub> ≠ MS<sub>within</sub> + MS<sub>between</sub> ✗<br><br>
+本例驗證：138/9 = 15.33，但 6.00 + 90.00 = 96.00。差得遠。<br>
+<em>道理很簡單：a/c + b/d ≠ (a+b)/(c+d)。分母不同的分數不能直接加。</em>
+</div>
+</section>
+
+<!-- §9 -->
+<section id="compute">
+<div class="section-header"><span class="section-num">§9</span><h2>完整計算：心像實驗從頭算一次</h2></div>
+
+<div class="steps">
+
+<div class="step">
+<div class="step-num">1</div>
+<div class="step-body">
+<h4>算總平方和 SS<sub>total</sub>（每個人 − 7，平方後全加）</h4>
+<p style="font-family:'JetBrains Mono',monospace;font-size:13.5px;background:var(--cream);padding:12px;border-radius:8px;line-height:1.9">
+(1−7)² + (2−7)² + (5−7)² + (6−7)² + (6−7)²<br>
+&nbsp;+ (8−7)² + (8−7)² + (9−7)² + (11−7)² + (14−7)²<br>
+= 36 + 25 + 4 + 1 + 1 + 1 + 1 + 4 + 16 + 49 = <strong style="color:var(--accent)">138</strong>
+</p>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">2</div>
+<div class="step-body">
+<h4>算組間平方和 SS<sub>between</sub>（組平均 − 7，平方後 × 每組人數 5）</h4>
+<p style="font-family:'JetBrains Mono',monospace;font-size:13.5px;background:var(--cream);padding:12px;border-radius:8px;line-height:1.9">
+5 × (4 − 7)² + 5 × (10 − 7)²<br>
+= 5 × 9 + 5 × 9 = 45 + 45 = <strong style="color:var(--accent)">90</strong>
+</p>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">3</div>
+<div class="step-body">
+<h4>算組內平方和 SS<sub>within</sub>（每個人 − 自己組平均，平方後全加）</h4>
+<p style="font-family:'JetBrains Mono',monospace;font-size:13.5px;background:var(--cream);padding:12px;border-radius:8px;line-height:1.9">
+控制組（減 4）：(1−4)² + (2−4)² + (5−4)² + (6−4)² + (6−4)² = 9+4+1+4+4 = 22<br>
+實驗組（減 10）：(8−10)² + (8−10)² + (9−10)² + (11−10)² + (14−10)² = 4+4+1+1+16 = 26<br>
+合計 = 22 + 26 = <strong style="color:var(--accent2)">48</strong>
+</p>
+<p>✅ <strong>檢查</strong>：48 + 90 = 138 = SS<sub>total</sub> ✓</p>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">4</div>
+<div class="step-body">
+<h4>算自由度</h4>
+<p style="font-family:'JetBrains Mono',monospace;font-size:13.5px;background:var(--cream);padding:12px;border-radius:8px;line-height:1.9">
+df<sub>between</sub> = A − 1 = 2 − 1 = <strong>1</strong><br>
+df<sub>within</sub> = A(S − 1) = 2 × (5 − 1) = <strong>8</strong><br>
+df<sub>total</sub> = AS − 1 = 10 − 1 = <strong>9</strong>&nbsp;&nbsp;✅ 1 + 8 = 9 ✓
+</p>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">5</div>
+<div class="step-body">
+<h4>算均方（SS ÷ df）</h4>
+<p style="font-family:'JetBrains Mono',monospace;font-size:13.5px;background:var(--cream);padding:12px;border-radius:8px;line-height:1.9">
+MS<sub>between</sub> = 90 ／ 1 = <strong style="color:var(--accent)">90.00</strong><br>
+MS<sub>within</sub> = 48 ／ 8 = <strong style="color:var(--accent2)">6.00</strong>
+</p>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">6</div>
+<div class="step-body">
+<h4>算 F 比值</h4>
+<div class="formula-box" style="margin:8px 0">
+<div class="formula-label">終於！</div>
+<div class="formula-main">F = MS<sub>between</sub> ／ MS<sub>within</sub> = 90.00 ／ 6.00 = <span style="color:var(--gold)">15.00</span></div>
+<div class="formula-desc">組間變異是組內變異的 <strong>15 倍</strong>。如果自變數沒有效果，這個值應該在 1 附近——15 顯然遠大於 1。<br><em>但「多大才算夠大」？第八章見。</em></div>
+</div>
+</div>
+</div>
+
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:19px;margin:36px 0 16px;font-weight:700">📋 ANOVA 摘要表（論文裡就長這樣）</h3>
+
+<div class="data-table-wrap">
+<table class="anova-table">
+<thead><tr><th>變異來源 Source</th><th>df</th><th>SS</th><th>MS</th><th>F</th></tr></thead>
+<tbody>
+<tr class="hl"><td>組間（心像法效果）</td><td>1</td><td>90.00</td><td>90.00</td><td><strong>15.00</strong></td></tr>
+<tr><td>組內（誤差）</td><td>8</td><td>48.00</td><td>6.00</td><td>—</td></tr>
+</tbody>
+<tfoot>
+<tr><td style="text-align:left">總和 Total</td><td>9</td><td>138.00</td><td>—</td><td>—</td></tr>
+</tfoot>
+</table>
+</div>
+
+<div class="info-box">
+🔭 <strong>下一章預告</strong>：第八章會告訴你，這張表在論文中會寫成 <em>S</em>(<em>A</em>) 記號、加上顯著性星號，並且寫成一句話：「F(1, 8) = 15.00, MS<sub>e</sub> = 6.00, p &lt; .01」。同時會學到怎麼把 F 換算成效果量 R²（提示：90 / 138 = .652）。
+</div>
+</section>
+
+<!-- §10 -->
+<section id="play">
+<div class="section-header"><span class="section-num">§10</span><h2>F 遊樂場：親手感受 F 為什麼會變大變小</h2></div>
+
+<div class="prose">
+<p>下面的兩組資料你可以自由調整。觀察：<strong>什麼情況會讓 F 變大？</strong></p>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🎮 拖動滑桿，看 SS、MS、F 即時變化</div>
+<div class="ctrl-row">
+  <div>
+    <label>兩組平均數的差距（M₂ − M₁）</label>
+    <input type="range" id="gapSlider" min="0" max="12" step="0.5" value="6" oninput="drawPlay()">
+    <span class="ctrl-val" id="gapVal">6.0</span>
+  </div>
+  <div>
+    <label>組內分散程度（每組的離散）</label>
+    <input type="range" id="spreadSlider" min="0.5" max="6" step="0.1" value="2.35" oninput="drawPlay()">
+    <span class="ctrl-val" id="spreadVal">2.35</span>
+  </div>
+  <div>
+    <label>每組人數 S</label>
+    <input type="range" id="nSlider" min="3" max="30" step="1" value="5" oninput="drawPlay()">
+    <span class="ctrl-val" id="nVal">5</span>
+  </div>
+  <button class="mini-btn" onclick="resetPlay()">↺ 回到心像實驗</button>
+</div>
+<canvas id="playCanvas" height="280"></canvas>
+<div id="playStats" style="margin-top:14px"></div>
+</div>
+
+<div class="concept-grid">
+<div class="concept-card" style="border-top:4px solid var(--accent)">
+<div class="concept-icon">📈</div>
+<h3>組間差距 ↑ → F ↑</h3>
+<p>兩組平均數拉得越開，SS<sub>between</sub> 越大，分子變大 → F 變大。這是<strong>「效果強度」</strong>在起作用。</p>
+</div>
+<div class="concept-card" style="border-top:4px solid var(--accent2)">
+<div class="concept-icon">📉</div>
+<h3>組內分散 ↑ → F ↓</h3>
+<p>同組的人差異越大，SS<sub>within</sub> 越大，分母變大 → F 變小。這是<strong>「雜訊」</strong>在淹沒訊號。</p>
+</div>
+<div class="concept-card" style="border-top:4px solid var(--gold)">
+<div class="concept-icon">👥</div>
+<h3>人數 S ↑ → F ↑</h3>
+<p>平均數差距不變、分散程度不變，但人數變多，F 還是會變大——因為 SS<sub>between</sub> 直接乘上 S。<strong style="color:var(--accent)">這就是「檢定力」的來源，也是第八章要小心的陷阱：F 大不等於效果強。</strong></p>
+</div>
+</div>
+</section>
+
+<!-- §K -->
+<section id="formulas">
+<div class="section-header"><span class="section-num">§K</span><h2>關鍵公式整理</h2></div>
+
+<div class="formula-grid">
+<div class="formula-mini"><div class="fm-label">距離分割（一切的起點）</div><div class="fm-eq">(Y<sub>as</sub> − M<sub>··</sub>) = (Y<sub>as</sub> − M<sub>a·</sub>) + (M<sub>a·</sub> − M<sub>··</sub>)</div></div>
+<div class="formula-mini"><div class="fm-label">總平方和</div><div class="fm-eq">SS<sub>total</sub> = ΣΣ(Y<sub>as</sub> − M<sub>··</sub>)²</div></div>
+<div class="formula-mini"><div class="fm-label">組內平方和</div><div class="fm-eq">SS<sub>within</sub> = ΣΣ(Y<sub>as</sub> − M<sub>a·</sub>)²</div></div>
+<div class="formula-mini"><div class="fm-label">組間平方和</div><div class="fm-eq">SS<sub>between</sub> = S·Σ(M<sub>a·</sub> − M<sub>··</sub>)²</div></div>
+<div class="formula-mini"><div class="fm-label">平方和可加性</div><div class="fm-eq">SS<sub>total</sub> = SS<sub>within</sub> + SS<sub>between</sub></div><div class="fm-note">因為交叉項 = 0（兩者正交）</div></div>
+<div class="formula-mini"><div class="fm-label">自由度</div><div class="fm-eq">df<sub>between</sub> = A − 1；df<sub>within</sub> = A(S − 1)；df<sub>total</sub> = AS − 1</div></div>
+<div class="formula-mini"><div class="fm-label">均方</div><div class="fm-eq">MS = SS ／ df</div><div class="fm-note">⚠️ 均方不可相加</div></div>
+<div class="formula-mini"><div class="fm-label">F 比值</div><div class="fm-eq">F = MS<sub>between</sub> ／ MS<sub>within</sub></div><div class="fm-note">= (效果＋誤差) ／ 誤差</div></div>
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">📌 關鍵概念</h3>
+<div class="notions-grid">
+<div class="notion-item">變異數分析 ANOVA</div>
+<div class="notion-item">組間變異</div>
+<div class="notion-item">組內變異</div>
+<div class="notion-item">實驗誤差</div>
+<div class="notion-item">總平均 M<sub>··</sub></div>
+<div class="notion-item">組平均 M<sub>a·</sub></div>
+<div class="notion-item">平方和 SS</div>
+<div class="notion-item">平方和可加性</div>
+<div class="notion-item">自由度 df</div>
+<div class="notion-item">均方 MS</div>
+<div class="notion-item">F 比值</div>
+<div class="notion-item">平衡設計</div>
+</div>
+</section>
+
+<!-- 測驗 -->
+<section id="quiz">
+<div class="section-header"><span class="section-num">§Q</span><h2>複習測驗</h2></div>
+<div id="quizContainer"></div>
+<div style="text-align:center;margin-top:32px">
+<button onclick="resetQuiz()" class="btn">🔄 重新作答</button>
+<div id="quizScore" style="margin-top:16px;font-size:16px;font-weight:700;color:var(--teal);display:none"></div>
+</div>
+</section>
+
+<section style="text-align:center;border-bottom:none">
+<h2 style="font-family:'Noto Serif TC',serif;margin-bottom:16px">繼續學習</h2>
+<p style="color:var(--muted);margin-bottom:24px">F = 15.00 已經到手。但「多大才算夠大」？下一章補上<em>統計檢定</em>與<em>效果量</em>這兩塊拼圖</p>
+<a href="ch8.html" class="btn btn-gold">前往第八章：ANOVA 的檢定與效果量 →</a>
+</section>
+
+</div>
+
+<footer>
+<a href="ch6.html">← 第六章</a>  &nbsp;|&nbsp;  <a href="index.html">回首頁</a>  &nbsp;|&nbsp;  <a href="ch8.html">第八章 →</a><br><br>
+教材製作基於：Abdi, H., Edelman, B., Valentin, D. &amp; Dowling, W. J. (2009). <em>Experimental Design and Analysis for Psychology</em>. Oxford University Press.<br><br>
+© 版權所有　<strong style="color:var(--paper)">葉欲禾（Gary Yu-Ho Yeh）</strong>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{const d=document.documentElement;document.getElementById('progress-bar').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%'});
+
+// ── 資料 ──
+const G1=[1,2,5,6,6], G2=[8,8,9,11,14];
+const M1=4, M2=10, MM=7;
+
+// ── §2 直方圖 ──
+function drawHist(){
+  const c=document.getElementById('histCanvas');const W=c.offsetWidth;c.width=W;const H=300;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const pad={l:44,r:16,t:44,b:48},pw=W-pad.l-pad.r,ph=H-pad.t-pad.b;
+  const xOf=v=>pad.l+pw*(v-0.5)/14.5, bw=pw/15*0.8;
+  const yOf=n=>pad.t+ph*(1-n/3);
+  // counts
+  const cnt={};
+  G1.forEach(v=>{cnt[v]=cnt[v]||{a:0,b:0};cnt[v].a++});
+  G2.forEach(v=>{cnt[v]=cnt[v]||{a:0,b:0};cnt[v].b++});
+  // axes
+  ctx.strokeStyle='#eee';
+  for(let n=1;n<=3;n++){const y=yOf(n);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();
+    ctx.fillStyle='#aaa';ctx.font='11px JetBrains Mono';ctx.textAlign='right';ctx.fillText(n,pad.l-6,y+4);}
+  ctx.strokeStyle='#333';ctx.beginPath();ctx.moveTo(pad.l,yOf(0));ctx.lineTo(W-pad.r,yOf(0));ctx.stroke();
+  // bars
+  Object.keys(cnt).forEach(k=>{
+    const v=+k,o=cnt[k];let stack=0;
+    if(o.a){ctx.fillStyle='#2980b9';const h=ph*o.a/3;ctx.fillRect(xOf(v)-bw/2,yOf(0)-h,bw,h);stack=o.a;}
+    if(o.b){ctx.fillStyle='#c0392b';const h=ph*o.b/3;ctx.fillRect(xOf(v)-bw/2,yOf(stack)-h,bw,h);}
+  });
+  // x labels
+  ctx.fillStyle='#666';ctx.font='11px JetBrains Mono';ctx.textAlign='center';
+  for(let v=1;v<=14;v++)ctx.fillText(v,xOf(v),H-pad.b+16);
+  ctx.font='12px "Noto Sans TC"';ctx.fillText('回想的配對詞數量',pad.l+pw/2,H-10);
+  // mean lines
+  const ml=(v,col,lab,off)=>{
+    ctx.strokeStyle=col;ctx.lineWidth=2;ctx.setLineDash([5,4]);
+    ctx.beginPath();ctx.moveTo(xOf(v),pad.t-8);ctx.lineTo(xOf(v),yOf(0));ctx.stroke();
+    ctx.setLineDash([]);ctx.lineWidth=1;
+    ctx.fillStyle=col;ctx.font='bold 11.5px "Noto Sans TC"';ctx.textAlign='center';
+    ctx.fillText(lab,xOf(v),pad.t-14+off);
+  };
+  ml(M1,'#2980b9','M₁=4',0);ml(MM,'#1a1a2e','M··=7',-16);ml(M2,'#c0392b','M₂=10',0);
+  // legend
+  ctx.textAlign='left';ctx.font='12px "Noto Sans TC"';
+  ctx.fillStyle='#2980b9';ctx.fillRect(pad.l,8,12,12);ctx.fillText('控制組',pad.l+17,18);
+  ctx.fillStyle='#c0392b';ctx.fillRect(pad.l+80,8,12,12);ctx.fillText('實驗組',pad.l+97,18);
+}
+
+// ── §5 距離分割 ──
+const subjects=[];
+G1.forEach((v,i)=>subjects.push({g:1,i:i+1,y:v,m:M1}));
+G2.forEach((v,i)=>subjects.push({g:2,i:i+1,y:v,m:M2}));
+let selIdx=0;
+function buildSubjBtns(){
+  const box=document.getElementById('subjBtns');box.innerHTML='';
+  subjects.forEach((s,k)=>{
+    const b=document.createElement('button');
+    b.className='mini-btn'+(k===selIdx?' active':'');
+    b.textContent='Y'+(s.g)+','+(s.i)+'='+s.y;
+    b.onclick=()=>{selIdx=k;buildSubjBtns();drawSplit()};
+    box.appendChild(b);
+  });
+}
+function drawSplit(){
+  const s=subjects[selIdx];
+  const c=document.getElementById('splitCanvas');const W=c.offsetWidth;c.width=W;const H=260;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const pad={l:40,r:40,t:40},pw=W-pad.l-pad.r;
+  const xOf=v=>pad.l+pw*(v-0)/15;
+  const axisY=170;
+  // number line
+  ctx.strokeStyle='#333';ctx.beginPath();ctx.moveTo(pad.l,axisY);ctx.lineTo(W-pad.r,axisY);ctx.stroke();
+  ctx.fillStyle='#999';ctx.font='11px JetBrains Mono';ctx.textAlign='center';
+  for(let v=0;v<=15;v++){ctx.beginPath();ctx.moveTo(xOf(v),axisY);ctx.lineTo(xOf(v),axisY+5);ctx.stroke();ctx.fillText(v,xOf(v),axisY+19);}
+  // markers
+  const mark=(v,col,lab,dy)=>{
+    ctx.strokeStyle=col;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(xOf(v),axisY-8);ctx.lineTo(xOf(v),axisY+8);ctx.stroke();ctx.lineWidth=1;
+    ctx.fillStyle=col;ctx.font='bold 12px "Noto Sans TC"';ctx.textAlign='center';ctx.fillText(lab,xOf(v),axisY+dy);
+  };
+  mark(s.y,'#6b3fa0','Y='+s.y,-16);
+  mark(s.m,s.g===1?'#2980b9':'#c0392b','M'+s.g+'·='+s.m,-32);
+  mark(MM,'#1a1a2e','M··=7',-48);
+  // arrows
+  const arrow=(x1,x2,y,col,lab)=>{
+    ctx.strokeStyle=col;ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.moveTo(xOf(x1),y);ctx.lineTo(xOf(x2),y);ctx.stroke();
+    const dir=x2>x1?-1:1;
+    ctx.beginPath();ctx.moveTo(xOf(x2),y);ctx.lineTo(xOf(x2)+dir*8,y-5);ctx.lineTo(xOf(x2)+dir*8,y+5);ctx.closePath();ctx.fillStyle=col;ctx.fill();
+    ctx.lineWidth=1;
+    ctx.font='bold 12px "Noto Sans TC"';ctx.textAlign='center';
+    ctx.fillText(lab,(xOf(x1)+xOf(x2))/2,y-8);
+  };
+  arrow(s.y,s.m,axisY+44,'#2980b9','組內偏差 '+(s.y-s.m));
+  arrow(s.m,MM,axisY+74,'#c0392b','組間偏差 '+(s.m-MM));
+  ctx.strokeStyle='#6b3fa0';ctx.setLineDash([4,3]);
+  arrow(s.y,MM,axisY-70,'#6b3fa0','總偏差 '+(s.y-MM));
+  ctx.setLineDash([]);
+  document.getElementById('splitExplain').innerHTML=
+    '🧮 <strong>第 '+s.g+' 組第 '+s.i+' 位受試者</strong>：('+s.y+' − 7) = ('+s.y+' − '+s.m+') + ('+s.m+' − 7) → <strong>'+
+    (s.y-MM)+' = '+(s.y-s.m)+' + '+(s.m-MM)+'</strong> ✓<br>'+
+    '<span style="color:#2980b9">組內偏差 '+(s.y-s.m)+'</span>（他跟同組同學的差距，純誤差）　＋　'+
+    '<span style="color:#c0392b">組間偏差 '+(s.m-MM)+'</span>（他那組跟全體的差距，效果＋誤差）';
+}
+
+// ── §6 圓餅 ──
+function drawPie(){
+  const c=document.getElementById('pieCanvas');const W=c.offsetWidth;c.width=W;const H=200;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const barY=60,barH=54,x0=40,bw=W-80;
+  const pB=90/138;
+  ctx.fillStyle='#c0392b';ctx.fillRect(x0,barY,bw*pB,barH);
+  ctx.fillStyle='#2980b9';ctx.fillRect(x0+bw*pB,barY,bw*(1-pB),barH);
+  ctx.fillStyle='#fff';ctx.font='bold 14px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('SS between = 90（65.2%）',x0+bw*pB/2,barY+32);
+  ctx.fillText('SS within = 48（34.8%）',x0+bw*pB+bw*(1-pB)/2,barY+32);
+  ctx.fillStyle='#1a1a2e';ctx.font='bold 13px "Noto Sans TC"';
+  ctx.fillText('SS total = 138',x0+bw/2,barY-14);
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2;ctx.strokeRect(x0,barY,bw,barH);ctx.lineWidth=1;
+  ctx.fillStyle='#666';ctx.font='12.5px "Noto Sans TC"';
+  ctx.fillText('← 自變數解釋掉的變異（第八章：這就是 R² = .652）　　剩下的是誤差 →',x0+bw/2,barY+barH+28);
+}
+
+// ── §10 F 遊樂場 ──
+function resetPlay(){
+  document.getElementById('gapSlider').value=6;
+  document.getElementById('spreadSlider').value=2.35;
+  document.getElementById('nSlider').value=5;
+  drawPlay();
+}
+function drawPlay(){
+  const gap=parseFloat(document.getElementById('gapSlider').value);
+  const sp=parseFloat(document.getElementById('spreadSlider').value);
+  const S=parseInt(document.getElementById('nSlider').value);
+  document.getElementById('gapVal').textContent=gap.toFixed(1);
+  document.getElementById('spreadVal').textContent=sp.toFixed(2);
+  document.getElementById('nVal').textContent=S;
+  // 造資料：固定形狀的偏差 pattern，縮放到指定 spread
+  const base=[-1.5,-0.85,0,0.85,1.5];
+  const dev=[];for(let i=0;i<S;i++)dev.push(base[i%5]*(1+Math.floor(i/5)*0.13));
+  const md=dev.reduce((a,b)=>a+b,0)/S;
+  const cd=dev.map(v=>v-md);
+  const sd=Math.sqrt(cd.reduce((a,b)=>a+b*b,0)/S);
+  const scale=sd>0?sp/sd:0;
+  const m1=7-gap/2,m2=7+gap/2;
+  const g1=cd.map(v=>m1+v*scale),g2=cd.map(v=>m2+v*scale);
+  // 統計量
+  const MMx=(m1+m2)/2;
+  const SSb=S*((m1-MMx)**2+(m2-MMx)**2);
+  const SSw=[...g1.map(v=>(v-m1)**2),...g2.map(v=>(v-m2)**2)].reduce((a,b)=>a+b,0);
+  const dfb=1,dfw=2*(S-1);
+  const MSb=SSb/dfb,MSw=SSw/dfw;
+  const F=MSw>0?MSb/MSw:Infinity;
+  const R2=SSb/(SSb+SSw);
+  // 畫圖
+  const c=document.getElementById('playCanvas');const W=c.offsetWidth;c.width=W;const H=280;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const pad={l:46,r:20,t:24,b:40},pw=W-pad.l-pad.r,ph=H-pad.t-pad.b;
+  const lo=-6,hi=20;
+  const yOf=v=>pad.t+ph*(1-(v-lo)/(hi-lo));
+  ctx.strokeStyle='#eee';ctx.fillStyle='#aaa';ctx.font='11px JetBrains Mono';ctx.textAlign='right';
+  for(let v=-5;v<=20;v+=5){const y=yOf(v);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();ctx.fillText(v,pad.l-6,y+4);}
+  const cx1=pad.l+pw*0.3,cx2=pad.l+pw*0.7;
+  const drawGroup=(vals,cx,m,col)=>{
+    const halfW=pw*0.19;
+    ctx.strokeStyle=col;ctx.lineWidth=2.5;ctx.setLineDash([6,4]);
+    ctx.beginPath();ctx.moveTo(cx-halfW,yOf(m));ctx.lineTo(cx+halfW,yOf(m));ctx.stroke();
+    ctx.setLineDash([]);ctx.lineWidth=1;
+    const n=vals.length,step=Math.min(11,(halfW*1.7)/Math.max(n-1,1));
+    vals.forEach((v,i)=>{
+      const jx=cx+(i-(n-1)/2)*step;
+      ctx.strokeStyle=col;ctx.globalAlpha=.35;ctx.beginPath();ctx.moveTo(jx,yOf(v));ctx.lineTo(jx,yOf(m));ctx.stroke();ctx.globalAlpha=1;
+      ctx.fillStyle=col;ctx.beginPath();ctx.arc(jx,yOf(v),4.2,0,7);ctx.fill();
+    });
+    ctx.fillStyle=col;ctx.font='bold 12px "Noto Sans TC"';ctx.textAlign='left';
+    ctx.fillText('M='+m.toFixed(2),cx+halfW+6,yOf(m)+4);
+  };
+  // 總平均線
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2;ctx.setLineDash([3,3]);
+  ctx.beginPath();ctx.moveTo(pad.l,yOf(MMx));ctx.lineTo(W-pad.r,yOf(MMx));ctx.stroke();
+  ctx.setLineDash([]);ctx.lineWidth=1;
+  ctx.fillStyle='#1a1a2e';ctx.font='11.5px "Noto Sans TC"';ctx.textAlign='left';
+  ctx.fillText('總平均 M··',pad.l+4,yOf(MMx)-6);
+  drawGroup(g1,cx1,m1,'#2980b9');drawGroup(g2,cx2,m2,'#c0392b');
+  ctx.fillStyle='#555';ctx.font='13px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('控制組',cx1,H-12);ctx.fillText('實驗組',cx2,H-12);
+  // 數值面板
+  const fTxt=isFinite(F)?F.toFixed(2):'∞';
+  const verdict=!isFinite(F)?'組內完全沒有變異 → F 無限大（現實不會發生）':
+                F<1?'F < 1！組間變異比誤差還小，完全沒有效果的跡象':
+                F<4?'F 不大，訊號被雜訊蓋住了':
+                F<15?'F 明顯大於 1，看得出效果':'F 非常大，效果強烈';
+  document.getElementById('playStats').innerHTML=
+    '<div class="split-demo" style="margin:0">'+
+    '<div class="split-card sc-between"><div class="sc-lab">SS between</div><div class="sc-val">'+SSb.toFixed(1)+'</div><div class="sc-note">df='+dfb+'　MS='+MSb.toFixed(2)+'</div></div>'+
+    '<div class="split-card sc-within"><div class="sc-lab">SS within</div><div class="sc-val">'+SSw.toFixed(1)+'</div><div class="sc-note">df='+dfw+'　MS='+MSw.toFixed(2)+'</div></div>'+
+    '<div class="split-card sc-total" style="border-color:var(--gold);background:rgba(212,160,23,.1)"><div class="sc-lab">F = MS<sub>b</sub> ／ MS<sub>w</sub></div><div class="sc-val" style="color:#8a6a00">'+fTxt+'</div><div class="sc-note">R² = '+R2.toFixed(3)+'</div></div>'+
+    '</div><div class="info-box" style="margin-bottom:0;margin-top:14px">💬 '+verdict+'</div>';
+}
+
+// ── 測驗 ──
+const quizData=[
+ {q:'ANOVA 中，「組內變異」反映的是什麼？',
+  opts:['自變數的效果','純粹的實驗誤差（隨機波動、個別差異）','自變數效果加上誤差','依變數的測量單位'],
+  ans:1,fb:'同一組的受試者接受完全相同的處理，所以他們之間的差異不可能來自自變數，只能是誤差。這正是為什麼組內變異可以當作「誤差的乾淨估計值」。'},
+ {q:'如果自變數完全沒有效果，我們預期 F 的值大約會是多少？',
+  opts:['0','接近 1','大於 15','無法預測'],
+  ans:1,fb:'沒有效果時，分子與分母都在估計同一個東西（誤差），兩個獨立估計值的比值會在 1 附近浮動——就像同一枚硬幣丟兩輪，比例接近但不會完全相同。'},
+ {q:'計算 SS_between 時，為什麼要乘以每組人數 S？',
+  opts:['為了讓數字變大比較好看','因為 (M_a· − M··) 對同組的每個人都相同，共要算 S 次','為了抵消測量單位','因為自由度是 S − 1'],
+  ans:1,fb:'組間偏差是「組的性質」，同一組 S 個人共用同一個值。ΣΣ(M_a·−M··)² 展開後就是 S·Σ(M_a·−M··)²，把 S 提到求和符號外面。'},
+ {q:'下列哪一項「不」具有可加性？',
+  opts:['平方和 SS','自由度 df','均方 MS','以上皆可相加'],
+  ans:2,fb:'SS 和 df 都可以相加（138=48+90；9=8+1），但 MS 不行——分母不同的分數不能直接相加。本例：138/9=15.33 ≠ 6.00+90.00。'},
+ {q:'課本證明「平方和可以相加」的關鍵，是證明交叉項等於 0。這個 0 的統計意義是什麼？',
+  opts:['資料有測量誤差','組內偏差與組間偏差的相關係數為 0，兩者互相獨立（正交）','總平均等於 0','樣本數不足'],
+  ans:1,fb:'交叉乘積和正是相關係數的分子。它等於 0 表示兩種偏差完全不相關、變異不重疊——用第五章的語言說就是「正交」。這才是變異能乾淨分割的真正理由。'},
+ {q:'df_within = A(S − 1) 的意思是什麼？',
+  opts:['總人數減 1','總共 A×S 個觀察值，但要先估計 A 個組平均，所以扣掉 A','組數減 1','每組人數減 1'],
+  ans:1,fb:'AS − A = A(S−1)。每估計一個母體參數就花掉一個自由度，這裡估了 A 個組平均，所以扣 A 個。本例：10 − 2 = 8。'},
+ {q:'在 F 遊樂場中，若「兩組平均數差距」和「組內分散程度」都不變，只把每組人數 S 從 5 增加到 30，F 會如何？',
+  opts:['不變，因為效果強度沒變','變小','變大','先變大再變小'],
+  ans:2,fb:'F 會變大，因為 SS_between 直接乘上 S。這說明「F 很大」不等於「效果很強」——樣本數也會把 F 撐大。第八章的效果量 R² 就是為了解決這個混淆而生。'},
+ {q:'心像實驗中 SS_total = 138、SS_between = 90。若把資料的測量單位從「個」改成「打」（除以 12），下列何者不變？',
+  opts:['SS_between 的數值','MS_within 的數值','F 的數值','SS_total 的數值'],
+  ans:2,fb:'所有 SS 都會除以 144（12²），但 F 是兩個同單位量的比值，單位互相消掉 → F 不變。這正是課本選擇「相除」而非「相減」來建構指標的理由。'}
+];
+let score=0,answered=0;
+function renderQuiz(){
+  const ct=document.getElementById('quizContainer');ct.innerHTML='';
+  quizData.forEach((q,qi)=>{
+    const card=document.createElement('div');card.className='quiz-card';
+    card.innerHTML='<div class="quiz-q"><span>'+(qi+1)+'</span>'+q.q+'</div>';
+    const opts=document.createElement('div');opts.className='quiz-opts';
+    q.opts.forEach((o,oi)=>{
+      const b=document.createElement('button');b.className='quiz-opt';b.textContent=String.fromCharCode(65+oi)+'. '+o;
+      b.onclick=()=>{
+        if(card.dataset.done)return;card.dataset.done='1';
+        const fb=card.querySelector('.quiz-feedback');
+        if(oi===q.ans){b.classList.add('selected-correct');fb.className='quiz-feedback show correct';fb.innerHTML='✅ 正確！'+q.fb;score++;}
+        else{b.classList.add('selected-wrong');opts.children[q.ans].classList.add('selected-correct');fb.className='quiz-feedback show wrong';fb.innerHTML='❌ 正解是 '+String.fromCharCode(65+q.ans)+'。'+q.fb;}
+        answered++;
+        if(answered===quizData.length){const s=document.getElementById('quizScore');s.style.display='block';s.textContent='🎉 完成！得分：'+score+' / '+quizData.length;}
+      };
+      opts.appendChild(b);
+    });
+    card.appendChild(opts);
+    const fb=document.createElement('div');fb.className='quiz-feedback';card.appendChild(fb);
+    ct.appendChild(card);
+  });
+}
+function resetQuiz(){score=0;answered=0;document.getElementById('quizScore').style.display='none';renderQuiz();}
+
+function drawAll(){drawHist();drawSplit();drawPie();drawPlay();}
+window.addEventListener('resize',drawAll);
+buildSubjBtns();renderQuiz();drawAll();
+</script>
+</body>
+</html>

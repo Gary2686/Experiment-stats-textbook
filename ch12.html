@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第十二章：計畫性正交比較 | 心理學統計教材</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a2e;--paper:#f8f4ef;--cream:#fdf8f2;--accent:#c0392b;--accent2:#2980b9;--gold:#d4a017;--teal:#1a6b6e;--purple:#6b3fa0;--muted:#6b7280;--border:#d5c9be;--card-bg:#fff;--formula-bg:#1a1a2e;--formula-text:#f0e6d3;--highlight:#fff3cd}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.8}
+.hero{background:var(--ink);color:var(--paper);padding:80px 40px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(255,255,255,.02) 40px,rgba(255,255,255,.02) 41px)}
+.hero-eyebrow{font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500}
+.hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(28px,5vw,52px);font-weight:700;line-height:1.2;margin-bottom:20px}
+.hero h1 span{color:var(--gold)}
+.hero-sub{font-size:15px;color:rgba(248,244,239,.65);max-width:560px;margin:0 auto 40px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.tag{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 16px;font-size:13px;color:var(--paper)}
+nav{position:sticky;top:0;z-index:100;background:rgba(26,26,46,.97);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);padding:0 40px;display:flex;gap:0;overflow-x:auto}
+nav a{display:block;padding:16px 20px;color:rgba(248,244,239,.65);text-decoration:none;font-size:13px;font-weight:500;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+nav a:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+section{padding:64px 0;border-bottom:1px solid var(--border)}
+section:last-of-type{border-bottom:none}
+.section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:36px}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.2);border-radius:4px;padding:3px 8px;flex-shrink:0}
+.section-header h2{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:700;color:var(--ink)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:32px}
+.concept-card{background:var(--card-bg);border-radius:12px;padding:24px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.concept-icon{font-size:28px;margin-bottom:12px}
+.concept-card h3{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;margin-bottom:10px}
+.concept-card p{font-size:14px;color:var(--muted);line-height:1.7}
+.concept-card p+p{margin-top:8px}
+.highlight-box{background:var(--highlight);border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#6b4c00}
+.warn-box{background:rgba(192,57,43,.06);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#7a2a1f}
+.info-box{background:rgba(41,128,185,.06);border-left:4px solid var(--accent2);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#1e5a8a}
+.magic-box{background:linear-gradient(135deg,rgba(107,63,160,0.08),rgba(212,160,23,0.08));border:2px solid var(--purple);border-radius:12px;padding:24px;margin:24px 0;font-size:14px}
+.magic-box .magic-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--purple);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.formula-box{background:var(--formula-bg);border-radius:12px;padding:28px 32px;margin:24px 0;position:relative;overflow:hidden}
+.formula-box::before{content:'FORMULA';position:absolute;top:12px;right:16px;font-size:10px;letter-spacing:3px;color:rgba(255,255,255,.2);font-family:'JetBrains Mono',monospace}
+.formula-box .formula-label{font-size:12px;color:var(--gold);margin-bottom:10px;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.formula-box .formula-main{font-family:'JetBrains Mono',monospace;font-size:20px;color:var(--formula-text);font-weight:600;margin-bottom:12px;word-wrap:break-word;line-height:1.5}
+.formula-box .formula-desc{font-size:13px;color:rgba(240,230,211,.6);line-height:1.7}
+.formula-box .formula-desc strong{color:var(--gold)}
+.chart-wrapper{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px;margin:28px 0}
+.chart-title{font-size:14px;font-weight:600;color:var(--muted);margin-bottom:16px;letter-spacing:.5px}
+canvas{display:block;width:100%}
+.data-table-wrap{overflow-x:auto;margin:24px 0;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--card-bg)}
+thead tr{background:var(--ink)}
+thead th{color:var(--paper);padding:12px 16px;text-align:center;font-weight:600;font-size:13px}
+thead th:first-child{text-align:left}
+tbody tr:nth-child(even){background:var(--cream)}
+tbody td{padding:10px 16px;text-align:center;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:13px}
+tbody td:first-child{text-align:left;font-family:'Noto Sans TC',sans-serif;font-size:13.5px}
+tfoot tr{background:rgba(192,57,43,.08);font-weight:600}
+tfoot td{padding:12px 16px;border-top:2px solid var(--accent);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;text-align:center}
+.prose p{margin-bottom:16px;font-size:15px;line-height:1.85;color:#333}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--ink)}
+.prose em{color:var(--accent);font-style:normal;font-weight:500}
+.steps{counter-reset:step}
+.step{display:flex;gap:20px;margin-bottom:28px;align-items:flex-start}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--gold);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.step-body{flex:1}
+.step-body h4{font-weight:700;font-size:15px;margin-bottom:8px}
+.step-body p{font-size:14px;color:#444;margin-bottom:8px}
+.step-body p:last-child{margin-bottom:0}
+.notions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0}
+.notion-item{background:var(--ink);color:var(--paper);border-radius:8px;padding:14px 18px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px}
+.notion-item::before{content:'◆';color:var(--gold);font-size:10px;flex-shrink:0}
+.formula-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:24px 0}
+.formula-mini{background:var(--ink);border-radius:10px;padding:20px;color:var(--formula-text)}
+.formula-mini .fm-label{font-size:11px;color:var(--gold);letter-spacing:2px;font-family:'JetBrains Mono',monospace;margin-bottom:8px;text-transform:uppercase}
+.formula-mini .fm-eq{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#fff;line-height:1.6;word-wrap:break-word}
+.formula-mini .fm-note{font-size:12px;color:rgba(255,255,255,.5);margin-top:6px;line-height:1.5}
+.quiz-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:20px}
+.quiz-q{font-weight:700;font-size:15px;margin-bottom:16px;line-height:1.6}
+.quiz-q span{display:inline-block;width:26px;height:26px;background:var(--ink);color:var(--gold);border-radius:50%;font-size:13px;text-align:center;line-height:26px;margin-right:8px;font-family:'JetBrains Mono',monospace}
+.quiz-opts{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:12px 18px;cursor:pointer;font-size:14px;transition:all .2s;text-align:left;font-family:'Noto Sans TC',sans-serif}
+.quiz-opt:hover{border-color:var(--accent2);background:rgba(41,128,185,.05)}
+.quiz-opt.selected-correct{border-color:#27ae60;background:rgba(39,174,96,.1);color:#1e8449;font-weight:600}
+.quiz-opt.selected-wrong{border-color:var(--accent);background:rgba(192,57,43,.1);color:var(--accent)}
+.quiz-feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:13.5px;display:none;line-height:1.6}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:rgba(39,174,96,.1);color:#1e8449;border:1px solid rgba(39,174,96,.3)}
+.quiz-feedback.wrong{background:rgba(192,57,43,.08);color:#c0392b;border:1px solid rgba(192,57,43,.2)}
+.btn{display:inline-block;padding:14px 32px;background:var(--ink);color:var(--paper);border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.btn:hover{background:var(--accent);transform:translateY(-2px)}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--accent);color:#fff}
+footer{background:var(--ink);color:rgba(248,244,239,.5);text-align:center;padding:32px;font-size:13px}
+footer a{color:var(--gold);text-decoration:none}
+footer a:hover{text-decoration:underline}
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);z-index:9999;width:0%;transition:width .1s}
+@media(max-width:600px){.hero{padding:48px 20px 40px}nav{padding:0 16px}.container{padding:0 16px}section{padding:48px 0}}
+.ctrl-row{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:14px 0;padding:16px;background:var(--cream);border-radius:8px;border:1px solid var(--border)}
+.ctrl-row label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:500}
+.ctrl-row input[type=range]{width:170px;accent-color:var(--accent)}
+.ctrl-val{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--accent);font-weight:700;min-width:48px;display:inline-block}
+.mini-btn{background:var(--cream);border:2px solid var(--border);border-radius:8px;padding:9px 15px;cursor:pointer;font-size:12.5px;font-weight:600;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.mini-btn:hover{border-color:var(--accent2)}
+.mini-btn.active{background:var(--ink);color:var(--gold);border-color:var(--ink)}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:18px 0}
+.stat-box{border-radius:10px;padding:16px;text-align:center;border:2px solid}
+.stat-box .sb-l{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.stat-box .sb-v{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700}
+.stat-box .sb-n{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.5}
+.cw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(94px,1fr));gap:10px;margin:14px 0}
+.cw-cell{background:var(--card-bg);border:2px solid var(--border);border-radius:10px;padding:12px 8px;text-align:center}
+.cw-cell .cw-g{font-size:11.5px;color:var(--muted);margin-bottom:6px;font-weight:600}
+.cw-cell .cw-m{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink);margin-bottom:8px}
+.cw-cell input{width:56px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;padding:5px;border:1.5px solid var(--border);border-radius:6px;background:var(--cream)}
+.cw-cell.pos{border-color:var(--accent)}
+.cw-cell.neg{border-color:var(--accent2)}
+.cw-cell.zero{opacity:.55}
+.orth-matrix{border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:12.5px;margin:0 auto}
+.orth-matrix th{background:var(--ink);color:var(--paper);padding:8px 12px;font-size:12px}
+.orth-matrix td{padding:9px 14px;text-align:center;border:1px solid var(--border);min-width:56px}
+.orth-matrix td.ok{background:rgba(39,174,96,.18);color:#14532d;font-weight:700}
+.orth-matrix td.bad{background:rgba(192,57,43,.15);color:#c0392b;font-weight:700}
+.orth-matrix td.diag{background:var(--cream);color:#999}
+.contrast-table td.cpos{background:rgba(192,57,43,.1);color:#c0392b;font-weight:700}
+.contrast-table td.cneg{background:rgba(41,128,185,.1);color:#2980b9;font-weight:700}
+.contrast-table td.czero{color:#bbb}
+.story-box{background:linear-gradient(135deg,rgba(41,128,185,.05),rgba(107,63,160,.06));border:2px solid var(--purple);border-radius:14px;padding:24px 28px;margin:24px 0}
+.story-box h4{font-family:'Noto Serif TC',serif;font-size:17.5px;font-weight:700;color:var(--purple);margin-bottom:12px}
+.story-box p{font-size:14.5px;line-height:1.95;color:#333;margin-bottom:12px}
+.story-box p:last-child{margin-bottom:0}
+.hyp-list{counter-reset:hyp}
+.hyp-item{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+.hyp-item .hn{flex-shrink:0;width:30px;height:30px;border-radius:8px;background:var(--ink);color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:13px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.hyp-item .hb{flex:1;font-size:14px;line-height:1.8;color:#333}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<div class="hero">
+  <div class="hero-eyebrow">第十二章 · Chapter 12</div>
+  <h1>計畫性<span>正交比較</span><br>Planned Orthogonal Comparisons</h1>
+  <p class="hero-sub">omnibus F 只會說「四組不全一樣」，但你真正想問的是「第 2 組是不是贏過其他所有組？」本章教你把研究假設直接翻譯成可檢定的數學式。</p>
+  <div class="hero-tags">
+    <span class="tag">ψ 對比</span>
+    <span class="tag">⚖️ 權重係數 Ca</span>
+    <span class="tag">⊥ 正交性</span>
+    <span class="tag">🎩 船長的年齡</span>
+    <span class="tag">🔧 Šidák 校正</span>
+    <span class="tag">📈 趨勢分析</span>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" style="color:var(--gold)">← 回首頁</a>
+  <a href="#why">§1 omnibus 的不足</a>
+  <a href="#what">§2 什麼是對比</a>
+  <a href="#build">§3 親手建構對比</a>
+  <a href="#orth">§4 正交性</a>
+  <a href="#alpha">§5 α 的三種意義</a>
+  <a href="#sidak">§6 Šidák 校正</a>
+  <a href="#ss">§7 計算 SSψ</a>
+  <a href="#smith">§8 完整實例</a>
+  <a href="#mean">§9 F 是平均值</a>
+  <a href="#sub">§10 次設計分析</a>
+  <a href="#trend">§11 趨勢分析</a>
+  <a href="#formulas">§K 公式整理</a>
+  <a href="#quiz">§Q 測驗</a>
+</nav>
+
+<div class="container">
+
+<!-- §1 -->
+<section id="why">
+<div class="section-header"><span class="section-num">§1</span><h2>omnibus F 的不足：問了一個沒人在乎的問題</h2></div>
+
+<div class="prose">
+<p>回想第八章的 Romeo and Juliet：F(3, 16) = 7.22, p &lt; .01。很漂亮，但它只回答了一個問題——<em>「四組的平均數不全部相同」</em>。</p>
+<p>可是作者真正想證明的是：<strong>「事前給脈絡的第 2 組，表現優於其他三組」</strong>；他還想確認<strong>「事後給脈絡的第 3 組跟無脈絡的第 1 組沒有差異」</strong>（用來殺掉對手理論）。</p>
+<p style="text-align:center;font-size:16px;font-weight:600;color:var(--accent);padding:16px;background:rgba(192,57,43,.06);border-radius:10px">
+omnibus F 對這兩個問題，一個都答不出來。
+</p>
+</div>
+
+<div class="concept-grid">
+<div class="concept-card" style="border-top:4px solid var(--accent)">
+<div class="concept-icon">📋</div>
+<h3>計畫性比較（a priori）</h3>
+<p><strong>實驗開跑前</strong>就決定要做的比較，直接來自研究假設或對立理論。</p>
+<p style="margin-top:8px;color:var(--accent);font-weight:600">數量通常很少，因為理論只預測幾件事。<br>👉 這是本章的主題。</p>
+</div>
+<div class="concept-card" style="border-top:4px solid var(--accent2)">
+<div class="concept-icon">🔍</div>
+<h3>事後比較（post hoc）</h3>
+<p><strong>看完資料後</strong>才決定要比什麼。例如「把最好的組跟最差的組比一比」——這種比較只有拿到資料才知道要比誰。</p>
+<p style="margin-top:8px;color:var(--accent2);font-weight:600">目的是確認「意料之外的樣態」是否可靠。<br>👉 第十四章的主題。</p>
+</div>
+</div>
+
+<div class="highlight-box">
+🔢 <strong>一個關鍵數字：A − 1</strong><br>
+一組正交（互相獨立）的比較，最多只能有 <strong>A − 1 個</strong>。<br>
+巧的是，A − 1 正好是 df<sub>A</sub>——<em>這不是巧合</em>。§7 會看到：這 A − 1 個對比的 SS 加起來剛好等於 SS<sub>A</sub>，等於把實驗效果切成 A − 1 片，每片一個自由度。
+</div>
+
+<div class="info-box">
+🛠️ <strong>所有類型的比較都遵循同樣三步驟</strong>：<br>
+① 把研究假設<strong>形式化</strong>成一組權重 C<sub>a</sub><br>
+② 計算 <strong>F<sub>comp</sub></strong>（就是 F 比值，只是分子換成對比的均方）<br>
+③ 評估 F<sub>comp</sub> 的機率<br><br>
+<strong>只有第③步會因比較的類型而不同</strong>（正交 vs 非正交 vs 事後）。前兩步永遠一樣。
+</div>
+</section>
+
+<!-- §2 -->
+<section id="what">
+<div class="section-header"><span class="section-num">§2</span><h2>什麼是對比（contrast）？</h2></div>
+
+<div class="prose">
+<p>用課本的例子：研究鎮靜劑對電玩表現的影響，設計了四組——</p>
+</div>
+
+<div class="data-table-wrap">
+<table>
+<thead><tr><th>組別</th><th>內容</th></tr></thead>
+<tbody>
+<tr><td>第 1 組：控制組</td><td>什麼都不給，直接玩電玩</td></tr>
+<tr><td>第 2 組：安慰劑組</td><td>給一顆假藥</td></tr>
+<tr><td>第 3 組：紅色藥丸組</td><td>鎮靜劑裝在鮮紅色藥丸裡</td></tr>
+<tr><td>第 4 組：藍色藥丸組</td><td>同樣的鎮靜劑，裝在淡藍色藥丸裡</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="prose">
+<p><strong>第一個研究問題</strong>：不管什麼顏色，鎮靜劑本身有效果嗎？<br>
+翻譯成統計語言：<em>「兩個吃藥組的平均，跟安慰劑組相同嗎？」</em></p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">從研究假設到對比：三次改寫</div>
+<div class="formula-main" style="font-size:15px">
+H₀ : μ₂ = (μ₃ + μ₄) ／ 2　<span style="color:rgba(240,230,211,.5)">（原始想法）</span><br><br>
+H₀ : 2μ₂ = μ₃ + μ₄　<span style="color:rgba(240,230,211,.5)">（去掉分數）</span><br><br>
+H₀ : 2μ₂ − μ₃ − μ₄ = 0　<span style="color:rgba(240,230,211,.5)">（全部移到一邊）</span>
+</div>
+<div class="formula-desc">
+最後一行左邊那個式子，就是<strong>對比（contrast）</strong>，記作希臘字母 <strong>ψ</strong>（讀作 sigh，就是 psychology 的那個 psy）。<br>
+<span style="color:var(--gold)">「對比」這個名字來自：我們把平均數分成<em>正號</em>與<em>負號</em>兩群，讓它們互相對抗。</span>
+</div>
+</div>
+
+<div class="prose">
+<p>寫得更一般化一點，把每一組的平均都乘上一個權重：</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">對比的通式</div>
+<div class="formula-main" style="font-size:16px">ψ₁ = (0 × μ₁) + (2 × μ₂) + (−1 × μ₃) + (−1 × μ₄)</div>
+<div class="formula-desc">
+權重記作 <strong>C<sub>a,c</sub></strong>（a = 組別編號，c = 第幾個對比）。這裡：<br>
+C<sub>1,1</sub> = 0（控制組沒被牽涉進來，所以權重是 0）、C<sub>2,1</sub> = 2、C<sub>3,1</sub> = −1、C<sub>4,1</sub> = −1<br><br>
+<strong>H₀ : ψ₁ = 0　vs　H₁ : ψ₁ ≠ 0</strong><br><br>
+<span style="color:rgba(240,230,211,.6)">註：有些課本（Rosenthal &amp; Rosnow, 1985; Estes, 1991）用 λ<sub>a</sub> 代替 C<sub>a</sub>，意思相同。</span>
+</div>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">📏 對比的鐵律：權重加起來必須是 0</div>
+<div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--purple);margin:14px 0">
+Σ<sub>a</sub> C<sub>a</sub> = 0
+</div>
+<p style="line-height:1.9">檢查 ψ₁：0 + 2 + (−1) + (−1) = 0 ✓</p>
+<p style="line-height:1.9;margin-top:10px"><strong>為什麼一定要這樣？</strong>因為對比要問的是「這群 vs 那群<em>有沒有差</em>」，而不是「整體水準高不高」。若權重和不為 0，這個式子就會被總平均污染，變成在問別的問題了。</p>
+</div>
+
+<div class="prose">
+<p><strong>第二個研究問題</strong>：有沒有安慰劑效果？→ 比較控制組與安慰劑組：</p>
+<p style="font-family:'JetBrains Mono',monospace;background:var(--cream);padding:14px;border-radius:8px;font-size:14.5px;text-align:center">
+ψ₂ = (1 × μ₁) + (−1 × μ₂) + (0 × μ₃) + (0 × μ₄)　→　C = (1, −1, 0, 0)，Σ = 0 ✓
+</p>
+</div>
+
+<div class="info-box">
+🎩 <strong>ψ 與 ψ̂ 的區別</strong>：ψ 是<strong>母體</strong>的真值（用 μ 算的，永遠不知道）；<strong>ψ̂</strong>（sigh-hat，戴帽子）是用<strong>樣本</strong>平均數算出來的估計值：<br>
+<span style="font-family:'JetBrains Mono',monospace">ψ̂₁ = 2M₂. − M₃. − M₄.　　ψ̂₂ = M₁. − M₂.</span>
+</div>
+</section>
+
+<!-- §3 -->
+<section id="build">
+<div class="section-header"><span class="section-num">§3</span><h2>親手建構對比：把假設翻譯成數字</h2></div>
+
+<div class="prose">
+<p>翻譯的訣竅只有三條，練幾次就會了：</p>
+</div>
+
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div class="step-body">
+<h4>把要比較的兩群分成「正號組」與「負號組」</h4>
+<p>沒有參與這次比較的組，權重給 <strong>0</strong>。</p>
+</div></div>
+<div class="step"><div class="step-num">2</div><div class="step-body">
+<h4>每一邊的權重 = 「對面那一邊的組數」</h4>
+<p>例：1 組 vs 3 組 → 正號那組給 <strong>+3</strong>，負號那三組各給 <strong>−1</strong>。<br>
+例：2 組 vs 3 組 → 正號兩組各給 <strong>+3</strong>，負號三組各給 <strong>−2</strong>。</p>
+</div></div>
+<div class="step"><div class="step-num">3</div><div class="step-body">
+<h4>檢查 ΣC<sub>a</sub> = 0</h4>
+<p>(+3) + (−1)×3 = 0 ✓　　(+3)×2 + (−2)×3 = 6 − 6 = 0 ✓</p>
+<p style="color:var(--muted)">💡 權重可以整組乘上任意常數（例如 (2,−1,−1) 和 (4,−2,−2) 檢定的是同一件事），F 值完全不變。習慣上用最小整數。</p>
+</div></div>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🎮 對比建構器：自己填權重，即時檢查與計算（Smith 實驗資料，S = 10、MS<sub>S(A)</sub> = 32）</div>
+<div class="cw-grid" id="cwGrid"></div>
+<div class="ctrl-row" style="justify-content:center">
+  <button class="mini-btn" onclick="setPreset([2,-3,2,2,-3])">ψ₁ 有脈絡 vs 無脈絡</button>
+  <button class="mini-btn" onclick="setPreset([2,0,-1,-1,0])">ψ₂ 真實 vs 模擬</button>
+  <button class="mini-btn" onclick="setPreset([0,0,1,-1,0])">ψ₃ 想像 vs 照片</button>
+  <button class="mini-btn" onclick="setPreset([0,1,0,0,-1])">ψ₄ 不同脈絡 vs 安慰劑</button>
+  <button class="mini-btn" onclick="setPreset([1,1,1,1,1])">❌ 錯誤示範（Σ≠0）</button>
+</div>
+<div id="cwOut"></div>
+</div>
+</section>
+
+<!-- §4 -->
+<section id="orth">
+<div class="section-header"><span class="section-num">§4</span><h2>正交性：兩個對比互不重疊</h2></div>
+
+<div class="prose">
+<p>如果你做好幾個對比，它們最好<strong>互相獨立</strong>——問的是完全不重疊的問題。用統計的話說，兩個對比的相關係數為 0，也就是<strong>正交（orthogonal）</strong>。</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">正交性的判準（等組人數時）</div>
+<div class="formula-main" style="font-size:18px">Σ<sub>a</sub> C<sub>a,1</sub> × C<sub>a,2</sub> = 0</div>
+<div class="formula-desc">
+把兩個對比的權重<strong>逐組相乘再加總</strong>。得到 0 就是正交。<br><br>
+<span style="color:var(--gold)">🔗 這個式子其實就是第二章的<strong>交叉乘積和（SCP）</strong>——相關係數的分子。分子為 0 ⟹ 相關為 0 ⟹ 兩個對比互相獨立。</span>
+</div>
+</div>
+
+<div class="prose">
+<p>回到第八章的 Smith 記憶實驗（5 組），課本設計了 4 個研究假設：</p>
+</div>
+
+<div class="hyp-list">
+<div class="hyp-item"><div class="hn">H1</div><div class="hb">「<strong>有正確脈絡</strong>」的組（第 1 組相同脈絡、第 3 組想像脈絡、第 4 組照片脈絡）表現優於「<strong>沒有正確脈絡</strong>」的組（第 2 組不同脈絡、第 5 組安慰劑）。</div></div>
+<div class="hyp-item"><div class="hn">H2</div><div class="hb">「相同脈絡」（真的回到原場景）與「模擬脈絡」（想像／照片）有差異。</div></div>
+<div class="hyp-item"><div class="hn">H3</div><div class="hb">「想像脈絡」與「照片脈絡」有差異。</div></div>
+<div class="hyp-item"><div class="hn">H4</div><div class="hb">「不同脈絡」與「安慰劑」有差異。</div></div>
+</div>
+
+<div class="data-table-wrap">
+<table class="contrast-table">
+<thead><tr><th>對比</th><th>1. 相同</th><th>2. 不同</th><th>3. 想像</th><th>4. 照片</th><th>5. 安慰劑</th><th>ΣC<sub>a</sub></th></tr></thead>
+<tbody>
+<tr><td><strong>ψ₁</strong>（1,3,4 vs 2,5）</td><td class="cpos">+2</td><td class="cneg">−3</td><td class="cpos">+2</td><td class="cpos">+2</td><td class="cneg">−3</td><td style="font-weight:700;color:#1e8449">0 ✓</td></tr>
+<tr><td><strong>ψ₂</strong>（1 vs 3,4）</td><td class="cpos">+2</td><td class="czero">0</td><td class="cneg">−1</td><td class="cneg">−1</td><td class="czero">0</td><td style="font-weight:700;color:#1e8449">0 ✓</td></tr>
+<tr><td><strong>ψ₃</strong>（3 vs 4）</td><td class="czero">0</td><td class="czero">0</td><td class="cpos">+1</td><td class="cneg">−1</td><td class="czero">0</td><td style="font-weight:700;color:#1e8449">0 ✓</td></tr>
+<tr><td><strong>ψ₄</strong>（2 vs 5）</td><td class="czero">0</td><td class="cpos">+1</td><td class="czero">0</td><td class="czero">0</td><td class="cneg">−1</td><td style="font-weight:700;color:#1e8449">0 ✓</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box">
+🔢 <strong>對比的個數 = 4 = A − 1 = df<sub>A</sub></strong>。這是正交對比家族的上限——再多就一定會有重疊。
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">⊥ 正交性檢查矩陣：任兩個對比的權重乘積和（點格子看計算過程）</div>
+<div style="overflow-x:auto"><table class="orth-matrix" id="orthTable"></table></div>
+<div id="orthNote" style="margin-top:14px"></div>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🍰 為什麼正交這麼重要？</div>
+<p style="line-height:1.95">因為正交 ⟹ <strong>SS<sub>ψ1</sub> + SS<sub>ψ2</sub> + … + SS<sub>ψ(A−1)</sub> = SS<sub>A</sub></strong>。</p>
+<p style="line-height:1.95;margin-top:10px">也就是說，一組正交對比把「實驗效果」這塊蛋糕<strong>不重不漏地切成 A − 1 片</strong>，每片剛好 1 個自由度。你可以清楚地說：「這個效果有 96% 來自第一個對比。」</p>
+<p style="line-height:1.95;margin-top:10px">如果對比之間<em>不</em>正交（第十三章的主題），SS 就會互相重疊、加起來超過 SS<sub>A</sub>——這正是第六章「非正交多元迴歸」的老問題，只是換了個場景重演。</p>
+</div>
+</section>
+
+<!-- §5 -->
+<section id="alpha">
+<div class="section-header"><span class="section-num">§5</span><h2>危險：做越多比較，越容易「撿到」假發現</h2></div>
+
+<div class="prose">
+<p>每做一個檢定，就有 α 的機率犯型 I 錯誤（把不存在的效果說成存在）。<strong>做 4 個檢定呢？</strong></p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">α 的兩種意義</div>
+<div class="formula-main" style="font-size:16px">α[PF] = 1 − (1 − α[PC])<sup>C</sup></div>
+<div class="formula-desc">
+・<strong>α[PC]</strong>（per comparison）：<em>單一個</em>比較的型 I 錯誤率<br>
+・<strong>α[PF]</strong>（per family）：整組比較中<em>至少犯一次</em>型 I 錯誤的機率<br>
+・C：比較的個數<br><br>
+例：做 4 個比較，每個都用 α = .05 → α[PF] = 1 − .95⁴ = <strong>.1855</strong><br>
+<span style="color:#ff8c8c">你以為冒 5% 的險，實際上接近 19%！</span>
+</div>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">📈 α 膨脹曲線：做越多比較，「至少一次誤判」的機率飆得多快</div>
+<div class="ctrl-row" style="justify-content:center">
+  <div><label>比較的個數 C</label><input type="range" id="cSlider" min="1" max="20" step="1" value="4" oninput="drawAlpha()"><span class="ctrl-val" id="cVal">4</span></div>
+</div>
+<canvas id="alphaCanvas" height="270"></canvas>
+<div id="alphaNote" style="margin-top:12px"></div>
+</div>
+
+<div class="story-box">
+<h4>🎩 統計學的經典笑話：船長的年齡</h4>
+<p>有人給小學生出了這樣一道題：<em>「一艘船上有 26 隻綿羊和 10 隻山羊。請問船長幾歲？」</em></p>
+<p>令人震驚的是，很多孩子會認真作答：「36 歲。」——他們假設<strong>題目一定有答案</strong>，於是把手上的數字硬湊出一個。</p>
+<p><strong>這跟統計有什麼關係？</strong>如果你對一堆沒有理論根據的比較全部做一遍檢定，總會有一兩個「顯著」。你會忍不住替它編一個解釋——就像孩子替船長編了個年齡。</p>
+<p style="color:var(--purple);font-weight:700">但那個顯著只是<em>統計的偽影（artifact）</em>，不是發現。這正是為什麼「計畫性比較」強調：<strong>比較必須來自理論，而且必須在看資料之前就決定好。</strong></p>
+</div>
+</section>
+
+<!-- §6 -->
+<section id="sidak">
+<div class="section-header"><span class="section-num">§6</span><h2>解方：Šidák 與 Bonferroni 校正</h2></div>
+
+<div class="prose">
+<p>既然做 C 個比較會讓整體錯誤率膨脹，那就<strong>反過來把每個比較的門檻調嚴</strong>，使整體維持在想要的水準。</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">Šidák 公式（精確解）</div>
+<div class="formula-main" style="font-size:17px">α[PC] = 1 − (1 − α[PF])<sup>1／C</sup></div>
+<div class="formula-desc">
+把膨脹公式反解出來即可。<strong>假設各比較互相獨立（正交）時成立。</strong><br><br>
+例：想讓 α[PF] = .05，做 C = 4 個比較 → α[PC] = 1 − (1 − .05)<sup>1/4</sup> = <strong>.0127</strong>
+</div>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">Bonferroni／Boole／Dunn 不等式（近似解）</div>
+<div class="formula-main" style="font-size:17px">α[PC] ≈ α[PF] ／ C</div>
+<div class="formula-desc">
+例：.05 ／ 4 = <strong>.0125</strong>　（跟精確值 .0127 幾乎一樣）<br><br>
+<strong>兩者的關係</strong>：　1 − (1 − α[PF])<sup>1/C</sup> ≥ α[PF]／C<br>
+所以 Bonferroni 永遠比 Šidák <em>更保守</em>（門檻更嚴、更容易漏掉真效果）。
+</div>
+</div>
+
+<div class="concept-grid">
+<div class="concept-card" style="border-top:4px solid var(--teal)">
+<div class="concept-icon">🎯</div>
+<h3>該用哪一個？</h3>
+<p><strong>理論上該用 Šidák</strong>——它是精確解，Bonferroni 只是近似且偏悲觀。</p>
+<p style="margin-top:8px">但 Bonferroni <strong>更有名、更常被引用</strong>，主要是歷史因素：在沒有電腦的年代，除法比開 C 次方好算太多了。</p>
+</div>
+<div class="concept-card" style="border-top:4px solid var(--gold)">
+<div class="concept-icon">💻</div>
+<h3>為什麼現在很重要？</h3>
+<p>校正後的 α 會變成 .0127 這種<strong>怪數字</strong>，傳統的 F 表只印 .05 和 .01，根本查不到。</p>
+<p style="margin-top:8px;color:var(--accent);font-weight:600">這正是「電腦要能直接給出精確 p 值」在現代如此重要的理由。</p>
+</div>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🧮 校正計算器</div>
+<div class="ctrl-row">
+  <div><label>比較個數 C</label><input type="range" id="corrC" min="1" max="20" step="1" value="4" oninput="drawCorr()"><span class="ctrl-val" id="corrCVal">4</span></div>
+  <div><label>想維持的 α[PF]</label>
+    <button class="mini-btn active" id="pf05" onclick="setPF(.05)">.05</button>
+    <button class="mini-btn" id="pf01" onclick="setPF(.01)">.01</button>
+  </div>
+</div>
+<div id="corrOut"></div>
+</div>
+
+<div class="warn-box">
+🤷 <strong>但課本的態度其實相當務實</strong>：<br>
+「目前的慣例是<em>把每個對比當成整個分析中唯一的對比</em>來檢定」——也就是<strong>不做校正</strong>，直接用 α = .05 或 .01。<br><br>
+理由：計畫性正交比較通常源自<strong>對立理論的競爭</strong>。這時真正重要的是「哪個理論被資料支持、哪個被排除」，而不是嚴格控制家族錯誤率。而且對比數量本來就很少（≤ A−1）。<br><br>
+<em>👉 實務建議：報告時把校正與否寫清楚。做了校正就說用哪個方法；沒做就說明比較是事前計畫且數量有限。透明比正確更重要。</em>
+</div>
+</section>
+
+<!-- §7 -->
+<section id="ss">
+<div class="section-header"><span class="section-num">§7</span><h2>計算對比的平方和 SSψ</h2></div>
+
+<div class="prose">
+<p>一個對比本質上就是「把資料重新分成正號、負號兩堆」的迷你 ANOVA。所以它<strong>只有 1 個自由度</strong>（兩堆嘛）。但誤差項要用<em>完整實驗</em>的 MS<sub>S(A)</sub>——因為那用上了全部資料，是誤差最好的估計。</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">對比平方和（最常用的形式）</div>
+<div class="formula-main" style="font-size:18px">SS<sub>ψ</sub> = S(Σ C<sub>a</sub>M<sub>a·</sub>)² ／ Σ C²<sub>a</sub> = S·ψ̂² ／ Σ C²<sub>a</sub></div>
+<div class="formula-desc">
+S = 每組人數；ψ̂ = Σ C<sub>a</sub>M<sub>a·</sub>（把權重乘上組平均再加總）<br><br>
+<strong>用組總和 Y<sub>a·</sub> 的等價版本</strong>：　SS<sub>ψ</sub> = (Σ C<sub>a</sub>Y<sub>a·</sub>)² ／ (S · Σ C²<sub>a</sub>)
+</div>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">因為 df<sub>ψ</sub> = 1，所以均方等於平方和</div>
+<div class="formula-main" style="font-size:16px">MS<sub>ψ</sub> = SS<sub>ψ</sub> ／ 1 = SS<sub>ψ</sub>　　⟹　　F<sub>ψ</sub> = SS<sub>ψ</sub> ／ MS<sub>S(A)</sub></div>
+<div class="formula-desc">檢定時查 F 分配，<strong>ν₁ = 1、ν₂ = A(S − 1)</strong>。<br>
+<span style="color:rgba(240,230,211,.6)">注意：這只對「對比」成立。§10 的「次設計比較」可以有多個自由度，那時 MS ≠ SS。</span></div>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🔗 對比其實也是迴歸（第九章的回音）</div>
+<p style="line-height:1.95">把權重 C<sub>a</sub> 看成「對各組分數的預測值」，就可以算 C<sub>a</sub> 與 Y<sub>as</sub> 的相關：</p>
+<div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:var(--purple);margin:14px 0">
+R²<sub>Y·ψ</sub> = SS<sub>ψ</sub> ／ SS<sub>total</sub>
+</div>
+<p style="line-height:1.95">這個係數告訴你<strong>「這個對比解釋了整體變異的多少比例」</strong>——效果量的一種。</p>
+<p style="line-height:1.95;margin-top:10px">另一個更常用的版本是 <strong>SS<sub>ψ</sub> ／ SS<sub>A</sub></strong>：「這個對比佔了<em>實驗效果</em>的多少比例」。§8 會看到，Smith 實驗的第一個對比一個人就吃掉了 <strong>96%</strong> 的實驗效果。</p>
+</div>
+</section>
+
+<!-- §8 -->
+<section id="smith">
+<div class="section-header"><span class="section-num">§8</span><h2>完整實例：Smith (1979) 的脈絡與記憶實驗</h2></div>
+
+<div class="prose">
+<p>50 位受試者隨機分成 5 組（每組 10 人），在某個房間學一串單字，隔天在不同條件下回想：</p>
+</div>
+
+<div class="data-table-wrap">
+<table>
+<thead><tr><th>組別</th><th>回想時的脈絡</th><th>10 位受試者的分數</th><th>Y<sub>a·</sub></th><th>M<sub>a·</sub></th></tr></thead>
+<tbody>
+<tr><td><strong>1. 相同</strong></td><td>回到原來那個房間</td><td>25,26,17,15,14,17,14,20,11,21</td><td>180</td><td><strong>18</strong></td></tr>
+<tr><td><strong>2. 不同</strong></td><td>換到另一個房間</td><td>11,21,9,6,7,14,12,4,7,19</td><td>110</td><td><strong>11</strong></td></tr>
+<tr><td><strong>3. 想像</strong></td><td>在新房間，但被要求<em>想像</em>原房間</td><td>14,15,29,10,12,22,14,20,22,12</td><td>170</td><td><strong>17</strong></td></tr>
+<tr><td><strong>4. 照片</strong></td><td>在新房間，看著原房間的<em>照片</em></td><td>25,15,23,21,18,24,14,27,12,11</td><td>190</td><td><strong>19</strong></td></tr>
+<tr><td><strong>5. 安慰劑</strong></td><td>在新房間，做無關的想像作業</td><td>8,20,10,7,15,7,1,17,11,4</td><td>100</td><td><strong>10</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">📊 五組平均數（依課本 Figure 12.1 重繪；虛線為總平均 15）</div>
+<canvas id="smithCanvas" height="300"></canvas>
+</div>
+
+<div class="data-table-wrap">
+<table>
+<thead><tr><th>Source</th><th>df</th><th>SS</th><th>MS</th><th>F</th><th>p(F)</th></tr></thead>
+<tbody>
+<tr style="background:rgba(212,160,23,.16)"><td>𝒜（脈絡類型）</td><td>4</td><td>700.00</td><td>175.00</td><td style="color:#1e8449;font-weight:700">5.469**</td><td>.00119</td></tr>
+<tr><td>𝒮(𝒜)</td><td>45</td><td>1440.00</td><td>32.00</td><td>—</td><td>—</td></tr>
+</tbody>
+<tfoot><tr><td style="text-align:left">Total</td><td>49</td><td>2140.00</td><td>—</td><td>—</td><td>—</td></tr></tfoot>
+</table>
+</div>
+
+<div class="prose"><p>omnibus F 顯著了，但它只說「五組不全一樣」。現在用四個對比切開來看：</p></div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🔬 四個對比的逐步計算（點按鈕切換）</div>
+<div class="ctrl-row" style="justify-content:center">
+  <button class="mini-btn active" onclick="showPsi(0,this)">ψ₁</button>
+  <button class="mini-btn" onclick="showPsi(1,this)">ψ₂</button>
+  <button class="mini-btn" onclick="showPsi(2,this)">ψ₃</button>
+  <button class="mini-btn" onclick="showPsi(3,this)">ψ₄</button>
+</div>
+<div id="psiDetail"></div>
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:17px;margin:28px 0 12px;font-weight:700">📋 完整的對比分析表</h3>
+<div class="data-table-wrap">
+<table>
+<thead><tr><th>Source</th><th>df</th><th>SS</th><th>MS</th><th>F</th><th>佔 SS<sub>A</sub> 比例</th></tr></thead>
+<tbody>
+<tr style="background:rgba(212,160,23,.12)"><td>𝒜（全部）</td><td>(4)</td><td>(700.00)</td><td>175.00</td><td>5.469**</td><td>100%</td></tr>
+<tr style="background:rgba(39,174,96,.08)"><td>&nbsp;&nbsp;ψ₁：(1,3,4) vs (2,5)</td><td>1</td><td>675.00</td><td>675.00</td><td style="color:#1e8449;font-weight:700">21.094**</td><td><strong>96.4%</strong></td></tr>
+<tr><td>&nbsp;&nbsp;ψ₂：(1) vs (3,4)</td><td>1</td><td>0.00</td><td>0.00</td><td style="color:#888">0.000 ns</td><td>0.0%</td></tr>
+<tr><td>&nbsp;&nbsp;ψ₃：(3) vs (4)</td><td>1</td><td>20.00</td><td>20.00</td><td style="color:#888">0.625 ns</td><td>2.9%</td></tr>
+<tr><td>&nbsp;&nbsp;ψ₄：(2) vs (5)</td><td>1</td><td>5.00</td><td>5.00</td><td style="color:#888">0.156 ns</td><td>0.7%</td></tr>
+<tr><td>誤差 𝒮(𝒜)</td><td>45</td><td>1440.00</td><td>32.00</td><td>—</td><td>—</td></tr>
+</tbody>
+<tfoot><tr><td style="text-align:left">Total</td><td>49</td><td>2140.00</td><td>—</td><td colspan="2">** p &lt; .01　ns：α = .05 下保留判斷</td></tr></tfoot>
+</table>
+</div>
+
+<div class="highlight-box">
+✅ <strong>檢查：675.00 + 0.00 + 20.00 + 5.00 = 700.00 = SS<sub>A</sub></strong> —— 四個正交對比把實驗效果完整切開，一點不多一點不少。
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🎯 這才叫做「解讀結果」</div>
+<p style="line-height:1.95">
+<strong>ψ₁ 極為顯著</strong>，F(1, 45) = 21.094, MS<sub>e</sub> = 32.00, p &lt; .01，而且<strong>一個對比就解釋了 96% 的實驗效果</strong>。<br><br>
+<strong>其他三個都不顯著。</strong>合起來的故事非常乾淨：
+</p>
+<p style="line-height:1.95;margin-top:12px;padding:14px;background:rgba(107,63,160,.08);border-radius:8px;font-weight:600;color:var(--purple)">
+記憶表現的關鍵，只在於「回想時能不能取得<em>正確的學習脈絡</em>」。<br>
+至於那個脈絡是<em>真的回到現場</em>、<em>用想像的</em>、還是<em>看照片</em>——完全沒差（ψ₂、ψ₃ 皆 ns）。<br>
+而「錯誤的脈絡」和「完全沒脈絡」也一樣糟（ψ₄ ns）。
+</p>
+<p style="line-height:1.95;margin-top:12px">👉 <strong>對照一下</strong>：omnibus F 只能說「五組不全一樣」。對比分析卻直接給出了一個可以寫進理論的結論。<em>這就是本章的價值。</em></p>
+</div>
+
+<div class="paper-quote" style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:18px 0;font-size:14.5px;line-height:1.9;font-style:italic;color:#333">
+The first contrast is clearly significant, <strong>F(1, 45) = 21.094, MS<sub>e</sub> = 32.00, p &lt; .01</strong>. Hence, it seems that reinstating at test the context experienced during learning improves subjects' performance.
+</div>
+</section>
+
+<!-- §9 -->
+<section id="mean">
+<div class="section-header"><span class="section-num">§9</span><h2>一個漂亮的性質：omnibus F 是各對比 F 的平均！</h2></div>
+
+<div class="formula-box">
+<div class="formula-label">推導（用到「正交對比的 SS 加總 = SS<sub>A</sub>」）</div>
+<div class="formula-main" style="font-size:15px">F<sub>omnibus</sub> = (SS<sub>A</sub>／(A−1)) ／ MS<sub>S(A)</sub> = (Σ SS<sub>ψ</sub>／(A−1)) ／ MS<sub>S(A)</sub> = (1／(A−1)) · Σ F<sub>ψ</sub></div>
+<div class="formula-desc">
+驗證 Smith 實驗：(21.094 + 0.000 + 0.625 + 0.156) ／ 4 = 21.875 ／ 4 = <strong>5.469</strong> ✓<br>
+<span style="color:var(--gold)">正是 ANOVA 表上的 omnibus F！</span>
+</div>
+</div>
+
+<div class="warn-box">
+⚠️ <strong>「平均」帶來的兩個弔詭現象</strong>（課本特別提醒，實務上很常遇到）<br><br>
+
+<strong>① omnibus F 不顯著，但某個對比顯著</strong><br>
+例：A = 4、S = 5、SS<sub>A</sub> = 90、MS<sub>S(A)</sub> = 10。<br>
+F<sub>A</sub> = (90/3)/10 = 3.00 &lt; 3.24（臨界值）→ <strong>不顯著</strong><br>
+若某對比 SS<sub>ψ</sub> = 50 → F<sub>ψ</sub> = 50/10 = 5.00 &gt; 4.49（df=1,16 的臨界值）→ <strong>顯著！</strong><br>
+<em>原因：omnibus 把 90 除以 3 攤平了；對比不必除（df=1），強度完整保留。<strong>被其他無效對比稀釋掉了。</strong></em><br><br>
+
+<strong>② omnibus F 顯著，但沒有任何對比顯著</strong><br>
+效果平均分散在多個對比上，每個都不夠強，但加起來夠。<br><br>
+
+<span style="font-weight:700">👉 所以：不需要「先做 omnibus F 顯著了才能做對比」。</span>計畫性比較源自理論，本來就該直接做。
+</div>
+</section>
+
+<!-- §10 -->
+<section id="sub">
+<div class="section-header"><span class="section-num">§10</span><h2>次設計分析：當問題需要不只 1 個自由度</h2></div>
+
+<div class="prose">
+<p>回到鎮靜劑實驗，但改成：安慰劑組 + 三種不同劑型的鎮靜劑。研究者只關心兩個問題：</p>
+</div>
+
+<div class="hyp-list">
+<div class="hyp-item"><div class="hn">Q1</div><div class="hb">吃鎮靜劑（不管哪種劑型）會不會影響電玩表現？<br><span style="color:var(--muted);font-size:13px">→ 可以寫成一個對比：<code>+3 −1 −1 −1</code></span></div></div>
+<div class="hyp-item"><div class="hn">Q2</div><div class="hb">三種劑型之間有沒有差異？<br><span style="color:var(--accent);font-size:13px">→ <strong>寫不成單一個對比！</strong>因為 H₀ : μ₂ = μ₃ = μ₄ 需要 <strong>2 個</strong>自由度。</span></div></div>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🧩 解法：把兩個正交對比「加起來」</div>
+<p style="line-height:1.95">Q2 其實是在分析一個「<strong>次設計（sub-design）</strong>」——從 4 組的設計中抽出 3 組來做一個小型 <em>S</em>(<em>A</em>) 分析。3 組 → 2 個自由度 → 可以由 2 個正交對比組成：</p>
+<div class="data-table-wrap" style="margin:14px 0">
+<table class="contrast-table" style="font-size:13px">
+<thead><tr><th></th><th>安慰劑</th><th>鎮靜劑 1</th><th>鎮靜劑 2</th><th>鎮靜劑 3</th><th>對應問題</th></tr></thead>
+<tbody>
+<tr><td><strong>ψ₁</strong></td><td class="cpos">+3</td><td class="cneg">−1</td><td class="cneg">−1</td><td class="cneg">−1</td><td>Q1</td></tr>
+<tr><td><strong>ψ₂</strong></td><td class="czero">0</td><td class="cpos">+2</td><td class="cneg">−1</td><td class="cneg">−1</td><td rowspan="2" style="vertical-align:middle;background:rgba(107,63,160,.08)">Q2（合併這兩個）</td></tr>
+<tr><td><strong>ψ₃</strong></td><td class="czero">0</td><td class="czero">0</td><td class="cpos">+1</td><td class="cneg">−1</td></tr>
+</tbody>
+</table>
+</div>
+<div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--purple);margin:14px 0">
+SS<sub>comp2</sub> = SS<sub>ψ2</sub> + SS<sub>ψ3</sub>　，　df<sub>comp2</sub> = 1 + 1 = 2
+</div>
+<p style="line-height:1.9"><strong>正交的比較可以直接相加</strong>——SS 加 SS、df 加 df。這就是為什麼要先確認正交性。</p>
+</div>
+
+<div class="prose">
+<p><strong>實際數據</strong>：每組 10 人，MS<sub>S(A)</sub> = 400.00，四組平均為 105、123、119、133。</p>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🧮 次設計分析的完整計算</div>
+<canvas id="subCanvas" height="250"></canvas>
+<div class="data-table-wrap" style="margin-top:16px">
+<table>
+<thead><tr><th>比較</th><th>組成</th><th>SS</th><th>df</th><th>MS</th><th>F</th><th>臨界值(α=.05)</th><th>結論</th></tr></thead>
+<tbody>
+<tr style="background:rgba(39,174,96,.08)"><td><strong>比較 1</strong>（Q1）</td><td>ψ₁</td><td>3000.00</td><td>1</td><td>3000.00</td><td style="color:#1e8449;font-weight:700">7.50</td><td>4.11</td><td style="color:#1e8449;font-weight:700">拒絕 H₀ ✓</td></tr>
+<tr><td><strong>比較 2</strong>（Q2）</td><td>ψ₂ + ψ₃</td><td>60 + 980 = 1040.00</td><td>2</td><td>520.00</td><td style="color:#888">1.30</td><td>3.26</td><td style="color:#888">保留 H₀</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="highlight-box">
+📖 <strong>結論怎麼寫</strong>：鎮靜劑確實影響電玩表現，F(1, 36) = 7.50, p &lt; .05；但<strong>三種劑型之間沒有差異</strong>，F(2, 36) = 1.30, ns。<br><br>
+<strong>注意 F 的自由度</strong>：比較 1 是 (1, 36)、比較 2 是 <strong>(2, 36)</strong>——分子自由度不同，臨界值當然也不同。這是次設計分析最容易出錯的地方。
+</div>
+
+<div class="info-box">
+📚 <strong>術語釐清</strong>：<br>
+・<strong>對比（contrast）</strong>＝ 自由度<strong>恰為 1</strong> 的比較<br>
+・<strong>比較（comparison）／次設計（sub-design）</strong>＝ 可以有<strong>多個</strong>自由度<br>
+所以「所有對比都是比較，但不是所有比較都是對比」。當 df &gt; 1 時，MS<sub>comp</sub> = SS<sub>comp</sub> ／ df<sub>comp</sub>，不能再偷懶說 MS = SS。
+</div>
+</section>
+
+<!-- §11 -->
+<section id="trend">
+<div class="section-header"><span class="section-num">§11</span><h2>趨勢分析：當自變數是「量」的時候</h2></div>
+
+<div class="prose">
+<p>如果自變數是<strong>數量</strong>（藥物劑量、練習次數、酒精濃度），我們感興趣的往往不是「哪組跟哪組不同」，而是<strong>「整體呈現什麼形狀」</strong>——直線上升？先升後降？波浪型？</p>
+<p>做法出奇地簡單：<strong>把每種「形狀」寫成一組對比權重</strong>，然後跑標準的對比分析。這些權重叫做<strong>正交多項式（orthogonal polynomials）</strong>，課本附錄有現成的表。</p>
+</div>
+
+<div class="info-box">
+📐 <strong>可以拆出幾種趨勢？</strong>A 個水準最多可以拆到 <strong>A − 1 次</strong>多項式——又是那個 df<sub>A</sub>。5 組就是：線性、二次、三次、四次。<br>
+<em>⚠️ 前提：設計必須平衡，且自變數的水準要<strong>等距</strong>（8%、10%、12%、14%、16% ✓）。不等距就得回頭用標準迴歸。</em>
+</div>
+
+<div class="data-table-wrap">
+<table class="contrast-table">
+<thead><tr><th>趨勢</th><th>X=8%</th><th>10%</th><th>12%</th><th>14%</th><th>16%</th><th>形狀</th></tr></thead>
+<tbody>
+<tr><td><strong>線性 Linear</strong></td><td class="cneg">−2</td><td class="cneg">−1</td><td class="czero">0</td><td class="cpos">+1</td><td class="cpos">+2</td><td>一路上升（或下降）</td></tr>
+<tr><td><strong>二次 Quadratic</strong></td><td class="cpos">+2</td><td class="cneg">−1</td><td class="cneg">−2</td><td class="cneg">−1</td><td class="cpos">+2</td><td>U 型／倒 U 型</td></tr>
+<tr><td><strong>三次 Cubic</strong></td><td class="cneg">−1</td><td class="cpos">+2</td><td class="czero">0</td><td class="cneg">−2</td><td class="cpos">+1</td><td>S 型（一個轉折 + 一個回彎）</td></tr>
+<tr><td><strong>四次 Quartic</strong></td><td class="cpos">+1</td><td class="cneg">−4</td><td class="cpos">+6</td><td class="cneg">−4</td><td class="cpos">+1</td><td>W 型</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">📈 四種正交多項式長什麼樣（點按鈕切換）</div>
+<div class="ctrl-row" style="justify-content:center">
+  <button class="mini-btn active" onclick="showTrend(0,this)">線性</button>
+  <button class="mini-btn" onclick="showTrend(1,this)">二次</button>
+  <button class="mini-btn" onclick="showTrend(2,this)">三次</button>
+  <button class="mini-btn" onclick="showTrend(3,this)">四次</button>
+  <button class="mini-btn" onclick="showTrend(4,this)">全部疊起來</button>
+</div>
+<canvas id="polyCanvas" height="250"></canvas>
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:17px;margin:28px 0 12px;font-weight:700">🍷 實例：酒精濃度與品酒喜好</h3>
+<div class="prose">
+<p>70 位受試者隨機分成 5 組（每組 14 人），品嚐酒精濃度分別為 8%、10%、12%、14%、16% 的酒，給出 0–100 分的喜好評分。MS<sub>S(A)</sub> = 500.00。</p>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🍷 五組的平均喜好分數</div>
+<canvas id="wineCanvas" height="290"></canvas>
+</div>
+
+<div class="data-table-wrap">
+<table>
+<thead><tr><th>Source</th><th>R²<sub>A·ψ</sub></th><th>df</th><th>SS</th><th>MS</th><th>F</th><th>p</th></tr></thead>
+<tbody>
+<tr style="background:rgba(212,160,23,.12)"><td>實驗效果（全部）</td><td>—</td><td>(4)</td><td>(29,680)</td><td>—</td><td>—</td><td>—</td></tr>
+<tr style="background:rgba(39,174,96,.08)"><td>&nbsp;&nbsp;ψ₁：<strong>線性</strong></td><td>.571</td><td>1</td><td>16,940</td><td>16,940</td><td style="color:#1e8449;font-weight:700">33.88**</td><td>.0000002</td></tr>
+<tr style="background:rgba(39,174,96,.08)"><td>&nbsp;&nbsp;ψ₂：<strong>二次</strong></td><td>.408</td><td>1</td><td>12,100</td><td>12,100</td><td style="color:#1e8449;font-weight:700">24.20**</td><td>.0009962</td></tr>
+<tr><td>&nbsp;&nbsp;ψ₃：三次</td><td>.019</td><td>1</td><td>560</td><td>560</td><td style="color:#888">1.12 ns</td><td>.2928</td></tr>
+<tr><td>&nbsp;&nbsp;ψ₄：四次</td><td>.003</td><td>1</td><td>80</td><td>80</td><td style="color:#888">0.16 ns</td><td>.6905</td></tr>
+<tr><td>誤差 𝒮(𝒜)</td><td>—</td><td>65</td><td>32,500</td><td>500</td><td>—</td><td>—</td></tr>
+</tbody>
+<tfoot><tr><td style="text-align:left">Total</td><td>—</td><td>69</td><td>62,180</td><td colspan="3">16,940+12,100+560+80 = 29,680 ✓</td></tr></tfoot>
+</table>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🍇 怎麼把兩個顯著趨勢講成一個故事</div>
+<p style="line-height:1.95">
+<strong>線性成分顯著（R² = .571）</strong>：整體而言，<em>酒精濃度越高，評分越高</em>。<br><br>
+<strong>二次成分也顯著（R² = .408）</strong>：但這條上升線是<em>彎的</em>——倒 U 型。<br><br>
+兩者合起來：<strong>酒精確實讓酒更討喜，但過了 14% 之後，再加酒精反而扣分。</strong>兩個成分合計解釋了實驗效果的 97.9%，三次與四次趨勢可以忽略。
+</p>
+<p style="line-height:1.95;margin-top:12px;padding:12px;background:rgba(107,63,160,.08);border-radius:8px">
+💡 <strong>注意</strong>：如果只做 omnibus F，你只會知道「五組不一樣」；如果只做兩兩比較，你會得到一堆零碎的顯著性。<strong>只有趨勢分析能直接告訴你「形狀是倒 U 型，轉折在 14%」——這才是能寫進論文摘要的結論。</strong>
+</p>
+</div>
+
+<div class="info-box">
+🔗 <strong>趨勢分析讓「對比」與「迴歸」的界線徹底模糊</strong>——因為我們正在評估「量的自變數」與依變數的關聯，這根本就是第五章的正交多元迴歸。<br>
+<em>第九章說 ANOVA 是迴歸，這裡又一次印證：統計方法之間的牆，大多是術語砌出來的。</em>
+</div>
+</section>
+
+<!-- §K -->
+<section id="formulas">
+<div class="section-header"><span class="section-num">§K</span><h2>關鍵公式整理</h2></div>
+
+<div class="formula-grid">
+<div class="formula-mini"><div class="fm-label">對比的定義</div><div class="fm-eq">ψ = Σ C<sub>a</sub>μ<sub>a·</sub>，且 Σ C<sub>a</sub> = 0</div></div>
+<div class="formula-mini"><div class="fm-label">對比的估計值</div><div class="fm-eq">ψ̂ = Σ C<sub>a</sub>M<sub>a·</sub></div></div>
+<div class="formula-mini"><div class="fm-label">正交性判準</div><div class="fm-eq">Σ<sub>a</sub> C<sub>a,1</sub>·C<sub>a,2</sub> = 0</div><div class="fm-note">＝ 相關係數的分子</div></div>
+<div class="formula-mini"><div class="fm-label">對比平方和</div><div class="fm-eq">SS<sub>ψ</sub> = S(Σ C<sub>a</sub>M<sub>a·</sub>)² / Σ C²<sub>a</sub></div></div>
+<div class="formula-mini"><div class="fm-label">對比平方和（用總和）</div><div class="fm-eq">SS<sub>ψ</sub> = (Σ C<sub>a</sub>Y<sub>a·</sub>)² / (S·Σ C²<sub>a</sub>)</div></div>
+<div class="formula-mini"><div class="fm-label">對比的 F</div><div class="fm-eq">F<sub>ψ</sub> = MS<sub>ψ</sub> / MS<sub>S(A)</sub> = SS<sub>ψ</sub> / MS<sub>S(A)</sub></div><div class="fm-note">ν₁ = 1, ν₂ = A(S−1)</div></div>
+<div class="formula-mini"><div class="fm-label">對比的效果量</div><div class="fm-eq">R²<sub>Y·ψ</sub> = SS<sub>ψ</sub> / SS<sub>total</sub></div><div class="fm-note">另一種：SS<sub>ψ</sub>/SS<sub>A</sub></div></div>
+<div class="formula-mini"><div class="fm-label">正交切割</div><div class="fm-eq">Σ SS<sub>ψ</sub> = SS<sub>A</sub>（共 A−1 個對比）</div></div>
+<div class="formula-mini"><div class="fm-label">α 膨脹</div><div class="fm-eq">α[PF] = 1 − (1 − α[PC])<sup>C</sup></div></div>
+<div class="formula-mini"><div class="fm-label">Šidák 校正</div><div class="fm-eq">α[PC] = 1 − (1 − α[PF])<sup>1/C</sup></div><div class="fm-note">精確解</div></div>
+<div class="formula-mini"><div class="fm-label">Bonferroni 校正</div><div class="fm-eq">α[PC] ≈ α[PF] / C</div><div class="fm-note">近似解，較保守</div></div>
+<div class="formula-mini"><div class="fm-label">omnibus F 是平均</div><div class="fm-eq">F<sub>omnibus</sub> = (1/(A−1)) · Σ F<sub>ψ</sub></div></div>
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">📌 關鍵概念</h3>
+<div class="notions-grid">
+<div class="notion-item">omnibus 檢定</div>
+<div class="notion-item">對比 contrast ψ</div>
+<div class="notion-item">權重係數 C<sub>a</sub></div>
+<div class="notion-item">計畫性 vs 事後比較</div>
+<div class="notion-item">正交（獨立）比較</div>
+<div class="notion-item">比較家族 family</div>
+<div class="notion-item">α[PC] 與 α[PF]</div>
+<div class="notion-item">船長的年齡</div>
+<div class="notion-item">Šidák 校正</div>
+<div class="notion-item">Bonferroni 不等式</div>
+<div class="notion-item">次設計分析</div>
+<div class="notion-item">趨勢分析</div>
+<div class="notion-item">正交多項式</div>
+</div>
+</section>
+
+<!-- 測驗 -->
+<section id="quiz">
+<div class="section-header"><span class="section-num">§Q</span><h2>複習測驗</h2></div>
+<div id="quizContainer"></div>
+<div style="text-align:center;margin-top:32px">
+<button onclick="resetQuiz()" class="btn">🔄 重新作答</button>
+<div id="quizScore" style="margin-top:16px;font-size:16px;font-weight:700;color:var(--teal);display:none"></div>
+</div>
+</section>
+
+<section style="text-align:center;border-bottom:none">
+<h2 style="font-family:'Noto Serif TC',serif;margin-bottom:16px">繼續學習</h2>
+<p style="color:var(--muted);margin-bottom:24px">正交對比很美好，但真實的研究假設常常互相重疊。下一章處理<em>非正交</em>比較——第六章那個「共享變異」的老問題又回來了</p>
+<a href="ch13.html" class="btn btn-gold">前往第十三章：計畫性非正交比較 →</a>
+</section>
+
+</div>
+
+<footer>
+<a href="ch11.html">← 第十一章</a>  &nbsp;|&nbsp;  <a href="index.html">回首頁</a>  &nbsp;|&nbsp;  <a href="ch13.html">第十三章 →</a><br><br>
+教材製作基於：Abdi, H., Edelman, B., Valentin, D. &amp; Dowling, W. J. (2009). <em>Experimental Design and Analysis for Psychology</em>. Oxford University Press.<br><br>
+© 版權所有　<strong style="color:var(--paper)">葉欲禾（Gary Yu-Ho Yeh）</strong>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{const d=document.documentElement;document.getElementById('progress-bar').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%'});
+
+// ═══ Smith 資料 ═══
+const gNames=['1. 相同','2. 不同','3. 想像','4. 照片','5. 安慰劑'];
+const gMeans=[18,11,17,19,10];
+const S_SMITH=10, MSW=32, SSA=700, SSTOT=2140;
+const psiSet=[
+  {n:'ψ₁',C:[2,-3,2,2,-3],desc:'(1,3,4) vs (2,5)：有正確脈絡 vs 沒有',hyp:'研究假設 1'},
+  {n:'ψ₂',C:[2,0,-1,-1,0],desc:'(1) vs (3,4)：真實脈絡 vs 模擬脈絡',hyp:'研究假設 2'},
+  {n:'ψ₃',C:[0,0,1,-1,0],desc:'(3) vs (4)：想像 vs 照片',hyp:'研究假設 3'},
+  {n:'ψ₄',C:[0,1,0,0,-1],desc:'(2) vs (5)：不同脈絡 vs 安慰劑',hyp:'研究假設 4'}
+];
+
+// ═══ F 分配（算 p 值）═══
+function lgamma(x){const g=[676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,
+  12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
+  if(x<0.5)return Math.log(Math.PI/Math.sin(Math.PI*x))-lgamma(1-x);
+  x-=1;let a=0.99999999999980993,t=x+7.5;
+  for(let i=0;i<8;i++)a+=g[i]/(x+i+1);
+  return 0.5*Math.log(2*Math.PI)+(x+0.5)*Math.log(t)-t+Math.log(a);}
+function betacf(a,b,x){const MAXIT=200,EPS=3e-14,FPMIN=1e-300;
+  const qab=a+b,qap=a+1,qam=a-1;let c=1,d=1-qab*x/qap;
+  if(Math.abs(d)<FPMIN)d=FPMIN;d=1/d;let h=d;
+  for(let m=1;m<=MAXIT;m++){const m2=2*m;
+    let aa=m*(b-m)*x/((qam+m2)*(a+m2));
+    d=1+aa*d;if(Math.abs(d)<FPMIN)d=FPMIN;c=1+aa/c;if(Math.abs(c)<FPMIN)c=FPMIN;d=1/d;h*=d*c;
+    aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));
+    d=1+aa*d;if(Math.abs(d)<FPMIN)d=FPMIN;c=1+aa/c;if(Math.abs(c)<FPMIN)c=FPMIN;d=1/d;
+    const del=d*c;h*=del;if(Math.abs(del-1)<EPS)break;}
+  return h;}
+function ibeta(a,b,x){if(x<=0)return 0;if(x>=1)return 1;
+  const bt=Math.exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*Math.log(x)+b*Math.log(1-x));
+  return x<(a+1)/(a+b+2)?bt*betacf(a,b,x)/a:1-bt*betacf(b,a,1-x)/b;}
+function fpval(f,v1,v2){if(f<=0)return 1;return 1-ibeta(v1/2,v2/2,v1*f/(v1*f+v2));}
+function fcrit(al,v1,v2){let lo=1e-4,hi=200;
+  for(let i=0;i<160;i++){const m=(lo+hi)/2;if(fpval(m,v1,v2)>al)lo=m;else hi=m;}return (lo+hi)/2;}
+
+// ═══ §3 對比建構器 ═══
+let cw=[2,-3,2,2,-3];
+function buildCW(){
+  const g=document.getElementById('cwGrid');g.innerHTML='';
+  gNames.forEach((nm,i)=>{
+    const cls=cw[i]>0?'pos':(cw[i]<0?'neg':'zero');
+    const d=document.createElement('div');d.className='cw-cell '+cls;
+    d.innerHTML='<div class="cw-g">'+nm+'</div><div class="cw-m">M = '+gMeans[i]+'</div>'+
+      '<input type="number" value="'+cw[i]+'" step="1" oninput="updCW('+i+',this.value)">';
+    g.appendChild(d);
+  });
+  calcCW();
+}
+function updCW(i,v){cw[i]=parseFloat(v)||0;buildCW();}
+function setPreset(arr){cw=arr.slice();buildCW();}
+function calcCW(){
+  const sumC=cw.reduce((a,b)=>a+b,0);
+  const psiHat=cw.reduce((a,c,i)=>a+c*gMeans[i],0);
+  const sumC2=cw.reduce((a,c)=>a+c*c,0);
+  const valid=Math.abs(sumC)<1e-9 && sumC2>0;
+  const ss=valid?S_SMITH*psiHat*psiHat/sumC2:0;
+  const F=ss/MSW, p=fpval(F,1,45), fc=fcrit(.05,1,45);
+  let html='';
+  if(!valid){
+    html='<div class="warn-box" style="margin:0">❌ <strong>這不是合法的對比！</strong>權重總和 ΣC<sub>a</sub> = <strong>'+sumC+'</strong>，必須等於 0。<br>'+
+      '權重和不為零時，這個式子會混入「整體水準」的資訊，問的就不是「這群 vs 那群有沒有差」了。</div>';
+  }else{
+    html='<div class="formula-box" style="margin:0 0 14px"><div class="formula-label">逐步計算</div>'+
+      '<div class="formula-main" style="font-size:14px">ψ̂ = '+cw.map((c,i)=>(c>=0&&i>0?'+':'')+c+'×'+gMeans[i]).join(' ')+' = <strong>'+psiHat.toFixed(2)+'</strong></div>'+
+      '<div class="formula-desc">ΣC²<sub>a</sub> = '+cw.map(c=>c*c).join(' + ')+' = <strong>'+sumC2+'</strong><br>'+
+      'SS<sub>ψ</sub> = S·ψ̂² / ΣC²<sub>a</sub> = 10 × '+psiHat.toFixed(2)+'² / '+sumC2+' = <strong style="color:var(--gold);font-size:16px">'+ss.toFixed(2)+'</strong><br>'+
+      'F<sub>ψ</sub> = '+ss.toFixed(2)+' / 32.00 = <strong style="color:var(--gold);font-size:16px">'+F.toFixed(3)+'</strong></div></div>'+
+      '<div class="stat-grid" style="margin:0">'+
+      '<div class="stat-box" style="border-color:var(--accent);background:rgba(192,57,43,.06)"><div class="sb-l">SS<sub>ψ</sub></div><div class="sb-v" style="color:var(--accent)">'+ss.toFixed(1)+'</div><div class="sb-n">佔 SS<sub>A</sub> 的 '+(ss/SSA*100).toFixed(1)+'%</div></div>'+
+      '<div class="stat-box" style="border-color:var(--gold);background:rgba(212,160,23,.1)"><div class="sb-l">F<sub>ψ</sub>(1, 45)</div><div class="sb-v" style="color:#8a6a00">'+F.toFixed(2)+'</div><div class="sb-n">p = '+(p<0.00001?'< .00001':p.toFixed(5))+'</div></div>'+
+      '<div class="stat-box" style="border-color:'+(F>=fc?'#1e8449':'#888')+';background:'+(F>=fc?'rgba(39,174,96,.08)':'#f4f0ea')+'"><div class="sb-l">決策（α=.05）</div><div class="sb-v" style="font-size:16px;color:'+(F>=fc?'#1e8449':'#888')+'">'+(F>=fc?'拒絕 H₀':'保留 H₀')+'</div><div class="sb-n">F critical = '+fc.toFixed(2)+'</div></div>'+
+      '</div>';
+  }
+  document.getElementById('cwOut').innerHTML=html;
+}
+
+// ═══ §4 正交矩陣 ═══
+function buildOrth(){
+  const t=document.getElementById('orthTable');
+  let h='<thead><tr><th></th>'+psiSet.map(p=>'<th>'+p.n+'</th>').join('')+'</tr></thead><tbody>';
+  psiSet.forEach((p,i)=>{
+    h+='<tr><th>'+p.n+'</th>';
+    psiSet.forEach((q,j)=>{
+      if(i===j){h+='<td class="diag">—</td>';}
+      else{const v=p.C.reduce((a,c,k)=>a+c*q.C[k],0);
+        h+='<td class="'+(v===0?'ok':'bad')+'" onclick="showOrth('+i+','+j+')" style="cursor:pointer">'+v+'</td>';}
+    });
+    h+='</tr>';
+  });
+  t.innerHTML=h+'</tbody>';
+  showOrth(0,1);
+}
+function showOrth(i,j){
+  const p=psiSet[i],q=psiSet[j];
+  const prods=p.C.map((c,k)=>c*q.C[k]);
+  const v=prods.reduce((a,b)=>a+b,0);
+  document.getElementById('orthNote').innerHTML=
+    '<div class="'+(v===0?'info-box':'warn-box')+'" style="margin:0">'+
+    '<strong>'+p.n+' × '+q.n+'</strong>：逐組相乘再加總<br>'+
+    '<span style="font-family:JetBrains Mono,monospace;font-size:13.5px">'+
+    p.C.map((c,k)=>'('+c+')×('+q.C[k]+')').join(' + ')+' = '+prods.join(' + ').replace(/\+ -/g,'− ')+' = <strong>'+v+'</strong></span><br>'+
+    (v===0?'✅ 乘積和為 0 → <strong>兩個對比正交</strong>，問的是完全不重疊的問題。':'❌ 乘積和不為 0 → 兩個對比不正交，資訊有重疊。')+
+    '</div>';
+}
+
+// ═══ §5 α 膨脹 ═══
+function drawAlpha(){
+  const C=+document.getElementById('cSlider').value;
+  document.getElementById('cVal').textContent=C;
+  const c=document.getElementById('alphaCanvas');const W=c.offsetWidth;c.width=W;const H=270;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const pad={l:54,r:26,t:26,b:46},pw=W-pad.l-pad.r,ph=H-pad.t-pad.b;
+  const xOf=n=>pad.l+pw*(n-1)/19, yOf=p=>pad.t+ph*(1-p/0.7);
+  ctx.strokeStyle='#eee';ctx.fillStyle='#aaa';ctx.font='11px JetBrains Mono';ctx.textAlign='right';
+  for(let p=0;p<=0.7;p+=0.1){const y=yOf(p);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();ctx.fillText(p.toFixed(1),pad.l-6,y+4);}
+  ctx.textAlign='center';
+  for(let n=1;n<=19;n+=3)ctx.fillText(n,xOf(n),H-pad.b+16);
+  // .05 參考線
+  ctx.strokeStyle='#1e8449';ctx.lineWidth=2;ctx.setLineDash([5,4]);
+  ctx.beginPath();ctx.moveTo(pad.l,yOf(.05));ctx.lineTo(W-pad.r,yOf(.05));ctx.stroke();ctx.setLineDash([]);ctx.lineWidth=1;
+  ctx.fillStyle='#1e8449';ctx.font='11.5px "Noto Sans TC"';ctx.textAlign='left';
+  ctx.fillText('你以為的風險 .05',pad.l+6,yOf(.05)-6);
+  // 曲線
+  ctx.beginPath();
+  for(let n=1;n<=20;n++){const p=1-Math.pow(0.95,n);n===1?ctx.moveTo(xOf(n),yOf(p)):ctx.lineTo(xOf(n),yOf(p));}
+  ctx.strokeStyle='#c0392b';ctx.lineWidth=3;ctx.stroke();ctx.lineWidth=1;
+  const cur=1-Math.pow(0.95,C);
+  ctx.fillStyle='#d4a017';ctx.beginPath();ctx.arc(xOf(C),yOf(cur),7,0,7);ctx.fill();
+  ctx.strokeStyle='#8a6a00';ctx.stroke();
+  ctx.strokeStyle='#333';ctx.beginPath();ctx.moveTo(pad.l,yOf(0));ctx.lineTo(W-pad.r,yOf(0));ctx.stroke();
+  ctx.fillStyle='#666';ctx.font='12px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('比較的個數 C',pad.l+pw/2,H-6);
+  ctx.save();ctx.translate(14,pad.t+ph/2);ctx.rotate(-Math.PI/2);ctx.fillText('α[PF]（至少犯一次的機率）',0,0);ctx.restore();
+  document.getElementById('alphaNote').innerHTML=
+    '<div class="'+(cur>0.15?'warn-box':'info-box')+'" style="margin:0">做 <strong>'+C+'</strong> 個比較、每個都用 α = .05：<br>'+
+    'α[PF] = 1 − .95<sup>'+C+'</sup> = <strong style="font-size:17px">'+cur.toFixed(4)+'</strong>'+
+    '　→　實際上有 <strong>'+(cur*100).toFixed(1)+'%</strong> 的機率至少誤判一次'+
+    (C>=14?'　😱 <strong>已經超過五成，等於擲硬幣！</strong>':(cur>0.15?'　⚠️ 已是名目值的 3 倍以上':''))+'</div>';
+}
+
+// ═══ §6 校正計算器 ═══
+let pfLevel=.05;
+function setPF(v){pfLevel=v;
+  document.getElementById('pf05').classList.toggle('active',v===.05);
+  document.getElementById('pf01').classList.toggle('active',v===.01);
+  drawCorr();}
+function drawCorr(){
+  const C=+document.getElementById('corrC').value;
+  document.getElementById('corrCVal').textContent=C;
+  const sidak=1-Math.pow(1-pfLevel,1/C), bonf=pfLevel/C;
+  document.getElementById('corrOut').innerHTML=
+    '<div class="stat-grid" style="margin:0">'+
+    '<div class="stat-box" style="border-color:var(--teal);background:rgba(26,107,110,.06)"><div class="sb-l">Šidák（精確）</div><div class="sb-v" style="color:var(--teal)">'+sidak.toFixed(5)+'</div><div class="sb-n">1 − (1 − '+pfLevel+')<sup>1/'+C+'</sup></div></div>'+
+    '<div class="stat-box" style="border-color:var(--purple);background:rgba(107,63,160,.06)"><div class="sb-l">Bonferroni（近似）</div><div class="sb-v" style="color:var(--purple)">'+bonf.toFixed(5)+'</div><div class="sb-n">'+pfLevel+' ÷ '+C+'</div></div>'+
+    '<div class="stat-box" style="border-color:var(--gold);background:rgba(212,160,23,.1)"><div class="sb-l">兩者差距</div><div class="sb-v" style="color:#8a6a00;font-size:18px">'+(sidak-bonf).toFixed(6)+'</div><div class="sb-n">Bonferroni 永遠較保守</div></div>'+
+    '</div>'+
+    '<div class="info-box" style="margin-bottom:0;margin-top:12px">📖 做 '+C+' 個比較、想把整體錯誤率控制在 '+pfLevel+' 時，'+
+    '<strong>每個比較的 p 值要小於 '+sidak.toFixed(4)+' 才算顯著</strong>。'+
+    (C>1?'　注意這比傳統的 .05／.01 嚴格得多——傳統 F 表根本查不到這種數字，所以現代分析必須依賴電腦給出精確 p 值。':'')+'</div>';
+}
+
+// ═══ §8 Smith 圖與對比明細 ═══
+function drawSmith(){
+  const c=document.getElementById('smithCanvas');const W=c.offsetWidth;c.width=W;const H=300;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const pad={l:48,r:24,t:26,b:52},pw=W-pad.l-pad.r,ph=H-pad.t-pad.b;
+  const yOf=v=>pad.t+ph*(1-(v-6)/16);
+  ctx.strokeStyle='#eee';ctx.fillStyle='#aaa';ctx.font='11px JetBrains Mono';ctx.textAlign='right';
+  for(let v=8;v<=20;v+=2){const y=yOf(v);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();ctx.fillText(v,pad.l-6,y+4);}
+  const cols=['#1a6b6e','#c0392b','#1a6b6e','#1a6b6e','#c0392b'];
+  const bw=pw/5;
+  gMeans.forEach((m,i)=>{
+    const cx=pad.l+bw*i+bw/2;
+    ctx.fillStyle=cols[i];ctx.globalAlpha=.8;
+    ctx.fillRect(cx-bw*0.28,yOf(m),bw*0.56,yOf(6)-yOf(m));ctx.globalAlpha=1;
+    ctx.fillStyle='#fff';ctx.font='bold 14px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText(m,cx,yOf(m)+22);
+    ctx.fillStyle='#555';ctx.font='12px "Noto Sans TC"';
+    ctx.fillText(gNames[i],cx,H-pad.b+18);
+  });
+  ctx.strokeStyle='#c0392b';ctx.lineWidth=2;ctx.setLineDash([6,4]);
+  ctx.beginPath();ctx.moveTo(pad.l,yOf(15));ctx.lineTo(W-pad.r,yOf(15));ctx.stroke();
+  ctx.setLineDash([]);ctx.lineWidth=1;
+  ctx.fillStyle='#c0392b';ctx.font='11.5px "Noto Sans TC"';ctx.textAlign='left';
+  ctx.fillText('總平均 15',pad.l+6,yOf(15)-6);
+  ctx.strokeStyle='#333';ctx.beginPath();ctx.moveTo(pad.l,yOf(6));ctx.lineTo(W-pad.r,yOf(6));ctx.stroke();
+  ctx.fillStyle='#1a6b6e';ctx.font='bold 12px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('綠＝有正確脈絡（M ≈ 18）　　紅＝無正確脈絡（M ≈ 10.5）',pad.l+pw/2,H-8);
+}
+function showPsi(k,btn){
+  if(btn){btn.parentElement.querySelectorAll('.mini-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+  const p=psiSet[k];
+  const prod=p.C.map((c,i)=>c*gMeans[i]);
+  const psiHat=prod.reduce((a,b)=>a+b,0);
+  const sumC2=p.C.reduce((a,c)=>a+c*c,0);
+  const ss=S_SMITH*psiHat*psiHat/sumC2, F=ss/MSW;
+  const fc05=fcrit(.05,1,45), fc01=fcrit(.01,1,45);
+  let rows='';
+  gNames.forEach((nm,i)=>{
+    rows+='<tr><td style="text-align:left">'+nm+'</td><td>'+gMeans[i]+'</td>'+
+      '<td class="'+(p.C[i]>0?'cpos':(p.C[i]<0?'cneg':'czero'))+'">'+p.C[i]+'</td>'+
+      '<td>'+(prod[i]>=0?'+':'')+prod[i].toFixed(2)+'</td><td>'+p.C[i]*p.C[i]+'</td></tr>';
+  });
+  document.getElementById('psiDetail').innerHTML=
+    '<div style="font-size:15px;font-weight:700;margin-bottom:10px;font-family:\'Noto Serif TC\',serif">'+p.n+'：'+p.desc+'　<span style="font-size:12.5px;color:var(--muted);font-weight:400">（'+p.hyp+'）</span></div>'+
+    '<div class="data-table-wrap" style="margin:12px 0"><table class="contrast-table" style="font-size:13px">'+
+    '<thead><tr><th>組別</th><th>M<sub>a·</sub></th><th>C<sub>a</sub></th><th>C<sub>a</sub>M<sub>a·</sub></th><th>C²<sub>a</sub></th></tr></thead>'+
+    '<tbody>'+rows+'</tbody>'+
+    '<tfoot><tr><td style="text-align:left">Σ</td><td>—</td><td>'+p.C.reduce((a,b)=>a+b,0)+' ✓</td><td><strong>'+psiHat.toFixed(2)+'</strong></td><td><strong>'+sumC2+'</strong></td></tr></tfoot>'+
+    '</table></div>'+
+    '<div class="formula-box" style="margin:12px 0"><div class="formula-label">代入公式</div>'+
+    '<div class="formula-main" style="font-size:15px">SS<sub>ψ</sub> = 10 × ('+psiHat.toFixed(2)+')² / '+sumC2+' = <span style="color:var(--gold)">'+ss.toFixed(2)+'</span></div>'+
+    '<div class="formula-desc">F<sub>ψ</sub> = '+ss.toFixed(2)+' / 32.00 = <strong style="font-size:16px">'+F.toFixed(3)+'</strong>　'+
+    '（臨界值：α=.05 → '+fc05.toFixed(2)+'；α=.01 → '+fc01.toFixed(2)+'）<br>'+
+    (F>=fc01?'<span style="color:#7fd88f;font-weight:700">✓✓ p &lt; .01，強烈拒絕 H₀</span>':(F>=fc05?'<span style="color:#7fd88f;font-weight:700">✓ p &lt; .05，拒絕 H₀</span>':'<span style="color:#bbb">ns — 保留判斷，這個假設沒有得到支持</span>'))+
+    '<br>這個對比佔實驗效果的 <strong>'+(ss/SSA*100).toFixed(1)+'%</strong>（SS<sub>ψ</sub>/SS<sub>A</sub>）、佔總變異的 '+(ss/SSTOT*100).toFixed(1)+'%（R²<sub>Y·ψ</sub>）</div></div>';
+}
+
+// ═══ §10 次設計圖 ═══
+function drawSub(){
+  const c=document.getElementById('subCanvas');const W=c.offsetWidth;c.width=W;const H=250;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const nm=['安慰劑','鎮靜劑 1','鎮靜劑 2','鎮靜劑 3'],M=[105,123,119,133];
+  const pad={l:50,r:24,t:26,b:48},pw=W-pad.l-pad.r,ph=H-pad.t-pad.b;
+  const yOf=v=>pad.t+ph*(1-(v-95)/45);
+  ctx.strokeStyle='#eee';ctx.fillStyle='#aaa';ctx.font='11px JetBrains Mono';ctx.textAlign='right';
+  for(let v=100;v<=135;v+=10){const y=yOf(v);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();ctx.fillText(v,pad.l-6,y+4);}
+  const bw=pw/4;
+  M.forEach((m,i)=>{
+    const cx=pad.l+bw*i+bw/2;
+    ctx.fillStyle=i===0?'#2980b9':'#c0392b';ctx.globalAlpha=.8;
+    ctx.fillRect(cx-bw*0.26,yOf(m),bw*0.52,yOf(95)-yOf(m));ctx.globalAlpha=1;
+    ctx.fillStyle='#fff';ctx.font='bold 13px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText(m,cx,yOf(m)+20);
+    ctx.fillStyle='#555';ctx.font='12px "Noto Sans TC"';
+    ctx.fillText(nm[i],cx,H-pad.b+18);
+  });
+  // 三種藥的平均
+  const barbM=(123+119+133)/3;
+  ctx.strokeStyle='#8a6a00';ctx.lineWidth=2.5;ctx.setLineDash([6,4]);
+  ctx.beginPath();ctx.moveTo(pad.l+bw,yOf(barbM));ctx.lineTo(W-pad.r,yOf(barbM));ctx.stroke();
+  ctx.setLineDash([]);ctx.lineWidth=1;
+  ctx.fillStyle='#8a6a00';ctx.font='bold 11.5px "Noto Sans TC"';ctx.textAlign='right';
+  ctx.fillText('三種藥平均 = '+barbM.toFixed(1),W-pad.r-4,yOf(barbM)-6);
+  ctx.strokeStyle='#333';ctx.beginPath();ctx.moveTo(pad.l,yOf(95));ctx.lineTo(W-pad.r,yOf(95));ctx.stroke();
+  ctx.fillStyle='#666';ctx.font='12px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('電玩表現分數（S = 10，MS_S(A) = 400）',pad.l+pw/2,H-6);
+}
+
+// ═══ §11 趨勢 ═══
+const polys=[
+  {n:'線性 Linear',C:[-2,-1,0,1,2],col:'#c0392b'},
+  {n:'二次 Quadratic',C:[2,-1,-2,-1,2],col:'#2980b9'},
+  {n:'三次 Cubic',C:[-1,2,0,-2,1],col:'#6b3fa0'},
+  {n:'四次 Quartic',C:[1,-4,6,-4,1],col:'#1a6b6e'}
+];
+let trendMode=0;
+function showTrend(k,btn){trendMode=k;
+  if(btn){btn.parentElement.querySelectorAll('.mini-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+  drawPoly();}
+function drawPoly(){
+  const c=document.getElementById('polyCanvas');const W=c.offsetWidth;c.width=W;const H=250;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const pad={l:44,r:24,t:26,b:44},pw=W-pad.l-pad.r,ph=H-pad.t-pad.b;
+  const xOf=i=>pad.l+pw*i/4, yOf=v=>pad.t+ph*(1-(v+6)/13);
+  ctx.strokeStyle='#eee';ctx.fillStyle='#aaa';ctx.font='11px JetBrains Mono';ctx.textAlign='right';
+  for(let v=-6;v<=6;v+=3){const y=yOf(v);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();ctx.fillText(v,pad.l-6,y+4);}
+  ctx.strokeStyle='#999';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad.l,yOf(0));ctx.lineTo(W-pad.r,yOf(0));ctx.stroke();ctx.lineWidth=1;
+  const list=trendMode===4?polys:[polys[trendMode]];
+  list.forEach(p=>{
+    ctx.beginPath();
+    p.C.forEach((v,i)=>{i===0?ctx.moveTo(xOf(i),yOf(v)):ctx.lineTo(xOf(i),yOf(v));});
+    ctx.strokeStyle=p.col;ctx.lineWidth=3;ctx.stroke();ctx.lineWidth=1;
+    p.C.forEach((v,i)=>{ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(xOf(i),yOf(v),5,0,7);ctx.fill();
+      if(trendMode!==4){ctx.fillStyle='#1a1a2e';ctx.font='bold 12px JetBrains Mono';ctx.textAlign='center';
+        ctx.fillText(v,xOf(i),yOf(v)-11);}});
+  });
+  ctx.fillStyle='#666';ctx.font='11.5px "Noto Sans TC"';ctx.textAlign='center';
+  ['8%','10%','12%','14%','16%'].forEach((l,i)=>ctx.fillText(l,xOf(i),H-pad.b+18));
+  ctx.fillText('自變數的水準（等距）',pad.l+pw/2,H-6);
+  if(trendMode===4){
+    ctx.textAlign='left';ctx.font='11.5px "Noto Sans TC"';
+    polys.forEach((p,i)=>{ctx.fillStyle=p.col;ctx.fillRect(pad.l+8,pad.t+i*17,12,4);
+      ctx.fillText(p.n,pad.l+26,pad.t+i*17+5);});
+  }
+}
+function drawWine(){
+  const c=document.getElementById('wineCanvas');const W=c.offsetWidth;c.width=W;const H=290;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const X=['8%','10%','12%','14%','16%'],M=[40,70,90,100,80];
+  const pad={l:50,r:26,t:26,b:52},pw=W-pad.l-pad.r,ph=H-pad.t-pad.b;
+  const xOf=i=>pad.l+pw*i/4, yOf=v=>pad.t+ph*(1-(v-20)/90);
+  ctx.strokeStyle='#eee';ctx.fillStyle='#aaa';ctx.font='11px JetBrains Mono';ctx.textAlign='right';
+  for(let v=20;v<=100;v+=20){const y=yOf(v);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();ctx.fillText(v,pad.l-6,y+4);}
+  // 線性擬合線
+  const mX=2, mY=76;
+  const b=M.reduce((a,m,i)=>a+(i-mX)*(m-mY),0)/M.reduce((a,_,i)=>a+(i-mX)**2,0);
+  ctx.strokeStyle='#c0392b';ctx.lineWidth=2;ctx.setLineDash([6,4]);
+  ctx.beginPath();ctx.moveTo(xOf(0),yOf(mY+b*(0-mX)));ctx.lineTo(xOf(4),yOf(mY+b*(4-mX)));ctx.stroke();
+  ctx.setLineDash([]);ctx.lineWidth=1;
+  ctx.fillStyle='#c0392b';ctx.font='11.5px "Noto Sans TC"';ctx.textAlign='left';
+  ctx.fillText('線性成分（R²=.571）',xOf(2.4),yOf(mY+b*(2.4-mX))-8);
+  // 實際折線
+  ctx.beginPath();
+  M.forEach((m,i)=>{i===0?ctx.moveTo(xOf(i),yOf(m)):ctx.lineTo(xOf(i),yOf(m));});
+  ctx.strokeStyle='#6b3fa0';ctx.lineWidth=3.5;ctx.stroke();ctx.lineWidth=1;
+  M.forEach((m,i)=>{
+    ctx.fillStyle='#6b3fa0';ctx.beginPath();ctx.arc(xOf(i),yOf(m),7,0,7);ctx.fill();
+    ctx.fillStyle='#1a1a2e';ctx.font='bold 13px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText(m,xOf(i),yOf(m)-14);
+    ctx.fillStyle='#555';ctx.font='12px "Noto Sans TC"';
+    ctx.fillText(X[i],xOf(i),H-pad.b+18);
+  });
+  // 轉折標註
+  ctx.strokeStyle='#8a6a00';ctx.lineWidth=2;
+  ctx.beginPath();ctx.arc(xOf(3),yOf(100),15,0,7);ctx.stroke();ctx.lineWidth=1;
+  ctx.fillStyle='#8a6a00';ctx.font='bold 12px "Noto Sans TC"';ctx.textAlign='right';
+  ctx.fillText('🔻 轉折點：14% 之後開始下降',xOf(3)-20,yOf(100)+4);
+  ctx.strokeStyle='#333';ctx.beginPath();ctx.moveTo(pad.l,yOf(20));ctx.lineTo(W-pad.r,yOf(20));ctx.stroke();
+  ctx.fillStyle='#666';ctx.font='12px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('酒精濃度　（紫線＝實際平均，呈倒 U 型：線性上升 + 二次彎曲）',pad.l+pw/2,H-6);
+}
+
+// ═══ 測驗 ═══
+const quizData=[
+ {q:'一組權重要能構成合法的「對比」，必須滿足什麼條件？',
+  opts:['所有權重都是整數','權重總和 ΣC_a = 0','至少有一個權重是正的','權重平方和等於 1'],
+  ans:1,fb:'ΣC_a = 0 是鐵律。若權重和不為零，式子會混入「整體水準」的資訊，問的就不是「這群 vs 那群有沒有差」了。權重可以整組乘上任意常數，F 值不變。'},
+ {q:'如何判斷兩個對比是否正交（互相獨立）？',
+  opts:['兩者的權重都不相同','兩者的權重逐組相乘再加總 = 0','兩者涉及的組別完全不重疊','兩者的 SS 相等'],
+  ans:1,fb:'ΣC_a,1 × C_a,2 = 0。這個式子正是第二章的交叉乘積和（SCP），也就是相關係數的分子。分子為 0 表示相關為 0，兩個對比問的是完全不重疊的問題。'},
+ {q:'A = 5 組的實驗，最多可以有幾個互相正交的對比？',
+  opts:['5 個','4 個','10 個','無上限'],
+  ans:1,fb:'A − 1 = 4 個，剛好等於 df_A。這 4 個對比的 SS 加起來會等於 SS_A——等於把實驗效果不重不漏地切成 4 片，每片 1 個自由度。'},
+ {q:'做 4 個比較、每個都用 α = .05，整體至少犯一次型 I 錯誤的機率是多少？',
+  opts:['.05','.20','.1855','.0125'],
+  ans:2,fb:'α[PF] = 1 − (1−.05)⁴ = .1855。你以為冒 5% 的險，實際上接近 19%。這正是「船長的年齡」寓言警告的：做夠多沒有理論根據的比較，總會撿到假的顯著。'},
+ {q:'Šidák 校正與 Bonferroni 校正的關係是？',
+  opts:['兩者完全相同','Šidák 是精確解，Bonferroni 是較保守的近似','Bonferroni 比較準確','兩者適用於不同類型的資料'],
+  ans:1,fb:'Šidák：α[PC] = 1−(1−α[PF])^(1/C) 是精確解；Bonferroni：α[PF]/C 是近似且永遠更嚴格。C=4、α[PF]=.05 時分別是 .0127 與 .0125。Bonferroni 較有名，是因為沒有電腦的年代除法比開方好算。'},
+ {q:'Smith 實驗中 ψ₁ 的 SS = 675，而 SS_A = 700。這代表什麼？',
+  opts:['計算有誤，SS_ψ 不能這麼接近 SS_A','第一個對比就解釋了 96% 的實驗效果，其他三個對比幾乎沒有貢獻','ψ₁ 與其他對比不正交','樣本數不足'],
+  ans:1,fb:'675/700 = 96.4%。整個實驗效果幾乎全來自「有正確脈絡 vs 沒有」這一個對比。至於脈絡是真實、想像還是照片（ψ₂、ψ₃）完全沒差。這才是能寫進論文的結論。'},
+ {q:'課本指出：omnibus F 可能不顯著，但某個對比卻顯著。為什麼？',
+  opts:['計算錯誤','omnibus F 把 SS_A 除以 (A−1) 攤平了，效果被其他無效對比稀釋；對比的 df = 1 不必除，強度完整保留','對比用了不同的誤差項','α 水準設定不同'],
+  ans:1,fb:'F_omnibus 其實是各對比 F 的「平均」。一個很強的對比會被幾個無效對比拉低平均。所以不需要「先做 omnibus 顯著才能做對比」——計畫性比較源自理論，本來就該直接做。'},
+ {q:'研究者想檢定「三種劑型之間有無差異」（H₀: μ₂=μ₃=μ₄）。這個問題有什麼特別？',
+  opts:['可以用單一個對比表達','需要 2 個自由度，必須由兩個正交對比相加組成「次設計比較」','無法用 ANOVA 分析','必須改用事後比較'],
+  ans:1,fb:'3 組的比較有 2 個自由度，超過對比的定義（對比 = df 恰為 1 的比較）。做法是把 ψ₂ 與 ψ₃ 的 SS 與 df 相加：SS=1040、df=2、MS=520、F(2,36)=1.30。注意分子自由度變成 2，臨界值也跟著改變。'},
+ {q:'酒精濃度實驗中，線性與二次趨勢都顯著。這代表什麼形狀？',
+  opts:['一條直線','倒 U 型：整體上升但有轉折，過了 14% 後反而下降','W 型波浪','無法判斷'],
+  ans:1,fb:'線性成分說「整體趨勢向上」，二次成分說「這條線是彎的」。合起來就是倒 U 型。兩者合計解釋 97.9% 的實驗效果。只有趨勢分析能直接給出「形狀是倒 U、轉折在 14%」這種可寫進摘要的結論。'}
+];
+let score=0,answered=0;
+function renderQuiz(){
+  const ct=document.getElementById('quizContainer');ct.innerHTML='';
+  quizData.forEach((q,qi)=>{
+    const card=document.createElement('div');card.className='quiz-card';
+    card.innerHTML='<div class="quiz-q"><span>'+(qi+1)+'</span>'+q.q+'</div>';
+    const opts=document.createElement('div');opts.className='quiz-opts';
+    q.opts.forEach((o,oi)=>{
+      const b=document.createElement('button');b.className='quiz-opt';b.textContent=String.fromCharCode(65+oi)+'. '+o;
+      b.onclick=()=>{
+        if(card.dataset.done)return;card.dataset.done='1';
+        const fb=card.querySelector('.quiz-feedback');
+        if(oi===q.ans){b.classList.add('selected-correct');fb.className='quiz-feedback show correct';fb.innerHTML='✅ 正確！'+q.fb;score++;}
+        else{b.classList.add('selected-wrong');opts.children[q.ans].classList.add('selected-correct');fb.className='quiz-feedback show wrong';fb.innerHTML='❌ 正解是 '+String.fromCharCode(65+q.ans)+'。'+q.fb;}
+        answered++;
+        if(answered===quizData.length){const s=document.getElementById('quizScore');s.style.display='block';s.textContent='🎉 完成！得分：'+score+' / '+quizData.length;}
+      };
+      opts.appendChild(b);
+    });
+    card.appendChild(opts);
+    const fb=document.createElement('div');fb.className='quiz-feedback';card.appendChild(fb);
+    ct.appendChild(card);
+  });
+}
+function resetQuiz(){score=0;answered=0;document.getElementById('quizScore').style.display='none';renderQuiz();}
+
+function drawAll(){drawAlpha();drawCorr();drawSmith();drawSub();drawPoly();drawWine();}
+window.addEventListener('resize',drawAll);
+buildCW();buildOrth();showPsi(0,null);renderQuiz();drawAll();
+</script>
+</body>
+</html>

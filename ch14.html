@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第十四章：單因子 ANOVA — 事後比較 | 心理學統計教材</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a2e;--paper:#f8f4ef;--cream:#fdf8f2;--accent:#c0392b;--accent2:#2980b9;--gold:#d4a017;--teal:#1a6b6e;--purple:#6b3fa0;--muted:#6b7280;--border:#d5c9be;--card-bg:#fff;--formula-bg:#1a1a2e;--formula-text:#f0e6d3;--highlight:#fff3cd}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.8}
+.hero{background:var(--ink);color:var(--paper);padding:80px 40px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(255,255,255,.02) 40px,rgba(255,255,255,.02) 41px)}
+.hero-eyebrow{font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500}
+.hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(28px,5vw,52px);font-weight:700;line-height:1.2;margin-bottom:20px}
+.hero h1 span{color:var(--gold)}
+.hero-sub{font-size:15px;color:rgba(248,244,239,.65);max-width:560px;margin:0 auto 40px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.tag{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 16px;font-size:13px;color:var(--paper)}
+nav{position:sticky;top:0;z-index:100;background:rgba(26,26,46,.97);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);padding:0 40px;display:flex;gap:0;overflow-x:auto}
+nav a{display:block;padding:16px 20px;color:rgba(248,244,239,.65);text-decoration:none;font-size:13px;font-weight:500;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+nav a:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+section{padding:64px 0;border-bottom:1px solid var(--border)}
+section:last-of-type{border-bottom:none}
+.section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:36px}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.2);border-radius:4px;padding:3px 8px;flex-shrink:0}
+.section-header h2{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:700;color:var(--ink)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:32px}
+.concept-card{background:var(--card-bg);border-radius:12px;padding:24px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.concept-icon{font-size:28px;margin-bottom:12px}
+.concept-card h3{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;margin-bottom:10px}
+.concept-card p{font-size:14px;color:var(--muted);line-height:1.7}
+.concept-card p+p{margin-top:8px}
+.highlight-box{background:var(--highlight);border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#6b4c00}
+.warn-box{background:rgba(192,57,43,.06);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#7a2a1f}
+.info-box{background:rgba(41,128,185,.06);border-left:4px solid var(--accent2);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#1e5a8a}
+.magic-box{background:linear-gradient(135deg,rgba(107,63,160,0.08),rgba(212,160,23,0.08));border:2px solid var(--purple);border-radius:12px;padding:24px;margin:24px 0;font-size:14px}
+.magic-box .magic-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--purple);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.formula-box{background:var(--formula-bg);border-radius:12px;padding:28px 32px;margin:24px 0;position:relative;overflow:hidden}
+.formula-box::before{content:'FORMULA';position:absolute;top:12px;right:16px;font-size:10px;letter-spacing:3px;color:rgba(255,255,255,.2);font-family:'JetBrains Mono',monospace}
+.formula-box .formula-label{font-size:12px;color:var(--gold);margin-bottom:10px;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.formula-box .formula-main{font-family:'JetBrains Mono',monospace;font-size:20px;color:var(--formula-text);font-weight:600;margin-bottom:12px;word-wrap:break-word;line-height:1.5}
+.formula-box .formula-desc{font-size:13px;color:rgba(240,230,211,.6);line-height:1.7}
+.formula-box .formula-desc strong{color:var(--gold)}
+.chart-wrapper{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px;margin:28px 0}
+.chart-title{font-size:14px;font-weight:600;color:var(--muted);margin-bottom:16px;letter-spacing:.5px}
+canvas{display:block;width:100%}
+.data-table-wrap{overflow-x:auto;margin:24px 0;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--card-bg)}
+thead tr{background:var(--ink)}
+thead th{color:var(--paper);padding:12px 16px;text-align:center;font-weight:600;font-size:13px}
+thead th:first-child{text-align:left}
+tbody tr:nth-child(even){background:var(--cream)}
+tbody td{padding:10px 16px;text-align:center;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:13px}
+tbody td:first-child{text-align:left;font-family:'Noto Sans TC',sans-serif;font-size:13.5px}
+tfoot tr{background:rgba(192,57,43,.08);font-weight:600}
+tfoot td{padding:12px 16px;border-top:2px solid var(--accent);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;text-align:center}
+.prose p{margin-bottom:16px;font-size:15px;line-height:1.85;color:#333}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--ink)}
+.prose em{color:var(--accent);font-style:normal;font-weight:500}
+.steps{counter-reset:step}
+.step{display:flex;gap:20px;margin-bottom:28px;align-items:flex-start}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--gold);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.step-body{flex:1}
+.step-body h4{font-weight:700;font-size:15px;margin-bottom:8px}
+.step-body p{font-size:14px;color:#444;margin-bottom:8px}
+.step-body p:last-child{margin-bottom:0}
+.notions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0}
+.notion-item{background:var(--ink);color:var(--paper);border-radius:8px;padding:14px 18px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px}
+.notion-item::before{content:'◆';color:var(--gold);font-size:10px;flex-shrink:0}
+.formula-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:24px 0}
+.formula-mini{background:var(--ink);border-radius:10px;padding:20px;color:var(--formula-text)}
+.formula-mini .fm-label{font-size:11px;color:var(--gold);letter-spacing:2px;font-family:'JetBrains Mono',monospace;margin-bottom:8px;text-transform:uppercase}
+.formula-mini .fm-eq{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#fff;line-height:1.6;word-wrap:break-word}
+.formula-mini .fm-note{font-size:12px;color:rgba(255,255,255,.5);margin-top:6px;line-height:1.5}
+.quiz-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:20px}
+.quiz-q{font-weight:700;font-size:15px;margin-bottom:16px;line-height:1.6}
+.quiz-q span{display:inline-block;width:26px;height:26px;background:var(--ink);color:var(--gold);border-radius:50%;font-size:13px;text-align:center;line-height:26px;margin-right:8px;font-family:'JetBrains Mono',monospace}
+.quiz-opts{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:12px 18px;cursor:pointer;font-size:14px;transition:all .2s;text-align:left;font-family:'Noto Sans TC',sans-serif}
+.quiz-opt:hover{border-color:var(--accent2);background:rgba(41,128,185,.05)}
+.quiz-opt.selected-correct{border-color:#27ae60;background:rgba(39,174,96,.1);color:#1e8449;font-weight:600}
+.quiz-opt.selected-wrong{border-color:var(--accent);background:rgba(192,57,43,.1);color:var(--accent)}
+.quiz-feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:13.5px;display:none;line-height:1.6}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:rgba(39,174,96,.1);color:#1e8449;border:1px solid rgba(39,174,96,.3)}
+.quiz-feedback.wrong{background:rgba(192,57,43,.08);color:#c0392b;border:1px solid rgba(192,57,43,.2)}
+.btn{display:inline-block;padding:14px 32px;background:var(--ink);color:var(--paper);border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.btn:hover{background:var(--accent);transform:translateY(-2px)}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--accent);color:#fff}
+footer{background:var(--ink);color:rgba(248,244,239,.5);text-align:center;padding:32px;font-size:13px}
+footer a{color:var(--gold);text-decoration:none}
+footer a:hover{text-decoration:underline}
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);z-index:9999;width:0%;transition:width .1s}
+@media(max-width:600px){.hero{padding:48px 20px 40px}nav{padding:0 16px}.container{padding:0 16px}section{padding:48px 0}}
+.ctrl-row{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:14px 0;padding:16px;background:var(--cream);border-radius:8px;border:1px solid var(--border)}
+.ctrl-row label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:500}
+.ctrl-row input[type=range]{width:170px;accent-color:var(--accent)}
+.ctrl-val{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--accent);font-weight:700;min-width:48px;display:inline-block}
+.mini-btn{background:var(--cream);border:2px solid var(--border);border-radius:8px;padding:9px 15px;cursor:pointer;font-size:12.5px;font-weight:600;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.mini-btn:hover{border-color:var(--accent2)}
+.mini-btn.active{background:var(--ink);color:var(--gold);border-color:var(--ink)}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:18px 0}
+.stat-box{border-radius:10px;padding:16px;text-align:center;border:2px solid}
+.stat-box .sb-l{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.stat-box .sb-v{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700}
+.stat-box .sb-n{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.5}
+.pw-matrix{border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:12.5px;width:100%}
+.pw-matrix th{background:var(--ink);color:var(--paper);padding:8px 10px;font-size:11.5px}
+.pw-matrix td{padding:9px 10px;text-align:center;border:1px solid var(--border)}
+.pw-matrix td.sig1{background:rgba(39,174,96,.16);color:#14532d;font-weight:700}
+.pw-matrix td.sig2{background:rgba(39,174,96,.3);color:#0d3d1f;font-weight:700}
+.pw-matrix td.ns{background:#f6f3ee;color:#999}
+.pw-matrix td.diag{background:var(--cream);color:#bbb}
+.nk-level{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+.nk-node{border-radius:10px;padding:11px 14px;font-size:12.5px;text-align:center;border:2px solid;min-width:124px}
+.nk-node .nn-l{font-family:'JetBrains Mono',monospace;font-size:12px;margin-bottom:5px}
+.nk-node .nn-f{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700}
+.nk-rej{background:rgba(39,174,96,.12);border-color:#1e8449;color:#14532d}
+.nk-ns{background:#f4f0ea;border-color:#bbb;color:#888}
+.nk-skip{background:#faf8f5;border-color:#e0d8ce;color:#c5bdb4;border-style:dashed}
+.nk-rowlab{font-size:12px;color:var(--muted);text-align:center;margin:14px 0 4px;font-weight:600}
+.test-card{border-radius:12px;padding:20px;border:2px solid;margin-bottom:16px}
+.test-card h4{font-family:'Noto Serif TC',serif;font-size:16.5px;font-weight:700;margin-bottom:10px}
+.test-card p{font-size:13.5px;line-height:1.8;color:#444;margin-bottom:8px}
+.tc-scheffe{background:rgba(192,57,43,.05);border-color:var(--accent)}
+.tc-tukey{background:rgba(41,128,185,.05);border-color:var(--accent2)}
+.tc-nk{background:rgba(107,63,160,.05);border-color:var(--purple)}
+.tc-duncan{background:rgba(212,160,23,.07);border-color:var(--gold)}
+.letter-tag{display:inline-block;background:var(--ink);color:var(--gold);border-radius:5px;padding:2px 9px;font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;margin:0 2px}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<div class="hero">
+  <div class="hero-eyebrow">第十四章 · Chapter 14</div>
+  <h1>單因子 ANOVA<br><span>事後比較</span></h1>
+  <p class="hero-sub">「看完資料才決定要比什麼」——這聽起來很自然，卻是統計上最危險的動作。因為你的比較家族，其實包含了<em>所有你沒做但心裡默默排除掉的</em>比較。</p>
+  <div class="hero-tags">
+    <span class="tag">🔍 資料窺探</span>
+    <span class="tag">🛡️ Scheffé 檢定</span>
+    <span class="tag">🍺 Tukey HSD</span>
+    <span class="tag">🪜 Newman–Keuls</span>
+    <span class="tag">📊 F<sub>range</sub> 分配</span>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" style="color:var(--gold)">← 回首頁</a>
+  <a href="#why">§1 隱形的比較家族</a>
+  <a href="#explosion">§2 數字有多可怕</a>
+  <a href="#scheffe">§3 Scheffé 的巧思</a>
+  <a href="#scheffe-ex">§4 Scheffé 實例</a>
+  <a href="#pairwise">§5 兩兩比較</a>
+  <a href="#tukey">§6 Tukey 檢定</a>
+  <a href="#nk">§7 Newman–Keuls</a>
+  <a href="#nk-ex">§8 車禍證詞實例</a>
+  <a href="#choose">§9 該用哪一個</a>
+  <a href="#formulas">§K 公式整理</a>
+  <a href="#quiz">§Q 測驗</a>
+</nav>
+
+<div class="container">
+
+<!-- §1 -->
+<section id="why">
+<div class="section-header"><span class="section-num">§1</span><h2>事後比較的核心難題：你的家族比你以為的大得多</h2></div>
+
+<div class="prose">
+<p>前兩章的比較都是<strong>事前</strong>計畫好的——來自理論，數量有限。本章處理的是另一種情況：</p>
+<p style="text-align:center;font-size:16px;font-weight:600;color:var(--accent);padding:16px;background:rgba(192,57,43,.06);border-radius:10px">
+「咦，第 2 組跟第 5 組差好多，來檢定一下！」
+</p>
+<p>這叫做<strong>事後比較</strong>（post hoc、a posteriori），也有人不客氣地稱之為 <em>data snooping</em>（資料窺探）。</p>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🕵️ Scheffé 的洞見：你其實做了所有比較</div>
+<p style="line-height:1.95">當你看著資料說「這兩組差最多，來比比看」，你<strong>已經在心裡把所有其他配對都掃過一遍</strong>，並且判斷它們「不有趣」。</p>
+<p style="line-height:1.95;margin-top:12px;padding:14px;background:rgba(107,63,160,.1);border-radius:8px;font-weight:700;color:var(--purple);font-size:15px">
+所以無論你實際「做」了幾個檢定，<br>你的比較家族都包含<strong>所有可能的比較</strong>。
+</p>
+<p style="line-height:1.95;margin-top:12px">這不是吹毛求疵——這是統計上的必然。既然你是<em>從資料中挑出最極端的那個</em>來檢定，當然要用「挑最極端者」的機率分配來評估它。</p>
+</div>
+
+<div class="warn-box">
+🎯 <strong>回想第十二章的「船長的年齡」</strong>：孩子們假設題目一定有答案，於是硬湊出一個。事後比較的危險完全一樣——<strong>資料中總會有某兩組看起來差很多</strong>，即使母體中它們毫無差異。<br><br>
+事後檢定的全部工作，就是把門檻抬高到「連隨機波動中最極端的那一對，也很難跨過」的程度。
+</div>
+</section>
+
+<!-- §2 -->
+<section id="explosion">
+<div class="section-header"><span class="section-num">§2</span><h2>先看數字：家族大到什麼程度？</h2></div>
+
+<div class="chart-wrapper">
+<div class="chart-title">💥 α 爆炸表：組數增加時，可能的比較數與型 I 錯誤率（依課本 Table 14.1、14.2）</div>
+<div class="ctrl-row" style="justify-content:center">
+  <button class="mini-btn active" id="tbAll" onclick="setTable(0)">所有可能的對比</button>
+  <button class="mini-btn" id="tbPair" onclick="setTable(1)">只算兩兩比較</button>
+</div>
+<div class="data-table-wrap" style="margin:0"><table id="expTable"></table></div>
+<div id="expNote" style="margin-top:12px"></div>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">兩個計數公式</div>
+<div class="formula-main" style="font-size:15px">
+所有可能的對比數 = 1 + [(3<sup>A</sup> − 1)／2 − 2<sup>A</sup>]<br><br>
+兩兩比較數 = A(A − 1) ／ 2
+</div>
+<div class="formula-desc">
+A = 4 時：所有對比 = <strong>25 個</strong>；兩兩比較 = <strong>6 個</strong><br>
+A = 10 時：所有對比 = <strong>28,501 個</strong>；兩兩比較 = 45 個<br><br>
+<span style="color:#ff8c8c">若每個都用 α = .05 檢定，A = 5 時 α[PF] 已經是 <strong>.990</strong>——幾乎<em>保證</em>會誤判至少一次。</span>
+</div>
+</div>
+
+<div class="info-box">
+📌 <strong>兩種家族，兩種對策</strong>：<br>
+・想檢定<strong>任何形式</strong>的對比（包括 2 組 vs 3 組這種複雜組合）→ 家族是「所有可能對比」→ 用 <strong>Scheffé</strong>（§3）<br>
+・只想做<strong>兩兩比較</strong>（哪兩組不同）→ 家族小得多 → 用 <strong>Tukey 或 Newman–Keuls</strong>（§6、§7）<br><br>
+<em>Jaccard 等人 (1984) 調查 APA 期刊發現：將近三分之二的多重比較都只是兩兩比較。</em>
+</div>
+</section>
+
+<!-- §3 -->
+<section id="scheffe">
+<div class="section-header"><span class="section-num">§3</span><h2>Scheffé 檢定：一個極簡潔的巧思</h2></div>
+
+<div class="prose">
+<p>Scheffé (1953, 1959) 的想法簡單得令人拍案。它建立在兩個觀察上：</p>
+</div>
+
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div class="step-body">
+<h4>omnibus F 其實已經檢定了「所有對比皆為 0」</h4>
+<p>H₀（所有母體平均相等）成立 ⟺ <strong>所有可能的對比都等於 0</strong>。所以 omnibus F 本來就是一個「全家族」的檢定。</p>
+</div></div>
+<div class="step"><div class="step-num">2</div><div class="step-body">
+<h4>檢定「最大的那個對比」= 一次檢定所有對比</h4>
+<p>如果連<em>最大</em>的對比都不顯著，那所有比它小的當然也不顯著。<strong>所以只要守住最大值那一關就好。</strong></p>
+</div></div>
+<div class="step"><div class="step-num">3</div><div class="step-body">
+<h4>那就讓「最大對比的檢定」剛好等價於 omnibus 檢定</h4>
+<p>這樣就永遠不會出現「omnibus 不顯著、但某個事後對比卻顯著」的矛盾決策。</p>
+</div></div>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🔑 關鍵定理：最大的對比平方和 = SS<sub>A</sub></div>
+<p style="line-height:1.95">哪一組權重會讓 SS<sub>ψ</sub> 達到最大？答案優美得不可思議：</p>
+<div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--purple);margin:16px 0">
+C<sub>a</sub> = M<sub>a·</sub> − M<sub>··</sub>
+</div>
+<p style="line-height:1.95">用「<strong>每組偏離總平均的距離</strong>」當權重（這確實是合法對比，因為離均差和為 0）。代進 SS<sub>ψ</sub> 公式化簡後會得到：</p>
+<div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--purple);margin:14px 0">
+SS<sub>ψ,max</sub> = SS<sub>A</sub>　⟹　F<sub>ψ,max</sub> = (A − 1) × F<sub>omnibus</sub>
+</div>
+<p style="line-height:1.95">直覺上很合理：<strong>最能「解釋」組間差異的那個對比，就是完全照著資料形狀量身訂做的那一個</strong>——它把整個實驗效果一口吃掉。</p>
+<p style="line-height:1.95;margin-top:10px;font-size:13.5px;color:var(--muted)">💡 順帶一提：這個「最大對比」<em>不可能</em>與任何其他對比正交。因為兩個正交對比的 SS 加起來才等於 SS<sub>A</sub>，而它自己就已經用光了。</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">Scheffé 臨界值</div>
+<div class="formula-main" style="font-size:19px">F<sub>critical, Scheffé</sub> = (A − 1) × F<sub>critical, omnibus</sub></div>
+<div class="formula-desc">
+自由度用 <strong>ν₁ = A − 1、ν₂ = A(S − 1)</strong> 去查 F 表，再乘上 (A − 1)。<br><br>
+<span style="color:#ff8c8c">⚠️ <strong>最常見的錯誤</strong>：查表時用 ν₁ = 1。<u>不對！</u>要用 ν₁ = A − 1。<br>因為這個檢定對應的是 omnibus F，不是單一自由度的對比。</span>
+</div>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🛡️ Scheffé 有多保守？（與單一對比的臨界值比較）</div>
+<div class="ctrl-row" style="justify-content:center">
+  <div><label>組數 A</label><input type="range" id="schA" min="2" max="8" step="1" value="4" oninput="drawScheffe()"><span class="ctrl-val" id="schAVal">4</span></div>
+  <div><label>每組人數 S</label><input type="range" id="schS" min="3" max="30" step="1" value="5" oninput="drawScheffe()"><span class="ctrl-val" id="schSVal">5</span></div>
+</div>
+<canvas id="scheffeCanvas" height="230"></canvas>
+<div id="scheffeNote" style="margin-top:12px"></div>
+</div>
+
+<div class="highlight-box">
+🛡️ <strong>Scheffé 是「保守」的檢定</strong>——它的臨界值永遠比其他方法高。這帶來一個重要保證：<br><br>
+<strong>Scheffé 拒絕 H₀ ⟹ 其他更有檢定力的方法也一定會拒絕。</strong><br>
+反之則不然：可能其他方法拒絕了，Scheffé 卻沒有。<br><br>
+<em>所以兩者之間永遠不會出現「矛盾」的結論——這正是 Scheffé 的設計目標。代價是型 II 錯誤（β）變大。</em>
+</div>
+</section>
+
+<!-- §4 -->
+<section id="scheffe-ex">
+<div class="section-header"><span class="section-num">§4</span><h2>Scheffé 實例：Romeo and Juliet</h2></div>
+
+<div class="prose">
+<p>同樣的四個對比，但這次假設研究者是<strong>看完資料才決定</strong>要檢定它們。MS<sub>S(A)</sub> = 2.35、S = 5、A = 4。</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">先算臨界值</div>
+<div class="formula-main" style="font-size:16px">F<sub>critical, Scheffé</sub> = (4 − 1) × F<sub>critical</sub>(3, 16) = 3 × 3.24 = <span style="color:var(--gold)">9.72</span></div>
+<div class="formula-desc">對照第十三章事前非正交的 Šidák 臨界值 7.86——事後檢定的門檻明顯更高。</div>
+</div>
+
+<div class="data-table-wrap">
+<table>
+<thead><tr><th>對比</th><th>SS<sub>ψ</sub></th><th>F<sub>ψ</sub></th><th>vs 9.72</th><th>Scheffé 決策</th><th>對照：事前 Šidák（7.86）</th></tr></thead>
+<tbody>
+<tr style="background:#f6f3ee;color:#888"><td>ψ₁（任何脈絡有效）</td><td>12.15</td><td>5.17</td><td>&lt;</td><td>ns</td><td>ns（本來就沒過）</td></tr>
+<tr style="background:#f6f3ee;color:#888"><td>ψ₂（事後脈絡有效）</td><td>0.10</td><td>0.04</td><td>&lt;</td><td>ns</td><td>ns</td></tr>
+<tr style="background:rgba(39,174,96,.1)"><td>ψ₃（事前脈絡最強）</td><td>46.82</td><td><strong>19.92</strong></td><td>&gt;</td><td style="color:#1e8449;font-weight:700">拒絕 H₀ ✓</td><td style="color:#1e8449">✓ 也拒絕</td></tr>
+<tr style="background:rgba(212,160,23,.14)"><td>ψ₄（部分 vs 事前）</td><td>19.60</td><td>8.34</td><td>&lt;</td><td style="color:var(--accent);font-weight:700">ns ✗</td><td style="color:#1e8449">✓ 拒絕（7.86）</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="warn-box">
+😬 <strong>注意 ψ₄ 的命運</strong>：F = 8.34。<br>
+・如果它是<strong>事前計畫</strong>的比較（第十三章）→ 門檻 7.86 → <strong>顯著</strong><br>
+・如果它是<strong>事後才想到</strong>的（本章）→ 門檻 9.72 → <strong>不顯著</strong><br><br>
+<span style="font-weight:700">完全一樣的資料、完全一樣的 F 值，結論卻相反。差別只在於「你什麼時候決定要做這個比較」。</span><br><br>
+👉 這就是為什麼<strong>預先註冊（preregistration）</strong>在現代研究中如此重要——它讓「這是事前假設」這件事變得可稽核，而不只是作者的自我宣稱。
+</div>
+
+<div class="info-box">
+🖥️ <strong>用電腦算精確 p 值的做法</strong>：把 F<sub>ψ</sub> 除以 (A − 1)，再用 ν₁ = A − 1、ν₂ = A(S − 1) 查 F 分配。<br>
+例：ψ₃ 的 F = 19.92 → 19.92 ／ 3 = <strong>6.64</strong> → 在 F(3, 16) 下的 p = <strong>.004019</strong> ✓（與課本一致）
+</div>
+</section>
+
+<!-- §5 -->
+<section id="pairwise">
+<div class="section-header"><span class="section-num">§5</span><h2>更常見的需求：只做兩兩比較</h2></div>
+
+<div class="prose">
+<p>Scheffé 保護了「所有可能的對比」，但如果你根本不打算做 2 組 vs 3 組那種複雜對比，只想知道<strong>「哪兩組彼此不同」</strong>，那 Scheffé 就保護過頭了——白白損失檢定力。</p>
+<p>兩兩比較的家族小得多（A = 4 時只有 6 個，而非 25 個），值得專門的方法。</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">兩兩比較的 SS 有簡化公式</div>
+<div class="formula-main" style="font-size:17px">SS<sub>ψ</sub> = S(M<sub>a·</sub> − M<sub>a′·</sub>)² ／ 2</div>
+<div class="formula-desc">
+因為權重是 (+1, −1)，所以 ΣC² = 2，一般公式就化簡成這樣。<br><br>
+例（Romeo &amp; Juliet，事前脈絡 7.00 vs 部分脈絡 4.20）：<br>
+SS<sub>ψ</sub> = 5 × (2.80)² ／ 2 = 5 × 7.84 ／ 2 = <strong>19.60</strong>
+</div>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🍺 新分配登場：F<sub>range</sub>（學生化全距）</div>
+<p style="line-height:1.95">Tukey 與 Newman–Keuls 都用一個新的分配，來自 Gosset——就是那位用筆名「<strong>Student</strong>」發表 t 檢定的人。</p>
+<p style="line-height:1.95;margin-top:10px">（他用假名是因為正職是在<strong>健力士啤酒廠</strong>用統計改善釀酒品質，不希望學術著作跟本業扯上關係。也有統計史家認為，他是不想讓競爭對手嗅出健力士在做什麼。）</p>
+<p style="line-height:1.95;margin-top:12px">Gosset 推導出 <strong>Student's q（學生化全距，studentized range）</strong>。課本使用它的變形：</p>
+<div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--purple);margin:14px 0">
+F<sub>range</sub> = q² ／ 2
+</div>
+<p style="line-height:1.95"><strong>它在問什麼？</strong>「如果所有組其實來自<em>同一個</em>母體，那麼<u>最大平均</u>與<u>最小平均</u>之間的差距，會有多大？」——這正是「事後挑最極端者」該用的分配。</p>
+</div>
+
+<div class="info-box">
+📏 <strong>什麼是「全距（range）」？</strong>兩個值之間涵蓋幾個分數（含頭尾）。<br>
+例：數列 2, 4, 14, 25, 60 中，最小到最大的全距是 <strong>5</strong>（共 5 個數）。<br>
+在 ANOVA 裡：4 組時最大差距的全距就是 4。<strong>全距越大，臨界值越高</strong>——因為挑選範圍越廣，撿到極端值的機會越大。
+</div>
+
+<div class="warn-box">
+🔬 <strong>F<sub>range</sub> 與標準 ANOVA 的微妙差異</strong>：兩者檢定同一個 H₀，多數時候結論一致，但偶爾會不同（Winer, 1971）。<br>
+原因：<strong>F<sub>range</sub> 只用到最極端的兩個平均數</strong>，而 ANOVA 用到<strong>全部</strong>平均數。<br>
+一般而言 ANOVA 較敏感——但那是因為它問的是不同的問題。
+</div>
+</section>
+
+<!-- §6 -->
+<section id="tukey">
+<div class="section-header"><span class="section-num">§6</span><h2>Tukey 檢定：用「最大差距」的門檻檢定所有配對</h2></div>
+
+<div class="prose">
+<p>Tukey 的邏輯跟 Scheffé 一模一樣，只是把家族從「所有對比」縮小成「所有兩兩比較」：</p>
+<p><strong>用 range = A（最大可能全距）查出臨界值，然後套用到每一個配對。</strong></p>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">📊 Romeo and Juliet：六個兩兩比較（平均數已由大到小排序）</div>
+<canvas id="tukeyCanvas" height="270"></canvas>
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:16.5px;margin:24px 0 10px;font-weight:700">① 平均數差距表</h3>
+<div class="data-table-wrap"><table class="pw-matrix" id="diffTable"></table></div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:16.5px;margin:24px 0 10px;font-weight:700">② 平方和表（SS = S·diff² / 2）</h3>
+<div class="data-table-wrap"><table class="pw-matrix" id="ssTable"></table></div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:16.5px;margin:24px 0 10px;font-weight:700">③ F 值與 Tukey 判定</h3>
+<div class="data-table-wrap"><table class="pw-matrix" id="fTable"></table></div>
+
+<div class="stat-grid">
+<div class="stat-box" style="border-color:var(--accent2);background:rgba(41,128,185,.06)">
+<div class="sb-l">F<sub>critical, Tukey</sub>（α[PF] = .05）</div><div class="sb-v" style="color:var(--accent2)">8.20</div><div class="sb-n">range = 4，ν₂ = 16</div>
+</div>
+<div class="stat-box" style="border-color:var(--accent);background:rgba(192,57,43,.06)">
+<div class="sb-l">F<sub>critical, Tukey</sub>（α[PF] = .01）</div><div class="sb-v" style="color:var(--accent)">13.47</div><div class="sb-n">range = 4，ν₂ = 16</div>
+</div>
+<div class="stat-box" style="border-color:#1e8449;background:rgba(39,174,96,.06)">
+<div class="sb-l">顯著的配對</div><div class="sb-v" style="font-size:17px;color:#1e8449">3 組</div><div class="sb-n">全都跟「事前脈絡」有關</div>
+</div>
+</div>
+
+<div class="highlight-box">
+📖 <strong>結論</strong>：只有「事前脈絡」與其他三組的差距達到顯著（8.34*、15.36**、17.02**）。其餘三個配對（部分 vs 事後、部分 vs 無、事後 vs 無）都不顯著。<br><br>
+這跟第十二章對比分析的結論一致：<strong>關鍵只在於「有沒有拿到有效的事前脈絡」。</strong>
+</div>
+
+<div class="info-box">
+⚖️ <strong>Tukey 也是保守的</strong>：只有「最大差距」那一格用到<em>正確</em>的 α；其他配對用同一個門檻，就過度保護了。這帶來與 Scheffé 一樣的好處（不會有矛盾決策）與代價（檢定力損失）。<br>
+👉 為了改善這一點，Newman–Keuls 登場。
+</div>
+</section>
+
+<!-- §7 -->
+<section id="nk">
+<div class="section-header"><span class="section-num">§7</span><h2>Newman–Keuls：讓門檻隨全距浮動的序列檢定</h2></div>
+
+<div class="prose">
+<p>Tukey 的浪費在於：檢定「相鄰兩組」時，明明只涉及 2 個平均數，卻用了 range = A 的嚴格門檻。</p>
+<p><strong>Newman–Keuls 的改良</strong>：<em>每個配對用它自己實際的全距</em>來查臨界值。全距小 → 門檻低 → 檢定力提高。</p>
+</div>
+
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div class="step-body">
+<h4>把平均數由小到大排序</h4>
+<p>M₁ 最小、M<sub>A</sub> 最大。</p>
+</div></div>
+<div class="step"><div class="step-num">2</div><div class="step-body">
+<h4>先檢定最大的差距（M₁ vs M<sub>A</sub>，range = A）</h4>
+<p>做法跟 Tukey 完全一樣。<strong>如果不顯著 → 整個程序立刻停止</strong>，因為最大的都不顯著，其他必然也不顯著。</p>
+</div></div>
+<div class="step"><div class="step-num">3</div><div class="step-body">
+<h4>顯著的話，往下檢定 range = A − 1 的那兩對</h4>
+<p>用 range = A − 1 的臨界值（比較低）。</p>
+</div></div>
+<div class="step"><div class="step-num">4</div><div class="step-body">
+<h4>某一對不顯著 → 它「包住」的所有比較全部劃掉，不再檢定</h4>
+<p>直接判定為不顯著（<strong>由蘊含關係推得</strong>），不必實際檢定。</p>
+</div></div>
+<div class="step"><div class="step-num">5</div><div class="step-body">
+<h4>重複到所有配對都被檢定或被劃掉為止</h4>
+</div></div>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🪜 為什麼要「劃掉被包住的比較」？避免矛盾決策</div>
+<p style="line-height:1.95">假設平均數由小到大是 M₁ &lt; M₂ &lt; M₃ &lt; M₄ &lt; M₅。</p>
+<p style="line-height:1.95;margin-top:10px;padding:12px;background:rgba(192,57,43,.07);border-radius:8px;color:#7a2a1f">
+<strong>荒謬的情況</strong>：宣稱 M₂ 與 M₅ <em>沒有</em>差異，卻同時宣稱 M₃ 與 M₄ <em>有</em>差異。<br>
+但 M₃、M₄ 都夾在 M₂ 與 M₅ 之間——小差距顯著，大差距反而不顯著？<strong>邏輯上說不通。</strong>
+</p>
+<p style="line-height:1.95;margin-top:12px">Newman–Keuls 的「劃掉」規則就是為了封死這種矛盾。<em>統計程序不只要控制錯誤率，還要保持內在一致。</em></p>
+</div>
+</section>
+
+<!-- §8 -->
+<section id="nk-ex">
+<div class="section-header"><span class="section-num">§8</span><h2>實例：一個動詞改變了目擊者的記憶</h2></div>
+
+<div class="prose">
+<p>Loftus &amp; Palmer (1974) 的經典研究。50 位受試者（每組 10 人）看同一部連環車禍影片，之後被問車速。<strong>問句只差一個動詞</strong>：</p>
+<p style="font-family:'Noto Serif TC',serif;font-size:15px;background:var(--cream);padding:16px;border-radius:10px;line-height:2;border-left:4px solid var(--gold)">
+「當兩車<strong>接觸（contacted）</strong>時，時速大約多少？」<br>
+「當兩車<strong>撞到（hit）</strong>時……」<br>
+「當兩車<strong>碰撞（bumped）</strong>時……」<br>
+「當兩車<strong>相撞（collided）</strong>時……」<br>
+「當兩車<strong>猛撞（smashed）</strong>時……」
+</p>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🚗 五種問法的平均車速估計（S = 10，MS<sub>S(A)</sub> = 80.00）</div>
+<canvas id="loftusCanvas" height="280"></canvas>
+</div>
+
+<div class="highlight-box">
+🤯 <strong>結果本身就令人震撼</strong>：同一部影片，只因為問句裡的動詞不同，估計的車速從 <strong>30 mph 一路上升到 46 mph</strong>——相差超過 50%。<br>
+這是「誤導性訊息效應」的經典證據，直接衝擊了法庭上目擊者證詞的可信度。
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🪜 Newman–Keuls 的蘊含結構圖（依課本 Figure 14.2 重繪；點選節點看說明）</div>
+<div id="nkTree"></div>
+<div id="nkNote" style="margin-top:14px"></div>
+</div>
+
+<div class="data-table-wrap">
+<table>
+<thead><tr><th>全距</th><th>臨界值 α=.05</th><th>臨界值 α=.01</th><th>本層檢定的配對</th><th>結果</th></tr></thead>
+<tbody>
+<tr style="background:rgba(39,174,96,.1)"><td><strong>5</strong>（= A）</td><td>8.16</td><td>12.15</td><td>接觸 vs 猛撞：F = 16.00</td><td style="color:#1e8449;font-weight:700">拒絕 H₀ **</td></tr>
+<tr style="background:rgba(39,174,96,.08)"><td><strong>4</strong></td><td>7.18</td><td>11.05</td><td>接觸 vs 相撞：F = 7.56<br>撞到 vs 猛撞：F = 7.56</td><td style="color:#1e8449;font-weight:700">兩者皆拒絕 *</td></tr>
+<tr style="background:#f6f3ee;color:#888"><td><strong>3</strong></td><td>5.92</td><td>9.55</td><td>接觸 vs 碰撞：F = 4.00<br>撞到 vs 相撞：F = 2.25<br>碰撞 vs 猛撞：F = 4.00</td><td>全部 ns</td></tr>
+<tr style="background:#faf8f5;color:#bbb"><td><strong>2</strong></td><td>4.09</td><td>7.30</td><td>四個相鄰配對</td><td>不必檢定 — 由蘊含推得 ns</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:16.5px;margin:26px 0 10px;font-weight:700">最終結果表（差距與顯著性）</h3>
+<div class="data-table-wrap"><table class="pw-matrix" id="nkResult"></table></div>
+
+<div class="magic-box">
+<div class="magic-title">🔤 另一種常見的呈現法：字母標記</div>
+<p style="line-height:1.95">把平均數排序，在下面標字母——<strong>共用同一個字母的組別彼此沒有顯著差異</strong>。這是農學、生物學論文中極常見的表示法：</p>
+<div style="text-align:center;margin:18px 0;font-size:14px;line-height:2.4">
+<div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
+<div style="text-align:center"><strong>接觸 30</strong><br><span class="letter-tag">a</span></div>
+<div style="text-align:center"><strong>撞到 35</strong><br><span class="letter-tag">a</span><span class="letter-tag">b</span></div>
+<div style="text-align:center"><strong>碰撞 38</strong><br><span class="letter-tag">a</span><span class="letter-tag">b</span><span class="letter-tag">c</span></div>
+<div style="text-align:center"><strong>相撞 41</strong><br><span class="letter-tag">b</span><span class="letter-tag">c</span></div>
+<div style="text-align:center"><strong>猛撞 46</strong><br><span class="letter-tag">c</span></div>
+</div>
+</div>
+<p style="line-height:1.95">怎麼讀：<strong>接觸(30)</strong> 與 <strong>相撞(41)</strong> 沒有共用字母 → <em>顯著不同</em>；<strong>撞到(35)</strong> 與 <strong>碰撞(38)</strong> 都有 <span class="letter-tag">b</span> → <em>沒有顯著差異</em>。</p>
+<p style="line-height:1.95;margin-top:10px">整體訊息：<strong>只有語意距離夠遠的動詞（接觸 vs 相撞／猛撞）才造成可偵測的差異</strong>；語意相近的動詞之間分不出來。</p>
+</div>
+</section>
+
+<!-- §9 -->
+<section id="choose">
+<div class="section-header"><span class="section-num">§9</span><h2>該用哪一個？四種檢定的定位</h2></div>
+
+<div class="test-card tc-scheffe">
+<h4>🛡️ Scheffé — 最保守，但最萬用</h4>
+<p><strong>家族</strong>：所有可能的對比（含複雜對比）　｜　<strong>臨界值</strong>：(A−1) × F<sub>critical,omnibus</sub></p>
+<p><strong>什麼時候用</strong>：你想事後檢定<em>任意形式</em>的對比，包括「第 1、3 組合起來 vs 第 2、4 組」這種。</p>
+<p style="color:var(--accent);font-weight:600">優點：絕不會與 omnibus F 矛盾。缺點：檢定力最低。</p>
+</div>
+
+<div class="test-card tc-tukey">
+<h4>🍺 Tukey — 兩兩比較的標準做法</h4>
+<p><strong>家族</strong>：所有兩兩比較　｜　<strong>臨界值</strong>：F<sub>range</sub>，固定用 range = A</p>
+<p><strong>什麼時候用</strong>：只做兩兩比較，且希望嚴格控制家族錯誤率。</p>
+<p style="color:var(--accent2);font-weight:600">比 Scheffé 有力（因為家族小得多），但對小差距仍然過度保護。</p>
+</div>
+
+<div class="test-card tc-nk">
+<h4>🪜 Newman–Keuls — 最受歡迎，但不是最安全</h4>
+<p><strong>家族</strong>：所有兩兩比較　｜　<strong>臨界值</strong>：F<sub>range</sub>，每層用<em>實際</em>的 range</p>
+<p><strong>什麼時候用</strong>：想要比 Tukey 更高的檢定力，且能接受序列程序的複雜度。</p>
+<p style="color:var(--purple);font-weight:600">課本原話：「最受歡迎的替代方案（但不是最『安全』的）。」<br>
+<span style="font-weight:400;color:var(--muted)">現代文獻普遍指出，NK 在組數較多時無法嚴格維持 α[PF]。若審稿人重視嚴謹，Tukey 仍是較穩妥的選擇。</span></p>
+</div>
+
+<div class="test-card tc-duncan">
+<h4>⚡ Duncan — 更寬鬆的序列檢定</h4>
+<p>與 Newman–Keuls 同屬序列式，但門檻更低、檢定力更高。<strong>代價是型 I 錯誤控制更鬆</strong>。課本僅簡要提及。</p>
+<p style="color:#8a6a00;font-weight:600">實務上請謹慎使用，並在論文中明確交代選擇理由。</p>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">📏 四種方法的嚴格程度光譜（以 Romeo &amp; Juliet 的兩兩比較為例）</div>
+<canvas id="spectrumCanvas" height="200"></canvas>
+</div>
+
+<div class="highlight-box">
+📝 <strong>最重要的一課，其實不是選哪個檢定</strong><br><br>
+回顧 §4 的震撼對照：<strong>同一個 F = 8.34</strong>，事前計畫就顯著、事後才想到就不顯著。<br><br>
+所以真正的重點是：<br>
+① <strong>能事前計畫就事前計畫</strong>——理論驅動的比較檢定力高得多；<br>
+② <strong>誠實交代比較是事前還是事後決定的</strong>；<br>
+③ 若真的做了事後探索，<strong>把它定位成「產生假設」而非「驗證假設」</strong>，留待下一個研究確認。<br><br>
+<em>事後比較不是罪過，把事後說成事前才是。</em>
+</div>
+</section>
+
+<!-- §K -->
+<section id="formulas">
+<div class="section-header"><span class="section-num">§K</span><h2>關鍵公式整理</h2></div>
+
+<div class="formula-grid">
+<div class="formula-mini"><div class="fm-label">所有可能的對比數</div><div class="fm-eq">1 + [(3<sup>A</sup> − 1)/2 − 2<sup>A</sup>]</div><div class="fm-note">A=4 → 25 個</div></div>
+<div class="formula-mini"><div class="fm-label">兩兩比較數</div><div class="fm-eq">A(A − 1) / 2</div><div class="fm-note">A=4 → 6 個</div></div>
+<div class="formula-mini"><div class="fm-label">最大對比的權重</div><div class="fm-eq">C<sub>a</sub> = M<sub>a·</sub> − M<sub>··</sub>　⟹　SS<sub>ψ,max</sub> = SS<sub>A</sub></div></div>
+<div class="formula-mini"><div class="fm-label">最大對比的 F</div><div class="fm-eq">F<sub>ψ,max</sub> = (A − 1) × F<sub>omnibus</sub></div></div>
+<div class="formula-mini"><div class="fm-label">Scheffé 臨界值</div><div class="fm-eq">F<sub>crit,Scheffé</sub> = (A − 1) × F<sub>crit,omnibus</sub></div><div class="fm-note">⚠️ 查表用 ν₁ = A−1</div></div>
+<div class="formula-mini"><div class="fm-label">Scheffé 的 p 值</div><div class="fm-eq">把 F<sub>ψ</sub>/(A−1) 拿去查 F(A−1, A(S−1))</div></div>
+<div class="formula-mini"><div class="fm-label">兩兩比較的 SS</div><div class="fm-eq">SS<sub>ψ</sub> = S(M<sub>a·</sub> − M<sub>a′·</sub>)² / 2</div></div>
+<div class="formula-mini"><div class="fm-label">F<sub>range</sub> 與 q</div><div class="fm-eq">F<sub>range</sub> = q² / 2</div><div class="fm-note">q = 學生化全距</div></div>
+<div class="formula-mini"><div class="fm-label">Tukey</div><div class="fm-eq">所有配對都用 range = A 的臨界值</div></div>
+<div class="formula-mini"><div class="fm-label">Newman–Keuls</div><div class="fm-eq">每個配對用它自己的 range 查臨界值</div><div class="fm-note">序列進行，不顯著就劃掉下層</div></div>
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">📌 關鍵概念</h3>
+<div class="notions-grid">
+<div class="notion-item">事後（a posteriori）比較</div>
+<div class="notion-item">資料窺探</div>
+<div class="notion-item">隱含的比較家族</div>
+<div class="notion-item">保守檢定</div>
+<div class="notion-item">最大對比</div>
+<div class="notion-item">Scheffé 檢定</div>
+<div class="notion-item">學生化全距 q</div>
+<div class="notion-item">F<sub>range</sub></div>
+<div class="notion-item">Tukey HSD</div>
+<div class="notion-item">Newman–Keuls</div>
+<div class="notion-item">序列檢定</div>
+<div class="notion-item">蘊含結構</div>
+<div class="notion-item">矛盾決策</div>
+<div class="notion-item">字母標記法</div>
+</div>
+</section>
+
+<!-- 測驗 -->
+<section id="quiz">
+<div class="section-header"><span class="section-num">§Q</span><h2>複習測驗</h2></div>
+<div id="quizContainer"></div>
+<div style="text-align:center;margin-top:32px">
+<button onclick="resetQuiz()" class="btn">🔄 重新作答</button>
+<div id="quizScore" style="margin-top:16px;font-size:16px;font-weight:700;color:var(--teal);display:none"></div>
+</div>
+</section>
+
+<section style="text-align:center;border-bottom:none">
+<h2 style="font-family:'Noto Serif TC',serif;margin-bottom:16px">🎓 PART 3 完成！</h2>
+<p style="color:var(--muted);margin-bottom:24px">從第七章造出 F 比值，到本章的事後比較——單因子 ANOVA 的完整版圖已經拼齊。<br>接下來將進入<em>多因子設計</em>：當實驗同時操弄兩個以上的自變數，交互作用的世界就此展開</p>
+<a href="index.html" class="btn btn-gold">回首頁看看還有什麼 →</a>
+</section>
+
+</div>
+
+<footer>
+<a href="ch13.html">← 第十三章</a>  &nbsp;|&nbsp;  <a href="index.html">回首頁</a><br><br>
+教材製作基於：Abdi, H., Edelman, B., Valentin, D. &amp; Dowling, W. J. (2009). <em>Experimental Design and Analysis for Psychology</em>. Oxford University Press.<br><br>
+© 版權所有　<strong style="color:var(--paper)">葉欲禾（Gary Yu-Ho Yeh）</strong>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{const d=document.documentElement;document.getElementById('progress-bar').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%'});
+
+// ═══ F 分配 ═══
+function lgamma(x){const g=[676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,
+  12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
+  if(x<0.5)return Math.log(Math.PI/Math.sin(Math.PI*x))-lgamma(1-x);
+  x-=1;let a=0.99999999999980993,t=x+7.5;
+  for(let i=0;i<8;i++)a+=g[i]/(x+i+1);
+  return 0.5*Math.log(2*Math.PI)+(x+0.5)*Math.log(t)-t+Math.log(a);}
+function betacf(a,b,x){const MAXIT=200,EPS=3e-14,FPMIN=1e-300;
+  const qab=a+b,qap=a+1,qam=a-1;let c=1,d=1-qab*x/qap;
+  if(Math.abs(d)<FPMIN)d=FPMIN;d=1/d;let h=d;
+  for(let m=1;m<=MAXIT;m++){const m2=2*m;
+    let aa=m*(b-m)*x/((qam+m2)*(a+m2));
+    d=1+aa*d;if(Math.abs(d)<FPMIN)d=FPMIN;c=1+aa/c;if(Math.abs(c)<FPMIN)c=FPMIN;d=1/d;h*=d*c;
+    aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));
+    d=1+aa*d;if(Math.abs(d)<FPMIN)d=FPMIN;c=1+aa/c;if(Math.abs(c)<FPMIN)c=FPMIN;d=1/d;
+    const del=d*c;h*=del;if(Math.abs(del-1)<EPS)break;}
+  return h;}
+function ibeta(a,b,x){if(x<=0)return 0;if(x>=1)return 1;
+  const bt=Math.exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*Math.log(x)+b*Math.log(1-x));
+  return x<(a+1)/(a+b+2)?bt*betacf(a,b,x)/a:1-bt*betacf(b,a,1-x)/b;}
+function fpval(f,v1,v2){if(f<=0)return 1;return 1-ibeta(v1/2,v2/2,v1*f/(v1*f+v2));}
+function fcrit(al,v1,v2){let lo=1e-4,hi=300;
+  for(let i=0;i<170;i++){const m=(lo+hi)/2;if(fpval(m,v1,v2)>al)lo=m;else hi=m;}return (lo+hi)/2;}
+
+// ═══ §2 爆炸表 ═══
+let tabMode=0;
+function setTable(m){tabMode=m;
+  document.getElementById('tbAll').classList.toggle('active',m===0);
+  document.getElementById('tbPair').classList.toggle('active',m===1);
+  drawExpTable();}
+function drawExpTable(){
+  const rows=[];
+  for(let A=2;A<=10;A++){
+    const nAll=1+((Math.pow(3,A)-1)/2-Math.pow(2,A));
+    const nPair=A*(A-1)/2;
+    const C=tabMode===0?nAll:nPair;
+    const pf=1-Math.pow(0.95,C), pc=1-Math.pow(0.95,1/C);
+    rows.push({A,C,pf,pc});
+  }
+  let h='<thead><tr><th>組數 A</th><th>'+(tabMode===0?'可能的對比數':'兩兩比較數')+'</th><th>α[PF]（每個都用 .05）</th><th>α[PC]（要維持 α[PF]=.05）</th></tr></thead><tbody>';
+  rows.forEach(r=>{
+    const danger=r.pf>0.5?'background:rgba(192,57,43,.14)':(r.pf>0.2?'background:rgba(212,160,23,.12)':'');
+    h+='<tr style="'+danger+'"><td>'+r.A+'</td><td><strong>'+r.C.toLocaleString()+'</strong></td>'+
+       '<td style="font-family:JetBrains Mono,monospace;font-weight:700;color:'+(r.pf>0.5?'#c0392b':'#333')+'">'+
+       (r.pf>0.9995?'≈ 1.000':r.pf.toFixed(3))+'</td>'+
+       '<td style="font-family:JetBrains Mono,monospace">'+(r.pc<0.00001?r.pc.toExponential(1):r.pc.toFixed(6))+'</td></tr>';
+  });
+  document.getElementById('expTable').innerHTML=h+'</tbody>';
+  document.getElementById('expNote').innerHTML= tabMode===0
+   ? '<div class="warn-box" style="margin:0">💥 <strong>所有可能的對比</strong>：A = 5 時已有 90 個對比，α[PF] = <strong>.990</strong>——幾乎保證誤判至少一次。A = 10 時多達 <strong>28,501 個</strong>。<br>若要維持 α[PF] = .05，每個對比得用 α[PC] = .000002 才行。<strong>這就是為什麼需要 Scheffé。</strong></div>'
+   : '<div class="info-box" style="margin:0">📉 <strong>只算兩兩比較</strong>：家族小得多。A = 5 時只有 10 個，α[PF] = .4013（仍然很高，但比 .990 好太多）。<br><strong>家族越小，能保留的檢定力越多</strong>——所以只做兩兩比較時，用 Tukey 而不是 Scheffé。</div>';
+}
+
+// ═══ §3 Scheffé 保守度 ═══
+function drawScheffe(){
+  const A=+document.getElementById('schA').value, S=+document.getElementById('schS').value;
+  document.getElementById('schAVal').textContent=A;
+  document.getElementById('schSVal').textContent=S;
+  const v2=A*(S-1);
+  const fSingle=fcrit(.05,1,v2);
+  const fOm=fcrit(.05,A-1,v2);
+  const fSch=(A-1)*fOm;
+  const c=document.getElementById('scheffeCanvas');const W=c.offsetWidth;c.width=W;const H=230;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const rows=[{n:'單一對比 F(1,'+v2+')',v:fSingle,col:'#888'},
+              {n:'omnibus F('+(A-1)+','+v2+')',v:fOm,col:'#2980b9'},
+              {n:'Scheffé = '+(A-1)+' × '+fOm.toFixed(2),v:fSch,col:'#c0392b'}];
+  const x0=170,bw=W-x0-90,max=Math.max(fSch*1.15,6);
+  rows.forEach((r,i)=>{
+    const y=34+i*58,h=36;
+    ctx.fillStyle='#444';ctx.font='bold 12.5px "Noto Sans TC"';ctx.textAlign='right';
+    ctx.fillText(r.n,x0-12,y+h/2+5);
+    ctx.fillStyle='#f0ece5';ctx.fillRect(x0,y,bw,h);
+    ctx.fillStyle=r.col;ctx.fillRect(x0,y,bw*r.v/max,h);
+    ctx.strokeStyle='#1a1a2e';ctx.strokeRect(x0,y,bw,h);
+    ctx.fillStyle='#1a1a2e';ctx.font='bold 14px JetBrains Mono';ctx.textAlign='left';
+    ctx.fillText(r.v.toFixed(2),x0+bw*r.v/max+8,y+h/2+5);
+  });
+  ctx.fillStyle='#666';ctx.font='12px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('臨界值（α = .05）　—　越長 = 門檻越高 = 越難拒絕 H₀',x0+bw/2,H-10);
+  document.getElementById('scheffeNote').innerHTML=
+    '<div class="info-box" style="margin:0">📖 A = '+A+'、S = '+S+' 時：Scheffé 的門檻是 <strong>'+fSch.toFixed(2)+'</strong>，'+
+    '而同一個對比若是<em>事前</em>計畫的單一比較，門檻只有 <strong>'+fSingle.toFixed(2)+'</strong>。'+
+    '<br>事後檢定要付出 <strong>'+(fSch/fSingle).toFixed(1)+' 倍</strong>的門檻代價。'+
+    (A>=6?'　組數越多，這個代價越大。':'')+'</div>';
+}
+
+// ═══ §6 Tukey 表 ═══
+const rjN=['事前脈絡','部分脈絡','事後脈絡','無脈絡'];
+const rjM=[7.00,4.20,3.20,3.00];
+const RJ_S=5, RJ_MSW=2.35, TUK05=8.20, TUK01=13.47;
+function buildPWTables(){
+  const mk=(id,fn,fmt)=>{
+    let h='<thead><tr><th></th>'+rjN.map((n,i)=>'<th>'+n+'<br><small>'+rjM[i].toFixed(2)+'</small></th>').join('')+'</tr></thead><tbody>';
+    for(let i=0;i<4;i++){
+      h+='<tr><th>'+rjN[i]+'<br><small>'+rjM[i].toFixed(2)+'</small></th>';
+      for(let j=0;j<4;j++){
+        if(j<=i){h+='<td class="diag">'+(i===j?'—':'')+'</td>';}
+        else{const v=fn(i,j);h+=fmt(v,i,j);}
+      }
+      h+='</tr>';
+    }
+    document.getElementById(id).innerHTML=h+'</tbody>';
+  };
+  mk('diffTable',(i,j)=>rjM[i]-rjM[j],v=>'<td>'+v.toFixed(2)+'</td>');
+  mk('ssTable',(i,j)=>RJ_S*Math.pow(rjM[i]-rjM[j],2)/2,v=>'<td>'+v.toFixed(2)+'</td>');
+  mk('fTable',(i,j)=>RJ_S*Math.pow(rjM[i]-rjM[j],2)/2/RJ_MSW,v=>{
+    const cls=v>=TUK01?'sig2':(v>=TUK05?'sig1':'ns');
+    const star=v>=TUK01?'**':(v>=TUK05?'*':' ns');
+    return '<td class="'+cls+'">'+v.toFixed(2)+star+'</td>';
+  });
+}
+function drawTukey(){
+  const c=document.getElementById('tukeyCanvas');const W=c.offsetWidth;c.width=W;const H=270;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const pad={l:46,r:24,t:26,b:52},pw=W-pad.l-pad.r,ph=H-pad.t-pad.b;
+  const yOf=v=>pad.t+ph*(1-(v-2)/6);
+  ctx.strokeStyle='#eee';ctx.fillStyle='#aaa';ctx.font='11px JetBrains Mono';ctx.textAlign='right';
+  for(let v=2;v<=8;v+=2){const y=yOf(v);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();ctx.fillText(v,pad.l-6,y+4);}
+  const bw=pw/4;
+  rjM.forEach((m,i)=>{
+    const cx=pad.l+bw*i+bw/2;
+    ctx.fillStyle=i===0?'#c0392b':'#8a7f74';ctx.globalAlpha=.85;
+    ctx.fillRect(cx-bw*0.24,yOf(m),bw*0.48,yOf(2)-yOf(m));ctx.globalAlpha=1;
+    ctx.fillStyle='#fff';ctx.font='bold 13px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText(m.toFixed(2),cx,yOf(m)+20);
+    ctx.fillStyle='#555';ctx.font='12px "Noto Sans TC"';
+    ctx.fillText(rjN[i],cx,H-pad.b+18);
+  });
+  // 顯著連線
+  const links=[[0,1,'*'],[0,2,'**'],[0,3,'**']];
+  links.forEach((L,k)=>{
+    const [i,j,st]=L;
+    const x1=pad.l+bw*i+bw/2, x2=pad.l+bw*j+bw/2;
+    const y=pad.t+8+k*15;
+    ctx.strokeStyle='#1e8449';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2,y);ctx.stroke();ctx.lineWidth=1;
+    ctx.fillStyle='#1e8449';ctx.font='bold 12px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText(st,(x1+x2)/2,y-4);
+  });
+  ctx.strokeStyle='#333';ctx.beginPath();ctx.moveTo(pad.l,yOf(2));ctx.lineTo(W-pad.r,yOf(2));ctx.stroke();
+  ctx.fillStyle='#1e8449';ctx.font='12px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('綠線 = Tukey 判定顯著的配對（* p<.05；** p<.01）',pad.l+pw/2,H-6);
+}
+
+// ═══ §8 Loftus & Palmer ═══
+const lN=['接觸 contact','撞到 hit','碰撞 bump','相撞 collide','猛撞 smash'];
+const lM=[30,35,38,41,46];
+const L_S=10,L_MSW=80;
+const NK_CRIT={5:[8.16,12.15],4:[7.18,11.05],3:[5.92,9.55],2:[4.09,7.30]};
+function pairF(i,j){return L_S*Math.pow(lM[j]-lM[i],2)/2/L_MSW;}
+function drawLoftus(){
+  const c=document.getElementById('loftusCanvas');const W=c.offsetWidth;c.width=W;const H=280;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const pad={l:48,r:24,t:26,b:56},pw=W-pad.l-pad.r,ph=H-pad.t-pad.b;
+  const yOf=v=>pad.t+ph*(1-(v-25)/25);
+  ctx.strokeStyle='#eee';ctx.fillStyle='#aaa';ctx.font='11px JetBrains Mono';ctx.textAlign='right';
+  for(let v=25;v<=50;v+=5){const y=yOf(v);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();ctx.fillText(v,pad.l-6,y+4);}
+  const bw=pw/5;
+  const cols=['#2980b9','#5a95c4','#8a8a8a','#d08050','#c0392b'];
+  lM.forEach((m,i)=>{
+    const cx=pad.l+bw*i+bw/2;
+    ctx.fillStyle=cols[i];ctx.globalAlpha=.85;
+    ctx.fillRect(cx-bw*0.26,yOf(m),bw*0.52,yOf(25)-yOf(m));ctx.globalAlpha=1;
+    ctx.fillStyle='#fff';ctx.font='bold 14px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText(m,cx,yOf(m)+22);
+    ctx.fillStyle='#555';ctx.font='11.5px "Noto Sans TC"';
+    ctx.fillText(lN[i],cx,H-pad.b+18);
+  });
+  ctx.strokeStyle='#333';ctx.beginPath();ctx.moveTo(pad.l,yOf(25));ctx.lineTo(W-pad.r,yOf(25));ctx.stroke();
+  ctx.fillStyle='#c0392b';ctx.font='bold 12.5px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('同一部影片，只換一個動詞 → 估計車速相差 16 mph（+53%）',pad.l+pw/2,H-6);
+  ctx.save();ctx.translate(14,pad.t+ph/2);ctx.rotate(-Math.PI/2);
+  ctx.fillStyle='#666';ctx.font='12px "Noto Sans TC"';ctx.fillText('估計車速 (mph)',0,0);ctx.restore();
+}
+function buildNKTree(){
+  const levels=[
+    {r:5,pairs:[[0,4]],lab:'全距 5（= A）'},
+    {r:4,pairs:[[0,3],[1,4]],lab:'全距 4'},
+    {r:3,pairs:[[0,2],[1,3],[2,4]],lab:'全距 3'},
+    {r:2,pairs:[[0,1],[1,2],[2,3],[3,4]],lab:'全距 2'}
+  ];
+  let h='';
+  let stop=false;
+  levels.forEach(L=>{
+    const [c05,c01]=NK_CRIT[L.r];
+    h+='<div class="nk-rowlab">'+L.lab+'　臨界值：'+c05+'（.05）／'+c01+'（.01）</div><div class="nk-level">';
+    let anySig=false;
+    L.pairs.forEach(([i,j])=>{
+      const F=pairF(i,j);
+      let cls,txt;
+      if(stop){cls='nk-skip';txt='未檢定';}
+      else if(F>=c01){cls='nk-rej';txt='F = '+F.toFixed(2)+' **';anySig=true;}
+      else if(F>=c05){cls='nk-rej';txt='F = '+F.toFixed(2)+' *';anySig=true;}
+      else{cls='nk-ns';txt='F = '+F.toFixed(2)+' ns';}
+      h+='<div class="nk-node '+cls+'" onclick="nkClick('+i+','+j+','+L.r+','+(stop?1:0)+')" style="cursor:pointer">'+
+         '<div class="nn-l">M'+(i+1)+' − M'+(j+1)+'</div><div class="nn-f">'+txt+'</div></div>';
+    });
+    h+='</div>';
+    if(!anySig)stop=true;
+  });
+  document.getElementById('nkTree').innerHTML=h;
+}
+function nkClick(i,j,r,skipped){
+  const F=pairF(i,j);const [c05,c01]=NK_CRIT[r];
+  const diff=lM[j]-lM[i];
+  document.getElementById('nkNote').innerHTML=
+    '<div class="'+(skipped?'info-box':(F>=c05?'highlight-box':'warn-box'))+'" style="margin:0">'+
+    '<strong>'+lN[i]+'（'+lM[i]+'）vs '+lN[j]+'（'+lM[j]+'）</strong>　全距 = '+r+'<br>'+
+    'SS<sub>ψ</sub> = 10 × ('+diff+')² / 2 = '+(L_S*diff*diff/2).toFixed(0)+'　→　F = '+(L_S*diff*diff/2).toFixed(0)+' / 80 = <strong>'+F.toFixed(2)+'</strong><br>'+
+    '臨界值（全距 '+r+'）：'+c05+'（α=.05）、'+c01+'（α=.01）<br>'+
+    (skipped
+      ? '⏭️ <strong>這一格不必檢定</strong>——上一層的全距 3 全部不顯著，而全距 2 的比較都被它們「包住」，依蘊含關係直接判定為不顯著。'
+      : (F>=c01?'✅ <strong>F ≥ '+c01+'，在 .01 水準拒絕 H₀</strong>':(F>=c05?'✅ <strong>F ≥ '+c05+'，在 .05 水準拒絕 H₀</strong>':'❌ <strong>F &lt; '+c05+'，保留 H₀</strong>——而且它所包住的下層比較也一併判定為不顯著。')))+
+    '</div>';
+}
+function buildNKResult(){
+  // 依 NK 序列程序判定：全距 5 顯著(**)、全距 4 顯著(*)、全距 3 以下不顯著
+  const sig={};
+  sig['0-4']=2; sig['0-3']=1; sig['1-4']=1;
+  let h='<thead><tr><th></th>'+lN.map((n,i)=>'<th>'+n+'<br><small>'+lM[i]+'</small></th>').join('')+'</tr></thead><tbody>';
+  for(let i=0;i<5;i++){
+    h+='<tr><th>'+lN[i]+'<br><small>'+lM[i]+'</small></th>';
+    for(let j=0;j<5;j++){
+      if(j<i){h+='<td class="diag"></td>';}
+      else if(i===j){h+='<td class="diag">0.00</td>';}
+      else{
+        const s=sig[i+'-'+j]||0;
+        const cls=s===2?'sig2':(s===1?'sig1':'ns');
+        const star=s===2?' **':(s===1?' *':' ns');
+        h+='<td class="'+cls+'">'+(lM[j]-lM[i]).toFixed(2)+star+'</td>';
+      }
+    }
+    h+='</tr>';
+  }
+  document.getElementById('nkResult').innerHTML=h+'</tbody>';
+}
+
+// ═══ §9 光譜 ═══
+function drawSpectrum(){
+  const c=document.getElementById('spectrumCanvas');const W=c.offsetWidth;c.width=W;const H=200;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const items=[{n:'未校正 F(1,16)',v:4.49,col:'#bbb',d:'不控制家族錯誤'},
+               {n:'Newman–Keuls（相鄰）',v:4.09,col:'#6b3fa0',d:'全距小 → 門檻低'},
+               {n:'Tukey',v:8.20,col:'#2980b9',d:'固定用 range = A'},
+               {n:'Scheffé',v:9.72,col:'#c0392b',d:'保護所有可能對比'}];
+  const x0=190,bw=W-x0-100,max=11;
+  items.forEach((it,i)=>{
+    const y=26+i*40,h=26;
+    ctx.fillStyle='#444';ctx.font='bold 12.5px "Noto Sans TC"';ctx.textAlign='right';
+    ctx.fillText(it.n,x0-12,y+h/2+5);
+    ctx.fillStyle='#f0ece5';ctx.fillRect(x0,y,bw,h);
+    ctx.fillStyle=it.col;ctx.fillRect(x0,y,bw*it.v/max,h);
+    ctx.strokeStyle='#1a1a2e';ctx.strokeRect(x0,y,bw,h);
+    ctx.fillStyle='#1a1a2e';ctx.font='bold 12.5px JetBrains Mono';ctx.textAlign='left';
+    ctx.fillText(it.v.toFixed(2),x0+bw*it.v/max+7,y+h/2+5);
+    ctx.fillStyle='#999';ctx.font='11px "Noto Sans TC"';
+    ctx.fillText(it.d,x0+bw*it.v/max+52,y+h/2+5);
+  });
+  ctx.fillStyle='#666';ctx.font='12px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('← 檢定力高、保護弱　　　　　　　　　保護強、檢定力低 →',x0+bw/2,H-10);
+}
+
+// ═══ 測驗 ═══
+const quizData=[
+ {q:'為什麼事後比較的「家族」被認為包含所有可能的比較？',
+  opts:['因為研究者一定會做完所有比較','因為看資料挑出要比的那一對時，等於已經隱含地檢視並排除了其他所有比較','因為統計軟體會自動全做','這只是慣例，沒有理由'],
+  ans:1,fb:'Scheffé 的核心洞見。你是「從資料中挑最極端的那個」來檢定，所以必須用「挑最極端者」的分配來評估它——無論你實際做了幾個檢定。'},
+ {q:'Scheffé 證明了「最大的對比平方和」等於什麼？',
+  opts:['SS_total','SS_A（實驗平方和）','MS_S(A)','SS_A / (A−1)'],
+  ans:1,fb:'用 C_a = M_a· − M·· 當權重時 SS_ψ,max = SS_A，因此 F_ψ,max = (A−1)×F_omnibus。直覺上：完全照著資料形狀量身訂做的對比，會把整個實驗效果一口吃掉。'},
+ {q:'計算 Scheffé 臨界值時，查 F 表要用哪組自由度？',
+  opts:['ν₁ = 1, ν₂ = A(S−1)','ν₁ = A−1, ν₂ = A(S−1)','ν₁ = A, ν₂ = AS','ν₁ = A−1, ν₂ = AS−1'],
+  ans:1,fb:'課本特別警告的常見錯誤。要用 ν₁ = A−1（因為這個檢定對應的是 omnibus F），再把查到的值乘上 (A−1)。Romeo & Juliet：3 × 3.24 = 9.72。'},
+ {q:'Romeo & Juliet 中 ψ₄ 的 F = 8.34。事前 Šidák 門檻 7.86、事後 Scheffé 門檻 9.72。這說明什麼？',
+  opts:['計算有誤','完全相同的資料與 F 值，會因為「何時決定做這個比較」而得到相反結論','Scheffé 檢定不可靠','應該用更大的樣本'],
+  ans:1,fb:'這是本章最重要的一課。也是為什麼預先註冊（preregistration）在現代研究中如此關鍵——它讓「這是事前假設」變得可稽核，而不只是作者的自我宣稱。'},
+ {q:'F_range（學生化全距）與標準 ANOVA 的 F 有什麼不同？',
+  opts:['兩者完全相同','F_range 只用到最極端的兩個平均數，ANOVA 用到全部平均數','F_range 不需要假設常態性','F_range 只能用於兩組'],
+  ans:1,fb:'因為使用的資訊不同，兩者偶爾會有不一致的結論（Winer, 1971）。一般而言 ANOVA 較敏感，但 F_range 問的是「最極端那一對會差多少」——正是事後比較該問的問題。'},
+ {q:'Tukey 檢定與 Newman–Keuls 檢定的主要差別是？',
+  opts:['Tukey 用 F 分配、NK 用 t 分配','Tukey 對所有配對都用 range = A 的臨界值；NK 依每個配對實際的全距調整臨界值','Tukey 只能用於平衡設計','NK 不需要控制型 I 錯誤'],
+  ans:1,fb:'NK 是序列檢定：全距小的配對用較低的門檻，因此檢定力較高。代價是程序較複雜，而且現代文獻指出組數多時 NK 無法嚴格維持 α[PF]。'},
+ {q:'Newman–Keuls 中，若某個配對不顯著，為什麼「被它包住」的配對就不必檢定？',
+  opts:['為了節省計算時間','為了避免矛盾決策——若大差距都不顯著，小差距卻顯著，邏輯上說不通','因為它們的 F 值一定相同','這是軟體的限制'],
+  ans:1,fb:'例如宣稱 M₂ 與 M₅ 沒差異、卻宣稱夾在中間的 M₃ 與 M₄ 有差異，這在邏輯上是矛盾的。「劃掉」規則就是為了封死這種內在不一致。'},
+ {q:'Loftus & Palmer 研究中，「接觸」組估計 30 mph、「猛撞」組估計 46 mph。這個結果的意義是？',
+  opts:['受試者的視力有差異','僅僅改變問句中的一個動詞，就能顯著改變目擊者對事件的記憶','影片品質影響了判斷','樣本數不足導致誤差'],
+  ans:1,fb:'同一部影片、隨機分派，唯一差別是問句動詞。這是「誤導性訊息效應」的經典證據，直接衝擊法庭上目擊者證詞的可信度。'},
+ {q:'字母標記法中，「撞到 35」標 a,b 而「碰撞 38」標 a,b,c。這代表什麼？',
+  opts:['兩者顯著不同','兩者共用字母 a 與 b，所以沒有顯著差異','無法判斷','碰撞組的變異較大'],
+  ans:1,fb:'字母標記法的規則：共用任何一個字母的組別彼此沒有顯著差異。這種表示法在農學、生物學論文中極為常見，能用一行呈現完整的兩兩比較結果。'}
+];
+let score=0,answered=0;
+function renderQuiz(){
+  const ct=document.getElementById('quizContainer');ct.innerHTML='';
+  quizData.forEach((q,qi)=>{
+    const card=document.createElement('div');card.className='quiz-card';
+    card.innerHTML='<div class="quiz-q"><span>'+(qi+1)+'</span>'+q.q+'</div>';
+    const opts=document.createElement('div');opts.className='quiz-opts';
+    q.opts.forEach((o,oi)=>{
+      const b=document.createElement('button');b.className='quiz-opt';b.textContent=String.fromCharCode(65+oi)+'. '+o;
+      b.onclick=()=>{
+        if(card.dataset.done)return;card.dataset.done='1';
+        const fb=card.querySelector('.quiz-feedback');
+        if(oi===q.ans){b.classList.add('selected-correct');fb.className='quiz-feedback show correct';fb.innerHTML='✅ 正確！'+q.fb;score++;}
+        else{b.classList.add('selected-wrong');opts.children[q.ans].classList.add('selected-correct');fb.className='quiz-feedback show wrong';fb.innerHTML='❌ 正解是 '+String.fromCharCode(65+q.ans)+'。'+q.fb;}
+        answered++;
+        if(answered===quizData.length){const s=document.getElementById('quizScore');s.style.display='block';
+          s.textContent='🎉 完成！得分：'+score+' / '+quizData.length+(score>=8?'　PART 3 全通關！':'');}
+      };
+      opts.appendChild(b);
+    });
+    card.appendChild(opts);
+    const fb=document.createElement('div');fb.className='quiz-feedback';card.appendChild(fb);
+    ct.appendChild(card);
+  });
+}
+function resetQuiz(){score=0;answered=0;document.getElementById('quizScore').style.display='none';renderQuiz();}
+
+function drawAll(){drawScheffe();drawTukey();drawLoftus();drawSpectrum();}
+window.addEventListener('resize',drawAll);
+drawExpTable();buildPWTables();buildNKTree();buildNKResult();
+nkClick(0,4,5,0);renderQuiz();drawAll();
+</script>
+</body>
+</html>
