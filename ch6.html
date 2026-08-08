@@ -129,6 +129,7 @@ footer a:hover{text-decoration:underline}
   <a href="#partial">§11 偏相關</a>
   <a href="#formulas">§K 公式整理</a>
   <a href="#quiz">§Q 測驗</a>
+  <a href="#reading">§R 指定閱讀</a>
 </nav>
 
 <div class="container">
@@ -665,6 +666,28 @@ r²<sub>Y·X|T</sub> = (...)² / (1 − 1²) = (...)² / <strong>0</strong> ← 
 <div style="text-align:center;margin-top:32px">
 <button onclick="resetQuiz()" class="btn">🔄 重新作答</button>
 <div id="quizScore" style="margin-top:16px;font-size:16px;font-weight:700;color:var(--teal);display:none"></div>
+</div>
+</section>
+
+<!-- §R 指定閱讀 -->
+<section id="reading">
+<div class="section-header"><span class="section-num">§R</span><h2>本章指定閱讀：印象管理與寫作傾向</h2></div>
+
+<div class="concept-card" style="border-left:4px solid var(--gold);margin-bottom:24px">
+<h3 style="font-size:18px">📄 Speer, Chawota, Rudolph, &amp; Qaqish (2026). The Impact of Impression Management on Writing Tendencies: Investigating Faking Susceptibility of Open-Ended Personality Assessments.</h3>
+<p style="margin-top:10px;font-size:14px"><em>Journal of Applied Psychology</em>. Advance online publication.</p>
+<p style="margin-top:12px;font-size:14.5px;color:#333;line-height:1.9"><strong>摘要</strong>：應徵者會在人格測驗上「演」出理想的自己。這篇論文用<strong>受試者間真實驗</strong>（N = 2,039，隨機分派「誠實」vs.「當作應徵夢幻工作」）檢驗：改用<em>開放式書寫</em>＋ <em>NLP 自動計分</em>，作假是否比較難得逞？結果：作假者確實會「更用力寫」（精緻回應 d = .29）並「報喜不報憂」（選擇性資訊管理 d = .72），但 Likert 量表分數膨脹 d̄ = .65，NLP 計分的開放式測驗只膨脹 <strong>d̄ = .26</strong>——且真實特質訊號仍留在文字裡。Study 2 進一步用 7 種 LLM 測試「AI 代寫」威脅，並訓練出<strong>準確率 99%、偽陽性率僅 1%</strong> 的客製化 AI 偵測模型。</p>
+<p style="margin-top:12px;font-size:14px;color:var(--muted)"><strong>為什麼選這篇配第六章？</strong>它的 NLP 計分管線核心是<strong>彈性網迴歸（elastic net）</strong>——正是本章「非正交多元迴歸／多重共線性」的工業級解法；而「精緻回應 × 選擇性資訊」的相關從誠實組 r = .11 飆到作假組 r = .58，是「預測變數非正交性隨情境改變」的絕佳實例。此外還能看到二因子混合 ANOVA、效果量 d 與信度校正 d<sub>c</sub>、ICC、折半信度、交叉驗證等方法如何在頂級期刊中實戰。</p>
+</div>
+
+<div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:28px 0">
+<a href="ch6-paper.html" class="btn btn-gold" style="font-size:16px;padding:16px 36px">🎭 進入互動導讀：設計 × NLP 計分 × 效果量 × AI 偵測 →</a>
+<a href="https://dx.doi.org/10.1037/apl0001397" target="_blank" rel="noopener" class="btn">📄 閱讀原文（DOI）</a>
+<a href="https://osf.io/jbux9/?view_only=9135dff2fb154f9faa123a25fc7e8037" target="_blank" rel="noopener" class="btn">📂 OSF 程式碼與資料</a>
+</div>
+
+<div class="info-box">
+🎯 <strong>讀書會報告前，用導讀頁做四件事</strong>：① 先把「§2 名詞中英對照表」掃一遍再讀原文；② 在「§6 作假指紋」點每根 d 值長條，練習說出每個數字怎麼算、怎麼解讀；③ 到「§7 效果量遊樂場」親手比較 d = .26 與 .65 的分布重疊差多少；④ 用「§10 扣合第六章」檢查你能不能把彈性網迴歸與本章的共線性、半偏相關講成同一個故事。
 </div>
 </section>
 

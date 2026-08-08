@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第六章指定閱讀：印象管理與寫作傾向（Speer et al., 2026）互動導讀</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a2e;--paper:#f8f4ef;--cream:#fdf8f2;--accent:#c0392b;--accent2:#2980b9;--gold:#d4a017;--teal:#1a6b6e;--purple:#6b3fa0;--muted:#6b7280;--border:#d5c9be;--card-bg:#fff;--formula-bg:#1a1a2e;--formula-text:#f0e6d3;--highlight:#fff3cd}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.8}
+.hero{background:var(--ink);color:var(--paper);padding:72px 40px 56px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(255,255,255,.02) 40px,rgba(255,255,255,.02) 41px)}
+.hero-eyebrow{font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500}
+.hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(24px,4.2vw,42px);font-weight:700;line-height:1.3;margin-bottom:14px}
+.hero h1 span{color:var(--gold)}
+.hero-sub{font-size:14.5px;color:rgba(248,244,239,.7);max-width:680px;margin:0 auto 26px;line-height:1.9}
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.tag{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 16px;font-size:13px;color:var(--paper)}
+nav{position:sticky;top:0;z-index:100;background:rgba(26,26,46,.97);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);padding:0 40px;display:flex;gap:0;overflow-x:auto}
+nav a{display:block;padding:16px 13px;color:rgba(248,244,239,.65);text-decoration:none;font-size:12.5px;font-weight:500;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+nav a:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.container{max-width:940px;margin:0 auto;padding:0 24px}
+section{padding:58px 0;border-bottom:1px solid var(--border)}
+section:last-of-type{border-bottom:none}
+.section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:30px}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.2);border-radius:4px;padding:3px 8px;flex-shrink:0}
+.section-header h2{font-family:'Noto Serif TC',serif;font-size:24px;font-weight:700;color:var(--ink)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-bottom:26px}
+.concept-card{background:var(--card-bg);border-radius:12px;padding:22px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.concept-icon{font-size:26px;margin-bottom:10px}
+.concept-card h3{font-family:'Noto Serif TC',serif;font-size:16.5px;font-weight:700;margin-bottom:10px}
+.concept-card p{font-size:13.5px;color:var(--muted);line-height:1.7}
+.concept-card p+p{margin-top:8px}
+.highlight-box{background:var(--highlight);border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:18px 24px;margin:22px 0;font-size:14px;color:#6b4c00}
+.warn-box{background:rgba(192,57,43,.06);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:18px 24px;margin:22px 0;font-size:14px;color:#7a2a1f}
+.info-box{background:rgba(41,128,185,.06);border-left:4px solid var(--accent2);border-radius:0 8px 8px 0;padding:18px 24px;margin:22px 0;font-size:14px;color:#1e5a8a}
+.magic-box{background:linear-gradient(135deg,rgba(107,63,160,0.08),rgba(212,160,23,0.08));border:2px solid var(--purple);border-radius:12px;padding:22px;margin:22px 0;font-size:14px}
+.magic-box .magic-title{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;color:var(--purple);margin-bottom:10px}
+.chart-wrapper{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:22px;margin:24px 0}
+.chart-title{font-size:14px;font-weight:600;color:var(--muted);margin-bottom:14px;letter-spacing:.5px}
+canvas{display:block;width:100%}
+.controls{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin:14px 0;padding:14px;background:var(--cream);border-radius:8px;border:1px solid var(--border)}
+.ctrl-group label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:500}
+.ctrl-group input[type=range]{width:200px;accent-color:var(--accent)}
+.ctrl-val{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);font-weight:600;min-width:44px;display:inline-block}
+.data-table-wrap{overflow-x:auto;margin:22px 0;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+table{width:100%;border-collapse:collapse;font-size:13px;background:var(--card-bg)}
+thead tr{background:var(--ink)}
+thead th{color:var(--paper);padding:11px 12px;text-align:center;font-weight:600;font-size:12.5px}
+thead th:first-child{text-align:left}
+tbody tr:nth-child(even){background:var(--cream)}
+tbody td{padding:9px 12px;text-align:center;border-bottom:1px solid var(--border);font-size:12.5px}
+tbody td:first-child{text-align:left;font-weight:600}
+.prose p{margin-bottom:15px;font-size:15px;line-height:1.85;color:#333}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--ink)}
+.prose em{color:var(--accent);font-style:normal;font-weight:500}
+.btn{display:inline-block;padding:13px 28px;background:var(--ink);color:var(--paper);border:none;border-radius:8px;font-size:14.5px;font-weight:600;cursor:pointer;text-decoration:none;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.btn:hover{background:var(--accent);transform:translateY(-2px)}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--accent);color:#fff}
+footer{background:var(--ink);color:rgba(248,244,239,.5);text-align:center;padding:30px;font-size:13px}
+footer a{color:var(--gold);text-decoration:none}
+footer a:hover{text-decoration:underline}
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);z-index:9999;width:0%;transition:width .1s}
+.study-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.study-tab{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:9px 13px;cursor:pointer;font-size:12.5px;font-weight:600;font-family:'Noto Sans TC',sans-serif;color:var(--ink);transition:all .2s}
+.study-tab:hover{border-color:var(--accent2)}
+.study-tab.active{background:var(--ink);color:var(--gold);border-color:var(--ink)}
+.study-panel{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px}
+.study-meta{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
+.badge{font-size:11.5px;padding:4px 10px;border-radius:12px;font-weight:600}
+.badge-design{background:rgba(107,63,160,.12);color:var(--purple);border:1px solid rgba(107,63,160,.3)}
+.badge-n{background:rgba(41,128,185,.1);color:var(--accent2);border:1px solid rgba(41,128,185,.3)}
+.badge-stat{background:rgba(26,107,110,.1);color:var(--teal);border:1px solid rgba(26,107,110,.3)}
+.goal-box{background:rgba(212,160,23,.1);border:1.5px solid rgba(212,160,23,.45);border-radius:10px;padding:13px 17px;margin:12px 0;font-size:13.5px;color:#6b4c00;line-height:1.7}
+.flow-strip{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:12px 0;font-size:12.5px}
+.flow-node{background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-weight:500}
+.flow-arrow{color:var(--muted);font-weight:700}
+.analysis-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:9px;font-size:13px}
+.analysis-item .an-name{flex-shrink:0;background:rgba(26,107,110,.1);color:var(--teal);border:1px solid rgba(26,107,110,.3);border-radius:8px;padding:5px 11px;font-weight:700;font-size:12px;white-space:nowrap}
+.analysis-item .an-why{color:#444;padding-top:4px;line-height:1.6}
+.stats-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:12px 0;background:var(--cream);border-radius:8px;overflow:hidden}
+.stats-table th{background:rgba(26,26,46,.85);color:var(--paper);padding:8px 12px;text-align:left;font-size:12px}
+.stats-table td{padding:7px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.stats-table td:first-child{font-weight:600;width:38%}
+.stats-table td:last-child{font-family:'JetBrains Mono',monospace;font-size:11.8px}
+.stats-table tr.sig td:last-child{color:#1e8449;font-weight:600}
+.stats-table tr.ns td:last-child{color:#888}
+.study-result{background:var(--cream);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:13px 17px;margin-top:13px;font-size:13.5px;color:#134e51}
+.formula-box{background:var(--formula-bg);border-radius:12px;padding:24px 28px;margin:22px 0;color:var(--formula-text)}
+.formula-label{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:600}
+.formula-main{font-family:'JetBrains Mono',monospace;font-size:16px;line-height:1.9;text-align:center;margin:10px 0}
+.formula-desc{font-size:13px;color:rgba(240,230,211,.75);margin-top:12px;line-height:1.8}
+.gloss-cat{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;margin:28px 0 12px;color:var(--teal);border-left:4px solid var(--teal);padding-left:12px}
+.dt-btn{background:var(--cream);border:2px solid var(--border);border-radius:10px;padding:12px 22px;cursor:pointer;font-size:14px;font-weight:600;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.dt-btn:hover{border-color:var(--accent2);background:rgba(41,128,185,.06)}
+.dt-btn.active{background:var(--ink);color:var(--gold);border-color:var(--ink)}
+.quiz-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:22px 26px;margin-bottom:18px}
+.quiz-q{font-weight:700;font-size:14.5px;margin-bottom:14px;line-height:1.6}
+.quiz-q span{display:inline-block;width:25px;height:25px;background:var(--ink);color:var(--gold);border-radius:50%;font-size:12.5px;text-align:center;line-height:25px;margin-right:8px;font-family:'JetBrains Mono',monospace}
+.quiz-opts{display:flex;flex-direction:column;gap:9px}
+.quiz-opt{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:11px 16px;cursor:pointer;font-size:13.5px;transition:all .2s;text-align:left;font-family:'Noto Sans TC',sans-serif}
+.quiz-opt:hover{border-color:var(--accent2);background:rgba(41,128,185,.05)}
+.quiz-opt.selected-correct{border-color:#27ae60;background:rgba(39,174,96,.1);color:#1e8449;font-weight:600}
+.quiz-opt.selected-wrong{border-color:var(--accent);background:rgba(192,57,43,.1);color:var(--accent)}
+.quiz-feedback{margin-top:12px;padding:11px 15px;border-radius:8px;font-size:13px;display:none;line-height:1.6}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:rgba(39,174,96,.1);color:#1e8449;border:1px solid rgba(39,174,96,.3)}
+.quiz-feedback.wrong{background:rgba(192,57,43,.08);color:#c0392b;border:1px solid rgba(192,57,43,.2)}
+@media(max-width:600px){.hero{padding:44px 20px 36px}nav{padding:0 14px}.container{padding:0 16px}section{padding:44px 0}}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<div class="hero">
+  <div class="hero-eyebrow">第六章 · 指定閱讀導讀 Reading Companion</div>
+  <h1>印象管理如何改變你的寫作<br><span>Faking &amp; Open-Ended Personality Assessments</span></h1>
+  <p class="hero-sub">Speer, Chawota, Rudolph, &amp; Qaqish (2026)<br><em>Journal of Applied Psychology</em>（Online First）<br>開放式人格測驗會被「演」出來嗎？NLP 計分能擋住作假與 AI 代寫嗎？</p>
+  <div class="hero-tags">
+    <span class="tag">🎭 印象管理 IM</span>
+    <span class="tag">✍️ 開放式人格測驗</span>
+    <span class="tag">🤖 NLP／LLM 計分</span>
+    <span class="tag">🧪 受試者間實驗 N=2,039</span>
+    <span class="tag">🕵️ AI 偵測 99% 準確率</span>
+  </div>
+  <div style="margin-top:26px">
+    <a class="btn btn-gold" href="https://dx.doi.org/10.1037/apl0001397" target="_blank" rel="noopener">📄 原文（DOI）</a>
+    &nbsp;
+    <a class="btn" href="https://osf.io/jbux9/?view_only=9135dff2fb154f9faa123a25fc7e8037" target="_blank" rel="noopener">📂 OSF 分析程式碼與資料</a>
+  </div>
+</div>
+
+<nav>
+  <a href="ch6.html" style="color:var(--gold)">← 回第六章</a>
+  <a href="#tldr">§1 一分鐘看懂</a>
+  <a href="#gloss">§2 名詞對照表</a>
+  <a href="#theory">§3 理論框架</a>
+  <a href="#design">§4 設計與流程</a>
+  <a href="#measures">§5 測量與 NLP</a>
+  <a href="#results">§6 Study 1 結果</a>
+  <a href="#dplay">§7 效果量 d 遊樂場</a>
+  <a href="#training">§8 訓練樣本配置</a>
+  <a href="#study2">§9 Study 2：AI</a>
+  <a href="#ch6link">§10 扣合第六章</a>
+  <a href="#meaning">§11 從數字到意涵</a>
+  <a href="#quiz">§Q 測驗</a>
+</nav>
+
+<div class="container">
+
+<!-- §1 -->
+<section id="tldr">
+<div class="section-header"><span class="section-num">§1</span><h2>一分鐘看懂這篇在講什麼</h2></div>
+<div class="prose">
+<p><strong>一句話</strong>：找工作的人會在人格測驗上「演」出理想的自己（作假 faking）。這篇論文問：如果不用「1–7 分勾選」的 Likert 量表，改用<em>開放式書寫</em>（用自己的話描述行為）＋ <em>NLP 自動計分</em>，作假是不是比較難得逞？</p>
+<p><strong>答案（Study 1）</strong>：會作假，但作假「幅度」小很多——Likert 分數在應徵情境下平均膨脹 <strong>d̄ = .65</strong>，NLP 計分的開放式測驗只膨脹 <strong>d̄ = .26</strong>。而且作假的人不是亂編：他們寫得更用力（精緻回應 d = .29）、更會「報喜不報憂」（選擇性資訊管理 d = .72），但<em>真實人格的訊號仍然留在文字裡</em>——特質分數越高的人，越有本錢寫出漂亮又可信的內容。</p>
+<p><strong>新威脅（Study 2）</strong>：用 ChatGPT 等 7 種 LLM 代寫答案，盡責性分數平均被灌高 d ≈ 1.07。但好消息是：針對「特定題目」客製化訓練的 AI 偵測模型，能以 <strong>99% 準確率、1% 偽陽性率</strong>抓出 AI 代寫——連「人機混合」的回答都能抓到 92%。</p>
+<p><strong>結論</strong>：開放式人格測驗不是「防作假神器」，但搭配 NLP 計分後，是一條<em>更抗作假、可規模化</em>的替代路線。</p>
+</div>
+<div class="concept-grid">
+<div class="concept-card"><div class="concept-icon">🤔</div><h3>研究缺口</h3><p>過去只知道 Likert 量表容易被作假灌水，但幾乎沒人比較過「開放式測驗 vs. Likert」誰比較抗作假；也沒人系統性檢驗「作假時，人到底怎麼改寫自己的文字」，更沒人測過 LLM 代寫對開放式測驗的衝擊。</p></div>
+<div class="concept-card"><div class="concept-icon">💡</div><h3>核心洞見</h3><p>作假不是「全面說謊」，而是<strong>有選擇的包裝</strong>：加班加點潤稿（精緻回應）＋ 藏壞消息、放大好消息（選擇性資訊管理）。且包裝能力<em>受真實特質水準限制</em>——特質是錨，作假是在錨的附近擺盪。</p></div>
+<div class="concept-card"><div class="concept-icon">🧪</div><h3>方法亮點</h3><p>受試者間真實驗（隨機分派誠實組 vs. 應徵者組）＋ 兩時點測量 ＋ SME 人工評分 ＋ ModernBERT 遷移學習 ＋ <strong>彈性網迴歸</strong>（第六章的非正交多元迴歸親戚！）＋ 五折交叉驗證 ＋ 7 種 LLM 的 AI 偵測實驗。</p></div>
+</div>
+</section>
+
+<!-- §2 -->
+<section id="gloss">
+<div class="section-header"><span class="section-num">§2</span><h2>先修裝備：變數與重要名詞中英對照表</h2></div>
+<div class="info-box">🎒 <strong>進入方法之前，先把這張表掃過一遍。</strong>讀論文卡住時回來查——每個詞都附「白話版」解釋。</div>
+
+<div class="gloss-cat">A. 核心構念（這篇在研究「什麼」）</div>
+<div class="data-table-wrap"><table>
+<thead><tr><th style="width:26%">中文</th><th style="width:30%">英文</th><th>白話解釋</th></tr></thead>
+<tbody>
+<tr><td>作假／偽裝作答</td><td>Faking</td><td>刻意呈現「跟真實自己不符」的樣子（Goffin &amp; Boyd, 2009）。找工作時把自己演得更勤奮、更好相處。</td></tr>
+<tr><td>印象管理</td><td>Impression Management（IM）</td><td>為了讓別人對自己有好印象而做的一切策略性行為。作假是 IM 的一種「有動機的展演」。</td></tr>
+<tr><td>精緻回應</td><td>Elaborate Responding</td><td>回答時「更用力寫」：細節更多（quantity of details）、有情境脈絡（contextual embeddedness：時間、地點、場景）、邏輯結構通順（logical structure）。是一種回應<em>風格</em>。</td></tr>
+<tr><td>選擇性資訊管理</td><td>Selective Information Management</td><td>「報喜不報憂」：遮掩負面資訊（masking negatives）＋ 美化正面資訊（embellishing positives）。是一種回應<em>內容</em>的取捨。</td></tr>
+<tr><td>開放式人格測驗</td><td>Open-Ended Personality Assessment</td><td>不勾選分數，而是用文字回答「請描述你如何遵守規則與期限，並舉例」這類題目，再由文字推估人格。</td></tr>
+<tr><td>盡責性</td><td>Conscientiousness（C）</td><td>五大人格之一：自律、守時、有條理、負責任。本研究兩個目標特質之一。</td></tr>
+<tr><td>親和性</td><td>Agreeableness（A）</td><td>五大人格之一：友善、合作、體貼。本研究另一個目標特質（結果顯示它比較難從文字測準）。</td></tr>
+</tbody>
+</table></div>
+
+<div class="gloss-cat">B. 設計與流程用語</div>
+<div class="data-table-wrap"><table>
+<thead><tr><th style="width:26%">中文</th><th style="width:30%">英文</th><th>白話解釋</th></tr></thead>
+<tbody>
+<tr><td>受試者間設計</td><td>Between-Subjects Design</td><td>每人只被分到一種條件（誠實組 <em>或</em> 應徵者組），比較「兩群人」。避免同一人重複作答造成的練習／需求效應。</td></tr>
+<tr><td>隨機分派</td><td>Random Assignment</td><td>用抽籤決定誰進哪一組，讓兩組在未測量的變數上「期望值相等」——因果推論的入場券。</td></tr>
+<tr><td>誠實條件／動機條件</td><td>Honest / Motivated（Applicant-like）Condition</td><td>誠實組被要求照實回答；動機組被要求「把這當成你非常想要的工作的應徵」。h/f 或 honest/faked 都是指這兩組。</td></tr>
+<tr><td>兩時點測量</td><td>Time 1 / Time 2（T1／T2）</td><td>T1 做開放式測驗＋Likert（受操弄）；3–7 天後的 T2 <em>所有人</em>誠實填 Likert——當作「真實人格」的基準與 NLP 的訓練目標。</td></tr>
+<tr><td>注意力檢查</td><td>Attention Checks</td><td>混在題目中的「請選『非常同意』」型題目，抓亂答者。未通過者剔除。</td></tr>
+<tr><td>留存率</td><td>Retention Rate</td><td>T1 做完還願意回來做 T2 的比例（本研究 90%，N = 2,039）。太低會有流失偏誤。</td></tr>
+</tbody>
+</table></div>
+
+<div class="gloss-cat">C. 測量與機器學習用語</div>
+<div class="data-table-wrap"><table>
+<thead><tr><th style="width:26%">中文</th><th style="width:30%">英文</th><th>白話解釋</th></tr></thead>
+<tbody>
+<tr><td>Likert 量表</td><td>Likert Scale</td><td>「1=非常不同意 … 7=非常同意」的勾選題。本研究用 20 題 IPIP 大五量表。</td></tr>
+<tr><td>自然語言處理</td><td>Natural Language Processing（NLP）</td><td>讓電腦讀文字、算分數的技術總稱。這裡指「文字 → 人格分數」的自動計分。</td></tr>
+<tr><td>大型語言模型</td><td>Large Language Model（LLM）</td><td>ChatGPT、Gemini、Claude 這類會生成文字的 AI。Study 2 用 7 種 LLM 模擬「AI 代寫」。</td></tr>
+<tr><td>ModernBERT</td><td>ModernBERT</td><td>一種 Transformer 架構的語言模型，專長是文字的迴歸／分類任務。本研究的 NLP 計分引擎。</td></tr>
+<tr><td>遷移學習／微調</td><td>Transfer Learning / Fine-tuning</td><td>拿「已經讀過大量文本」的預訓練模型，用自己的資料再訓練一下，讓它學會特定任務（預測誠實 Likert 分數）。</td></tr>
+<tr><td>彈性網迴歸</td><td>Elastic Net Regression</td><td>帶「正則化懲罰」的多元迴歸，專治<strong>預測變數彼此高度相關</strong>（＝第六章的非正交／共線性問題）。用來把 5 題的 NLP 分數加權合成人格總分。</td></tr>
+<tr><td>五折交叉驗證</td><td>Fivefold Cross-Validation（CV）</td><td>資料切五份，輪流用四份訓練、一份測試——確保模型評估「沒看過答案」，防止過度擬合。</td></tr>
+<tr><td>目標分數</td><td>Target Score</td><td>ML 模型「要學著預測」的標準答案。本研究比較兩種：誠實 Likert 分數 vs. SME 評分（H6 的關鍵）。</td></tr>
+<tr><td>主題專家評分</td><td>Subject Matter Expert（SME）Ratings</td><td>三位受訓專家讀文字後評的人格／寫作傾向分數。跟 NLP 分數對照，也用來當另一種訓練目標。</td></tr>
+<tr><td>標準本位內容分析</td><td>Criterion-Based Content Analysis（CBCA）</td><td>司法心理學的謊言偵測框架：真實記憶通常細節多、有時空脈絡、邏輯連貫。本研究據此定義「精緻回應」的評分標準。</td></tr>
+</tbody>
+</table></div>
+
+<div class="gloss-cat">D. 統計指標（判讀結果的工具箱）</div>
+<div class="data-table-wrap"><table>
+<thead><tr><th style="width:26%">中文</th><th style="width:30%">英文</th><th>白話解釋</th></tr></thead>
+<tbody>
+<tr><td>Cohen's d（效果量）</td><td>Cohen's d / Standardized Mean Difference</td><td>兩組平均差除以合併標準差：「差了幾個標準差」。慣例：.2 小、.5 中、.8 大。本篇所有「膨脹幅度」都用 d 報告。</td></tr>
+<tr><td>去衰減校正 d<sub>c</sub></td><td>d Corrected for Unreliability</td><td>測量有誤差會「稀釋」效果量，d<sub>c</sub> = d ÷ √信度，還原「如果測量完美」的效果大小。</td></tr>
+<tr><td>組內相關係數</td><td>Intraclass Correlation（ICC）</td><td>多位評分者的一致性指標（0–1）。ICC = .87 表示三位 SME 的平均評分非常一致，評分結果可信。</td></tr>
+<tr><td>折半信度＋校正</td><td>Split-Half Reliability + Spearman–Brown</td><td>把回答拆兩半各自計分、算相關，再用 Spearman–Brown 公式校正回「全長測驗」的信度估計。</td></tr>
+<tr><td>聚合效度</td><td>Convergent Validity</td><td>NLP 分數與（不同來源的）誠實 Likert 分數的相關。相關夠高，表示兩者測到同一構念。</td></tr>
+<tr><td>再測信度</td><td>Test–Retest Reliability</td><td>同一量表兩次施測的相關（T1 vs. T2 Likert）。作假會讓它從 .91 掉到 .53——分數的「穩定性」被破壞。</td></tr>
+<tr><td>二因子混合 ANOVA</td><td>Two-Way Mixed ANOVA</td><td>條件（誠實/動機，受試者間）× 測量方法（Likert/NLP，受試者內）的變異數分析。「交互作用顯著」= 作假幅度因方法而異（H5 的檢定）。</td></tr>
+<tr><td>偽陽性率</td><td>False Positive Rate（FPR）</td><td>把「真人寫的」誤判成 AI 的比率。選才情境中冤枉好人代價極高，所以 1% 是關鍵賣點。</td></tr>
+<tr><td>召回率／特異度</td><td>Recall（TP/(TP+FN)）/ Specificity</td><td>召回率：AI 代寫中被抓到的比例；特異度：真人回答被正確放行的比例。</td></tr>
+</tbody>
+</table></div>
+</section>
+
+<!-- §3 -->
+<section id="theory">
+<div class="section-header"><span class="section-num">§3</span><h2>理論框架：動機 × 特質 → 兩種寫作戰術</h2></div>
+<div class="prose">
+<p>作者把「期望理論」（expectancy theory；Vroom, 1964）跟司法心理學的「內容本位謊言偵測」（CBCA、真實性監控）嫁接起來：當你<em>很想要這份工作</em>（高工具性 × 高價值）、又<em>相信答案可以自己塑造</em>，你就會投入更多力氣去經營回答——這股動機透過兩條戰術落地。</p>
+</div>
+<div class="chart-wrapper">
+<div class="chart-title">🗺️ 論文 Figure 1 的重繪：印象管理如何影響開放式作答</div>
+<svg viewBox="0 0 860 300" style="width:100%" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC',sans-serif">
+  <defs><marker id="arrF" markerWidth="10" markerHeight="10" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#1a1a2e"/></marker></defs>
+  <ellipse cx="130" cy="150" rx="105" ry="52" fill="rgba(41,128,185,.12)" stroke="#2980b9" stroke-width="2"/>
+  <text x="130" y="145" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a2e">想被看好的動機</text>
+  <text x="130" y="165" text-anchor="middle" font-size="11.5" fill="#2980b9">Motivation to Appear Favorably</text>
+  <rect x="330" y="20" width="180" height="56" rx="10" fill="rgba(107,63,160,.1)" stroke="#6b3fa0" stroke-width="2"/>
+  <text x="420" y="43" text-anchor="middle" font-size="13.5" font-weight="700" fill="#6b3fa0">真實特質水準</text>
+  <text x="420" y="62" text-anchor="middle" font-size="11.5" fill="#6b3fa0">Personality Level（錨）</text>
+  <rect x="620" y="60" width="220" height="76" rx="10" fill="rgba(26,107,110,.1)" stroke="#1a6b6e" stroke-width="2"/>
+  <text x="730" y="86" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1a6b6e">戰術 1：精緻回應</text>
+  <text x="730" y="105" text-anchor="middle" font-size="11.5" fill="#1a6b6e">細節更多、脈絡更足、</text>
+  <text x="730" y="122" text-anchor="middle" font-size="11.5" fill="#1a6b6e">邏輯更順（風格層面）</text>
+  <rect x="620" y="176" width="220" height="76" rx="10" fill="rgba(192,57,43,.08)" stroke="#c0392b" stroke-width="2"/>
+  <text x="730" y="202" text-anchor="middle" font-size="13.5" font-weight="700" fill="#c0392b">戰術 2：選擇性資訊管理</text>
+  <text x="730" y="221" text-anchor="middle" font-size="11.5" fill="#c0392b">遮掩負面 ＋ 美化正面</text>
+  <text x="730" y="238" text-anchor="middle" font-size="11.5" fill="#c0392b">（內容層面）</text>
+  <line x1="230" y1="120" x2="612" y2="90" stroke="#1a1a2e" stroke-width="2" marker-end="url(#arrF)"/>
+  <text x="400" y="95" text-anchor="middle" font-size="12" fill="#1a6b6e" font-weight="700">H1：動機組更精緻（d=.29）</text>
+  <line x1="230" y1="180" x2="612" y2="212" stroke="#1a1a2e" stroke-width="2" marker-end="url(#arrF)"/>
+  <text x="408" y="215" text-anchor="middle" font-size="12" fill="#c0392b" font-weight="700">H2：動機組更會挑好話講（d=.72）</text>
+  <line x1="470" y1="76" x2="616" y2="90" stroke="#6b3fa0" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrF)"/>
+  <line x1="500" y1="76" x2="628" y2="180" stroke="#6b3fa0" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrF)"/>
+  <text x="540" y="140" font-size="12" fill="#6b3fa0" font-weight="700">H3／H4：特質是錨</text>
+</svg>
+</div>
+<div class="data-table-wrap"><table>
+<thead><tr><th style="width:12%">假設</th><th>內容</th><th style="width:22%">結果</th></tr></thead>
+<tbody>
+<tr><td>H1</td><td>動機（應徵）條件下，精緻回應會比誠實條件高</td><td>✅ 支持（d = .29）</td></tr>
+<tr><td>H2</td><td>動機條件下，選擇性資訊管理會比誠實條件高</td><td>✅ 支持（d = .72）</td></tr>
+<tr><td>H3</td><td>動機條件下，特質水準與精緻回應正相關</td><td>🟡 部分支持（親和 r=.26✓；盡責 r=.07 ns）</td></tr>
+<tr><td>H4</td><td>動機條件下，特質水準與選擇性資訊管理相關（少講負面、多講正面）</td><td>🟡 部分支持（親和 r=.28✓；盡責 r=.10 ns）</td></tr>
+<tr><td>H5</td><td>誠實→作假的分數膨脹：Likert ＞ 開放式（NLP）</td><td>✅ 支持（d̄ .65 vs. .26；交互作用 p&lt;.01）</td></tr>
+<tr><td>H6</td><td>以誠實 Likert 為訓練目標的 NLP 分數，比以 SME 評分為目標更抗作假</td><td>✅ 支持（d̄ .26 vs. .63）</td></tr>
+<tr><td>H7</td><td>AI 生成的回答分數會高於真人回答</td><td>🟡 部分支持（盡責✓ d̄=1.07；親和✗ 因模型而異）</td></tr>
+<tr><td>RQ1</td><td>AI 生成的回答能否被準確辨識？</td><td>✅ 可以（準確率 99%、FPR 1%）</td></tr>
+</tbody>
+</table></div>
+<div class="highlight-box">🧠 <strong>理論上的關鍵一步</strong>：傳統謊言偵測理論把回答二分成「誠實 vs. 說謊」，但應徵者很少「整篇瞎編」——他們是<em>以真實特質為錨</em>的「拋光師」。所以特質訊號在作假時仍會滲進文字（H3/H4），這正是 NLP 還測得到人格的理論基礎。</div>
+</section>
+
+<!-- §4 -->
+<section id="design">
+<div class="section-header"><span class="section-num">§4</span><h2>研究設計與執行流程</h2></div>
+
+<div class="study-tabs">
+  <button class="study-tab active" onclick="showStudy(0,this)">Study 1：作假實驗</button>
+  <button class="study-tab" onclick="showStudy(1,this)">Study 2：AI 代寫與偵測</button>
+</div>
+
+<div class="study-panel" id="studyPanel0">
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700">Study 1｜開放式測驗到底多容易被「演」？</h3>
+<div class="study-meta">
+  <span class="badge badge-design">受試者間真實驗（隨機分派）</span>
+  <span class="badge badge-design">2 條件 × 2 時點</span>
+  <span class="badge badge-n">N = 2,039（Prolific，留存 90%）</span>
+  <span class="badge badge-stat">Cohen's d · 相關 · 混合 ANOVA · NLP 建模</span>
+</div>
+<div class="goal-box">🎯 <strong>研究目的</strong>：① 檢驗動機如何改變寫作（H1–H4）；② 比較開放式 vs. Likert 誰更抗作假（H5）；③ 檢驗訓練目標與訓練樣本配置對 NLP 模型抗作假能力的影響（H6）。</div>
+<div class="flow-strip">
+  <span class="flow-node">Prolific 招募在職美國成人<br><small>核准率 ≥98%、含注意力檢查</small></span><span class="flow-arrow">→</span>
+  <span class="flow-node">T1：<strong>隨機分派</strong><br><small>誠實組 vs.「當作應徵夢幻工作」組</small></span><span class="flow-arrow">→</span>
+  <span class="flow-node">T1 作答<br><small>5 題開放式（各 250–750 字元）＋ 20 題 IPIP Likert</small></span><span class="flow-arrow">→</span>
+  <span class="flow-node">隔 3–7 天</span><span class="flow-arrow">→</span>
+  <span class="flow-node">T2：全員<strong>誠實</strong>填 Likert<br><small>＝「真實人格」基準／NLP 訓練目標</small></span><span class="flow-arrow">→</span>
+  <span class="flow-node">計分<br><small>SME 人工評分 ＋ ModernBERT NLP 計分</small></span>
+</div>
+<div style="margin-top:14px">
+<div class="analysis-item"><span class="an-name">為何受試者間？</span><span class="an-why">同一人先誠實再作假（受試者內）會產生<strong>攜帶效應與需求效應</strong>——尤其寫作題，受試者可能直接把上次的答案改寫。作者引 Greenwald (1976) 說明取捨後選擇受試者間設計（腳註 1）。代價是需要更大樣本，且無法估個人層次的作假幅度。</span></div>
+<div class="analysis-item"><span class="an-name">為何隔 3–7 天再測 T2？</span><span class="an-why">要拿到「不受操弄污染」的誠實人格分數當 NLP 的訓練目標與比較基準；間隔太短會有記憶效應，太長會流失樣本（本研究留存 90%）。</span></div>
+<div class="analysis-item"><span class="an-name">品質控制</span><span class="an-why">注意力檢查未過者剔除、禁止複製貼上、告知「只有原創文字算數」。開放式與 Likert 的施測順序<strong>對抗平衡</strong>（counterbalanced）以排除順序效應。</span></div>
+</div>
+<div class="study-result">📌 樣本：51% 女性、66% 白人、平均年齡 40.44 歲。每題敘事平均花 2 分 20 秒；誠實／作假兩組作答時間<strong>無顯著差異</strong>——作假者不是花更多時間，而是把力氣花在「怎麼寫」。</div>
+</div>
+
+<div class="study-panel" id="studyPanel1" style="display:none">
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700">Study 2｜LLM 代寫是新型作假：測得出來嗎？擋得住嗎？</h3>
+<div class="study-meta">
+  <span class="badge badge-design">7 種 LLM × 20 種指令 × 每題 300 筆</span>
+  <span class="badge badge-n">合成 AI 每題 2,100 筆；真人用 AI（user-AI）n = 314</span>
+  <span class="badge badge-stat">Cohen's d · 分類模型 · 巢狀五折 CV · 留一 LLM 檢驗</span>
+</div>
+<div class="goal-box">🎯 <strong>研究目的</strong>：① AI 代寫能把開放式測驗分數灌多高（H7）？② 客製化偵測模型能否辨識 AI 代寫（RQ1）？</div>
+<div class="flow-strip">
+  <span class="flow-node">「純 AI」資料<br><small>GPT-3.5／GPT-4.1／GPT-5 mini／Gemini 2.0 Flash／Llama 3B／Qwen 2.5 7B／Claude 3 Haiku，temperature=1.0</small></span><span class="flow-arrow">→</span>
+  <span class="flow-node">「user-AI」資料<br><small>314 位真人被允許「隨意用 AI」回答（多數用 ChatGPT；有人照貼、有人改寫）</small></span><span class="flow-arrow">→</span>
+  <span class="flow-node">用 Study 1 的 NLP 模型計分<br><small>比較 AI vs. 真人分數（H7）</small></span><span class="flow-arrow">→</span>
+  <span class="flow-node">訓練 ModernBERT 偵測器<br><small>人 vs. AI 二元分類，巢狀五折 CV</small></span><span class="flow-arrow">→</span>
+  <span class="flow-node">泛化測試<br><small>留一 LLM：訓練時完全沒看過的模型也要抓得到</small></span>
+</div>
+<div style="margin-top:14px">
+<div class="analysis-item"><span class="an-name">20 種指令哪來的？</span><span class="an-why">10 種由作者團隊撰寫，另外 10 種來自獨立樣本（n = 50 Prolific 受試者實際使用 LLM 時下的指令）——確保模擬貼近真實使用行為，而不是研究者想像。</span></div>
+<div class="analysis-item"><span class="an-name">為何要「留一 LLM」？</span><span class="an-why">實務擔憂：新的 LLM 一直出，偵測器會不會只認得訓練過的模型？輪流把 1 種 LLM 完全排除在訓練外再測試——準確率仍達 98–100%，泛化性過關。</span></div>
+</div>
+<div class="study-result">📌 這個設計把「AI 作弊」拆成兩種生態效度不同的情境：<strong>純 AI</strong>（完全代寫）與<strong>人機混寫</strong>（user-AI），並分別檢驗偵測能力——後者才是實務上最難抓的。</div>
+</div>
+</section>
+
+<!-- §5 -->
+<section id="measures">
+<div class="section-header"><span class="section-num">§5</span><h2>測量工具與 NLP 計分管線</h2></div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:8px 0 14px;font-weight:700">5.1 三套測量工具</h3>
+<div class="concept-grid">
+<div class="concept-card"><div class="concept-icon">✍️</div><h3>開放式人格測驗（5 題）</h3><p>3 題測盡責、2 題測親和，依「特質活化理論」與傳統量表開發程序撰寫、SME 內容效度篩選（ICC<sub>[2,5]</sub> = .91；內容效度平均 3.9／4 與 3.8／4）。</p><p><strong>例題（C1）</strong>：「請描述你多麼確實地遵守規則與期限（例如作業、赴約準時），並舉例佐證。」<strong>（A2）</strong>：「當有人對你無禮時你如何反應？請舉例。」</p></div>
+<div class="concept-card"><div class="concept-icon">📊</div><h3>Likert 量表（20 題 IPIP）</h3><p>International Personality Item Pool 大五構面量表，T1、T2 各施測一次。信度 α = .93（盡責）、.89（親和）。</p><p>T1 的 Likert 受「誠實/應徵」操弄 → 用來估 Likert 的作假幅度；T2 誠實作答 → 當作真實人格基準與 NLP 訓練目標。</p></div>
+<div class="concept-card"><div class="concept-icon">👩‍⚖️</div><h3>SME 人工評分</h3><p>三位受訓專家依 CBCA 標準對 n = 260 份敘事評「精緻回應」與「選擇性資訊」（1–5 分），ICC<sub>[1,3]</sub> = .87；另對 n = 466 份評人格分數，ICC = .82。</p><p>先訂評分準則 → 獨立評分 → 定期會議校準「參照框架」——這是內容分析的標準流程。</p></div>
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:28px 0 14px;font-weight:700">5.2 NLP 計分管線：文字怎麼變成人格分數？</h3>
+<div class="chart-wrapper">
+<div class="chart-title">🔧 從一段敘事到一個盡責性分數（本研究的「監督式構念計分」supervised construct scoring）</div>
+<div class="flow-strip" style="justify-content:center">
+  <span class="flow-node">受試者的 5 段敘事</span><span class="flow-arrow">→</span>
+  <span class="flow-node"><strong>ModernBERT</strong><br><small>預訓練 Transformer</small></span><span class="flow-arrow">→</span>
+  <span class="flow-node">遷移學習微調<br><small>目標＝T2 誠實 Likert 分數</small></span><span class="flow-arrow">→</span>
+  <span class="flow-node">每題各得一個 NLP 分數</span><span class="flow-arrow">→</span>
+  <span class="flow-node"><strong>彈性網迴歸</strong>加權合成<br><small>👈 第六章主場！</small></span><span class="flow-arrow">→</span>
+  <span class="flow-node">人格總分<br><small>五折 CV 產生</small></span>
+</div>
+</div>
+<div class="prose">
+<p><strong>為什麼用「誠實 Likert」當訓練目標？</strong>這是 H6 的理論核心：若模型被訓練去「重建誠實時的自我報告」，它就會學著<em>穿透包裝、撈出真實訊號</em>；反之，若拿 SME 評分當目標——而 SME 讀的正是「已被精心包裝的文字」——模型就會連包裝一起學進去，變得跟 Likert 一樣好騙（§8 會看到證據）。</p>
+</div>
+
+<div class="formula-box">
+<div class="formula-label">折半信度 × Spearman–Brown 校正（估 NLP 分數的信度）</div>
+<div class="formula-main">r<sub>full</sub> = 2·r<sub>half</sub> ／ (1 + r<sub>half</sub>)</div>
+<div class="formula-desc">把每人的回答拆成兩半 → 各自用模型計分 → 兩半分數求相關 r<sub>half</sub> → 用公式校正回全長信度。<br>
+結果：盡責 r<sub>xx</sub> = <strong>.78</strong>、親和 r<sub>xx</sub> = <strong>.69</strong>。親和較低的可能原因：5 題中只有 2 題明確瞄準親和性。<br>
+聚合效度（NLP vs. T2 誠實 Likert）：盡責 r = .55、親和 r = .27——與過去 NLP 人格研究的量級一致。</div>
+</div>
+<div class="info-box">🔍 <strong>判讀要點</strong>：信度（reliability）問「同一把尺量兩次會不會一樣」，效度（validity）問「這把尺量到的是不是人格」。NLP 分數與 Likert 分數<em>來源不同</em>（文字 vs. 勾選），所以它們的相關是「聚合效度」證據，天生會低於同尺重測的信度——比較 §6 的 Table 4 時務必記得這點，否則會誤判 NLP 很爛。</div>
+</section>
+
+<!-- §6 -->
+<section id="results">
+<div class="section-header"><span class="section-num">§6</span><h2>Study 1 結果：作假的指紋長什麼樣？</h2></div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:8px 0 6px;font-weight:700">6.1 動機改變寫作（H1、H2）——每個 d 值都點得動</h3>
+<div class="chart-wrapper">
+<div class="chart-title">📊 誠實 → 應徵條件的寫作傾向變化（SME 評分，n = 260；Table 2）。點一根長條看解讀。</div>
+<canvas id="dBarCanvas" height="330"></canvas>
+<div id="dBarExplain" class="study-result" style="margin-top:10px">👆 點擊上方任一長條，看這個數字「怎麼來、怎麼解讀」。</div>
+</div>
+<div class="prose">
+<p>五個指標全部顯著：作假者細節更多（d = .33）、結構更順（d = .34）、負面資訊更少（d = −.51）、正面美化更多（d = .71）。注意<strong>選擇性資訊管理（.72）遠大於精緻回應（.29）</strong>——作假的主戰場是「講什麼」，不是「寫多好」。</p>
+<p>還有一個藏在 Table 1 的珍珠：精緻回應與選擇性資訊的相關，在誠實組只有 <strong>r = .11</strong>，在作假組飆到 <strong>r = .58</strong>——動機讓兩種戰術「同步啟動」。這個「相關結構因情境而變」的現象，§10 會用第六章的語言重新解讀。</p>
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:28px 0 6px;font-weight:700">6.2 特質是錨（H3、H4）——重繪論文 Figure 2 &amp; 3</h3>
+<div class="chart-wrapper">
+<div class="chart-title">📈 誠實（青）vs. 應徵（紅）條件下，真實特質分數（x 軸，T2 誠實 Likert）如何預測寫作傾向（y 軸）。依原文迴歸斜率示意重繪。</div>
+<div class="controls" style="justify-content:center">
+  <button class="dt-btn active" onclick="setFigMode(0,this)">精緻回應 × 盡責</button>
+  <button class="dt-btn" onclick="setFigMode(1,this)">精緻回應 × 親和</button>
+  <button class="dt-btn" onclick="setFigMode(2,this)">選擇性資訊 × 盡責</button>
+  <button class="dt-btn" onclick="setFigMode(3,this)">選擇性資訊 × 親和</button>
+</div>
+<canvas id="figCanvas" height="320"></canvas>
+<div id="figExplain" class="study-result" style="margin-top:10px"></div>
+</div>
+<div class="highlight-box">🧭 <strong>判讀方法</strong>：① 紅線整體在青線上方 → 這是 H1/H2 的「條件主效果」（作假墊高整體水準）；② 線有正斜率 → 特質越高寫作傾向越高（H3/H4 的「特質錨定」）；③ 兩線斜率是否不同 → 「條件 × 特質」交互作用（調節）。原文只有「盡責 × 選擇性資訊」的交互顯著（b = −.13, p &lt; .01：誠實組斜率較陡）。</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:28px 0 6px;font-weight:700">6.3 主戲：Likert vs. 開放式，誰比較抗作假？（H5）</h3>
+<div class="prose"><p>檢定方式是<strong>二因子混合 ANOVA</strong>：條件（誠實/動機，受試者間）× 方法（Likert/NLP，受試者內），對盡責與親和分別執行。兩個特質的「條件 × 方法」交互作用皆 p &lt; .01 → 作假幅度確實因方法而異。接著看效果量（Table 3）：</p></div>
+<div class="data-table-wrap"><table>
+<thead><tr><th>特質</th><th>NLP 誠實 M (SD)</th><th>NLP 動機 M (SD)</th><th>NLP d (d<sub>c</sub>)</th><th>Likert 誠實 M (SD)</th><th>Likert 動機 M (SD)</th><th>Likert d (d<sub>c</sub>)</th></tr></thead>
+<tbody>
+<tr><td>盡責性 C</td><td>5.08 (0.59)</td><td>5.29 (0.45)</td><td><strong>.40</strong> (.45)</td><td>5.15 (1.01)</td><td>5.92 (0.69)</td><td><strong>.90</strong> (.93)</td></tr>
+<tr><td>親和性 A</td><td>5.64 (0.22)</td><td>5.66 (0.22)</td><td><strong>.11</strong> (.13)</td><td>5.61 (0.76)</td><td>5.90 (0.65)</td><td><strong>.40</strong> (.42)</td></tr>
+<tr><td>平均</td><td colspan="2">—</td><td><strong>.26</strong> (.29)</td><td colspan="2">—</td><td><strong>.65</strong> (.68)</td></tr>
+</tbody>
+</table></div>
+<div class="prose">
+<p><strong>逐格解讀</strong>：以盡責為例，Likert 從誠實 5.15 膨脹到 5.92——差 0.77 分、合併 SD 約 0.86，所以 d = .77/.86 ≈ .90（快一個標準差，天翻地覆）；NLP 分數只從 5.08 → 5.29，d = .40。親和更明顯：.40 vs. .11。括號中的 d<sub>c</sub> 是「測量若完美」的校正值（§7 有公式）——校正後結論不變。</p>
+</div>
+<div class="prose"><p><strong>作假還會腐蝕心理計量品質</strong>（Table 4）：Likert 的再測相關從 .91（誠實/誠實）掉到 .53（誠實/作假），跌 42%；NLP 的聚合效度從 .64 掉到 .42，跌 34%。結論：<em>兩種方法都會被作假傷到</em>，但開放式的「分數膨脹」明顯較小。</p></div>
+</section>
+
+<!-- §7 -->
+<section id="dplay">
+<div class="section-header"><span class="section-num">§7</span><h2>效果量 d 遊樂場：親手感受 .26 與 .65 差多少</h2></div>
+<div class="formula-box">
+<div class="formula-label">Cohen's d 的定義與去衰減校正</div>
+<div class="formula-main">d = (M<sub>作假</sub> − M<sub>誠實</sub>) ／ SD<sub>pooled</sub>　，　SD<sub>pooled</sub> = √[ (SD₁² + SD₂²) ／ 2 ]　，　d<sub>c</sub> = d ／ √r<sub>xx</sub></div>
+<div class="formula-desc">「兩組差幾個標準差」。校正示範：盡責 NLP 的 d = .40、信度 r<sub>xx</sub> = .78 → d<sub>c</sub> = .40 ／ √.78 = .40 ／ .883 ≈ <strong>.45</strong>（正是 Table 3 括號中的值）。測量誤差會稀釋效果，所以「校正後」略大——比較不同信度的工具時（Likert α=.93 vs. NLP r<sub>xx</sub>=.78）要看 d<sub>c</sub> 才公平。</div>
+</div>
+<div class="chart-wrapper">
+<div class="chart-title">🎮 拉動滑桿或按下研究中的關鍵 d 值，看「誠實組」與「作假組」分數分布重疊多少</div>
+<div class="controls">
+  <div class="ctrl-group"><label>Cohen's d</label><input type="range" id="dSlider" min="0" max="1.3" step="0.01" value="0.26" oninput="drawDPlay()"><span class="ctrl-val" id="dVal">0.26</span></div>
+  <button class="dt-btn" onclick="setD(0.11)">.11 NLP親和</button>
+  <button class="dt-btn" onclick="setD(0.26)">.26 NLP平均</button>
+  <button class="dt-btn" onclick="setD(0.40)">.40 NLP盡責</button>
+  <button class="dt-btn" onclick="setD(0.65)">.65 Likert平均</button>
+  <button class="dt-btn" onclick="setD(0.90)">.90 Likert盡責</button>
+  <button class="dt-btn" onclick="setD(1.07)">1.07 純AI盡責</button>
+</div>
+<canvas id="dPlayCanvas" height="300"></canvas>
+<div id="dPlayStats" class="study-result" style="margin-top:10px"></div>
+</div>
+<div class="info-box">🎯 <strong>為什麼用 d 而不是 p 值當主角？</strong>N = 2,039 時幾乎任何差異都會 p &lt; .05——顯著性只告訴你「差異不是 0」，不告訴你「差多少、要不要在意」。選才實務關心的是：作假能把排名灌高多少？這只有效果量答得了。這正是第三章「統計檢定」到本章「解讀量級」的進階。</div>
+</section>
+
+<!-- §8 -->
+<section id="training">
+<div class="section-header"><span class="section-num">§8</span><h2>訓練樣本與訓練目標：ML 模型的「配方」實驗</h2></div>
+<div class="prose">
+<p>NLP 模型抗不抗作假，不只看架構，更看<strong>拿什麼資料、對什麼目標</strong>訓練。這是機器學習的核心原則：<em>模型的泛化能力取決於訓練樣本與應用場景的相似度</em>。作者做了兩組「配方比較」：</p>
+</div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:17px;margin:18px 0 8px;font-weight:700">8.1 訓練「樣本」配置（Table 5）——點選配方看結果</h3>
+<div class="chart-wrapper">
+<div class="chart-title">🧪 五種訓練樣本配方：左長條 = 作假膨脹 d̄（越短越抗作假）；右長條 = 聚合效度 r̄（越長越有效）</div>
+<div class="controls" style="justify-content:center">
+  <button class="dt-btn active" onclick="setConfig(0,this)">a. 誠實＋作假（全樣本）</button>
+  <button class="dt-btn" onclick="setConfig(1,this)">b. 混合（N 對齊）</button>
+  <button class="dt-btn" onclick="setConfig(2,this)">c. 誠實＋30%作假</button>
+  <button class="dt-btn" onclick="setConfig(3,this)">d. 只用誠實</button>
+  <button class="dt-btn" onclick="setConfig(4,this)">e. 只用作假</button>
+</div>
+<canvas id="configCanvas" height="240"></canvas>
+<div id="configExplain" class="study-result" style="margin-top:10px"></div>
+</div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:17px;margin:24px 0 8px;font-weight:700">8.2 訓練「目標」比較（Table 6，H6）</h3>
+<div class="data-table-wrap"><table>
+<thead><tr><th>訓練目標</th><th>盡責 d (d<sub>c</sub>)</th><th>親和 d (d<sub>c</sub>)</th><th>平均 d̄</th><th>信度 r<sub>xx</sub>（C／A）</th></tr></thead>
+<tbody>
+<tr><td>誠實 Likert 分數（本研究主用）</td><td>.40 (.45)</td><td>.11 (.13)</td><td><strong>.26</strong></td><td>.78／.69</td></tr>
+<tr><td>SME 直接評分</td><td>.65 (.72)</td><td>.60 (.74)</td><td><strong>.63</strong></td><td>.82／.66</td></tr>
+<tr><td>（SME 評分本身）</td><td>.94</td><td>.58</td><td>—</td><td>—</td></tr>
+</tbody>
+</table></div>
+<div class="prose">
+<p><strong>H6 獲得支持</strong>：拿 SME 評分當目標，模型的作假膨脹（d̄ = .63）幾乎跟 Likert（.65）一樣糟。<strong>為什麼？</strong>SME 讀的是「已被包裝過的文字」，他們自己就被騙了（SME 評分在作假組高出 d = .94／.58）——模型向被騙的老師學習，自然也學會被騙。反之，誠實 Likert 目標教模型「透視包裝、重建真實」。這對面試評分、AVI（非同步視訊面試）自動評分都是重要警告：<em>用人類評分當 ML 目標，會把人類的可騙性一起繼承</em>。</p>
+</div>
+</section>
+
+<!-- §9 -->
+<section id="study2">
+<div class="section-header"><span class="section-num">§9</span><h2>Study 2：AI 代寫的威脅與 99% 的反制</h2></div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:17px;margin:8px 0 8px;font-weight:700">9.1 AI 能灌多高？（H7）——依 LLM 差很大</h3>
+<div class="chart-wrapper">
+<div class="chart-title">🤖 各 LLM 生成回答 vs. 真人回答的分數差（Cohen's d；正值 = AI 比真人高分；Table 7）</div>
+<div class="controls" style="justify-content:center">
+  <button class="dt-btn active" onclick="setTrait(0,this)">盡責性 C</button>
+  <button class="dt-btn" onclick="setTrait(1,this)">親和性 A</button>
+</div>
+<canvas id="llmCanvas" height="330"></canvas>
+<div id="llmExplain" class="study-result" style="margin-top:10px"></div>
+</div>
+<div class="prose">
+<p><strong>盡責性</strong>：所有 LLM 都比真人高分（d̄ = 1.07，從 Gemini 的 .34 到 Qwen 的 1.20）；有趣的是<em>較舊的 GPT-3.5（d = 1.17）比新的 GPT-5 mini（.66）灌得更高</em>——「越新越強的模型越會作弊」這個直覺不成立。<strong>親和性</strong>則大逆轉：多數 LLM 反而<em>低於</em>真人（Gemini d = −1.82！），挑戰「AI 一定提升申請者輸出」的普遍假設。人機混合（user-AI）也一樣：盡責 +.61、親和 −.33。</p>
+</div>
+<h3 style="font-family:'Noto Serif TC',serif;font-size:17px;margin:24px 0 8px;font-weight:700">9.2 抓得到嗎？（RQ1）——客製化偵測器的成績單</h3>
+<div class="data-table-wrap"><table>
+<thead><tr><th>比較</th><th>準確率</th><th>召回率 TP/(TP+FN)</th><th>特異度 TN/(TN+FP)</th><th>偽陽性率 FPR</th></tr></thead>
+<tbody>
+<tr><td>整體（N = 4,321）</td><td>.99</td><td>.99</td><td>.99</td><td>.01</td></tr>
+<tr><td>真人 vs. user-AI（人機混寫）</td><td>.98</td><td>.92</td><td>.99</td><td>.01</td></tr>
+<tr><td>純 AI（7 種 LLM 全部）</td><td>1.00</td><td>1.00</td><td>—</td><td>—</td></tr>
+<tr><td>留一 LLM 泛化測試</td><td>.98–1.00</td><td>—</td><td>—</td><td>—</td></tr>
+</tbody>
+</table></div>
+<div class="prose">
+<p><strong>逐項解讀</strong>：純 AI 100% 全抓；連真人自己改寫過的 user-AI 都抓到 92%（漏網 8% 是偽陰性）。最關鍵的數字是 <strong>FPR = 1%</strong>：只有 1% 的純真人回答被冤枉成 AI——在選才情境，「冤枉真人」比「漏抓 AI」代價高得多（公平性與法律風險），所以作者建議即使偵測到，也應採「警示＋重寫機會」而非直接淘汰。</p>
+<p><strong>為什麼這裡能 99%，而市面上的 AI 偵測器常失靈？</strong>因為這是<em>針對固定題目客製訓練</em>的偵測器：題目固定 → AI 回答的變異小、模式集中 → 好抓。通用偵測器要面對無限多的文體與主題，難度完全不同。方法上用「巢狀五折交叉驗證」：內層折選模型、外層折估準確率，避免調參污染測試集。</p>
+</div>
+</section>
+
+<!-- §10 -->
+<section id="ch6link">
+<div class="section-header"><span class="section-num">§10</span><h2>扣合第六章：這篇論文哪裡用上「非正交多元迴歸」？</h2></div>
+
+<div class="magic-box">
+<div class="magic-title">🔗 連結 1｜彈性網迴歸 = 非正交多元迴歸的「工業級解法」</div>
+<p style="line-height:1.9">NLP 管線的最後一步：把 5 題的 NLP 分數加權合成人格總分，用的是<strong>彈性網迴歸（elastic net）</strong>。5 題測的是同一特質，分數彼此必然高度相關——這正是第六章 §10 的<strong>多重共線性</strong>情境：迴歸係數不穩、變異被重複計算。彈性網在最小平方法上加兩個懲罰項：</p>
+<div class="formula-box" style="margin:14px 0">
+<div class="formula-label">彈性網的目標函數</div>
+<div class="formula-main">min<sub>β</sub>　Σ(y − Xβ)² ＋ λ[ α·Σ|β| ＋ (1−α)/2·Σβ² ]</div>
+<div class="formula-desc">第一項就是第六章的多元迴歸殘差平方和；λ 懲罰讓相關的預測變數「分攤」權重而不會互相打架（L2，ridge）、甚至把貢獻極小者歸零（L1，lasso）。<strong>換句話說：第六章教你「診斷」共線性（半偏相關、變異重疊），彈性網是機器學習對同一問題的「治療」。</strong></div>
+</div>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🔗 連結 2｜「r = .11 → .58」：預測變數的非正交性會隨情境改變</div>
+<p style="line-height:1.9">第六章開場說：真實世界的自變數幾乎都相關（非正交）。本研究給了一個漂亮的實例——<strong>精緻回應與選擇性資訊</strong>這兩個「預測人格的變數」，在誠實組近乎正交（r = .11，各自的解釋變異幾乎不重疊），在作假組卻高度非正交（r = .58）。用第六章的語言：<em>作假讓兩個預測變數的文氏圖從「幾乎分離」變成「大片重疊」</em>——若拿它們同時預測人格，作假組的半偏相關（獨特貢獻）會遠小於各自的零階相關。相關結構不是恆定的，它本身就是心理歷程的證據。</p>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🔗 連結 3｜「控制」的語言：交互作用迴歸與 Table 1 的判讀</div>
+<p style="line-height:1.9">① 檢驗 H3/H4 的調節時，作者跑的是 <code>寫作傾向 = b₀ + b₁特質 + b₂條件 + b₃(特質×條件)</code>——b₃ 就是「<em>控制主效果之後</em>，交互項的獨特貢獻」，即第六章 §6 半偏相關的增量思維（R² 增加量檢定）。② Table 1 那張大相關矩陣，就是第六章「先看零階相關 → 再想像扣掉重疊後還剩多少」的實戰教材：例如 NLP 盡責與 Likert T1 盡責 r = .67，但兩者又各自與作答條件相關——想知道 NLP 的「獨特」效度，就得動用半偏相關的邏輯。</p>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🔗 連結 4｜信度校正 d<sub>c</sub> 與第六章的「測量誤差稀釋」邏輯同源</div>
+<p style="line-height:1.9">d<sub>c</sub> = d／√r<sub>xx</sub> 的原理，跟第六章討論相關係數會被測量誤差衰減（attenuation）是同一件事：觀察到的關聯 = 真實關聯 × 測量品質。比較 Likert（α=.93）與 NLP（r<sub>xx</sub>=.78）的作假幅度時若不校正，等於讓「尺比較準的一方」吃虧——這是跨工具比較時的必修功。</p>
+</div>
+</section>
+
+<!-- §11 -->
+<section id="meaning">
+<div class="section-header"><span class="section-num">§11</span><h2>從數字到意涵：結果解讀的三步導引</h2></div>
+<div class="prose">
+<p>讀實證論文的最後一哩路：把統計數字翻譯成「所以呢？」。示範三條完整的推導鏈——報告時照這個格式講，就不會只是唸數字。</p>
+</div>
+<div class="concept-grid">
+<div class="concept-card" style="border-top:4px solid var(--teal)">
+<div class="concept-icon">1️⃣</div><h3>數字 → 現象</h3>
+<p><strong>觀察</strong>：d̄ = .26（NLP）vs. .65（Likert）；交互作用 p &lt; .01。</p>
+<p><strong>翻譯</strong>：同一群人、同一股作假動機，換成開放式＋NLP 計分，分數膨脹縮到 Likert 的四成。<em>要求「用行為實例佐證」本身就是防偽設計</em>——瞎編有認知成本，且低特質者編不出高品質素材。</p>
+</div>
+<div class="concept-card" style="border-top:4px solid var(--gold)">
+<div class="concept-icon">2️⃣</div><h3>現象 → 機制</h3>
+<p><strong>觀察</strong>：H3/H4 在親和性上成立（r ≈ .26–.28）；SME 目標模型跟 Likert 一樣好騙（d̄ = .63）。</p>
+<p><strong>翻譯</strong>：作假是「以真實特質為錨的拋光」，真訊號仍在文字裡；能否撈出來取決於<em>訓練目標</em>——教模型重建「誠實自評」它就抗假，教它模仿「被騙的人類評審」它就跟著被騙。</p>
+</div>
+<div class="concept-card" style="border-top:4px solid var(--purple)">
+<div class="concept-icon">3️⃣</div><h3>機制 → 行動</h3>
+<p><strong>觀察</strong>：混合訓練樣本（誠實＋作假）d̄ = .26 且效度不減；AI 偵測 99%／FPR 1%。</p>
+<p><strong>翻譯</strong>：實務三守則——①訓練資料必須包含「應徵者式」回答；②目標分數用誠實自評而非人類評分；③針對自家題目客製 AI 偵測器，偵測到先警示再重測，別直接淘汰（1% 冤枉率在法律上仍是風險）。</p>
+</div>
+</div>
+<div class="warn-box">⚠️ <strong>推論的邊界（讀 Discussion 時要能自己講出來）</strong>：① 模擬應徵情境，非真實求職者（生態效度）；② 受試者間設計無法估「個人層次」的作假幅度（作者在第五點限制中坦承取捨）；③ 只測盡責與親和兩特質，親和的信度（.69）與聚合效度（.27）偏弱——開放式測親和性目前仍不夠格上場；④ 深度神經網路是黑盒子，「為什麼混合訓練有效」的機制尚未解釋（作者建議未來做可解釋性分析）；⑤ 效標關聯效度（能否預測工作表現）本研究未檢驗——選才工具的終極審判還沒開庭。</div>
+</section>
+
+<!-- §Q -->
+<section id="quiz">
+<div class="section-header"><span class="section-num">§Q</span><h2>導讀測驗：檢查你的判讀力</h2></div>
+<div id="quizContainer"></div>
+<div style="text-align:center;margin-top:32px">
+<button onclick="resetQuiz()" class="btn">🔄 重新作答</button>
+<div id="quizScore" style="margin-top:16px;font-size:16px;font-weight:700;color:var(--teal);display:none"></div>
+</div>
+</section>
+
+<section style="text-align:center;border-bottom:none">
+<h2 style="font-family:'Noto Serif TC',serif;margin-bottom:16px">回到課程</h2>
+<p style="color:var(--muted);margin-bottom:24px">帶著彈性網與共線性的眼光，回頭再看一次第六章的半偏相關——你會發現它們是同一個故事</p>
+<a href="ch6.html" class="btn btn-gold">← 回第六章：非正交多元迴歸</a>
+</section>
+
+</div>
+
+<footer>
+<a href="ch6.html">← 回第六章</a> &nbsp;|&nbsp; <a href="index.html">回首頁</a><br><br>
+導讀基於：Speer, A. B., Chawota, T. A., Rudolph, C., &amp; Qaqish, A. (2026). The impact of impression management on writing tendencies. <em>Journal of Applied Psychology</em>. https://doi.org/10.1037/apl0001397<br><br>
+© 版權所有　<strong style="color:var(--paper)">葉欲禾（Gary Yu-Ho Yeh）</strong>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{const d=document.documentElement;document.getElementById('progress-bar').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%'});
+
+// ── §4 study tabs ──
+function showStudy(i,btn){
+  document.querySelectorAll('.study-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('studyPanel0').style.display=i===0?'block':'none';
+  document.getElementById('studyPanel1').style.display=i===1?'block':'none';
+}
+
+// ── §6.1 d bar chart（Table 2）──
+const dBars=[
+  {label:'精緻回應\n(綜合)',d:0.29,color:'#1a6b6e',exp:'<strong>d = .29（p<.01）</strong>：作假組的敘事整體更精緻。怎麼算？SME 對 260 份敘事評 1–5 分，作假組 M=3.46、誠實組 M=3.31，差距除以合併 SD（≈.52）≈ .29。屬「小」效果——作假者會多用力，但幅度有限。'},
+  {label:'細節數量',d:0.33,color:'#2980b9',exp:'<strong>d = .33（p<.01）</strong>：作假組提供更多具體細節（M 3.79→3.96）。呼應 CBCA 的預測方向相反處：CBCA 說謊者細節較少，但「拋光式作假」不是瞎編，反而堆細節搏好感——這是理論修正的關鍵證據。'},
+  {label:'情境脈絡',d:0.14,color:'#8a8a8a',exp:'<strong>d = .14（不顯著）</strong>：時間地點等情境嵌入沒有顯著增加（2.39→2.49）。三個精緻回應成分中唯一不顯著者——「編場景」可能比「堆細節」認知成本更高。'},
+  {label:'邏輯結構',d:0.34,color:'#2980b9',exp:'<strong>d = .34（p<.01）</strong>：作假組文章更連貫通順（3.75→3.92）。用力寫的痕跡之一。'},
+  {label:'選擇性資訊\n(綜合)',d:0.72,color:'#c0392b',exp:'<strong>d = .72（p<.01）</strong>：作假的主戰場！綜合＝「少講負面」＋「多講正面」（負面反向計分）。中大型效果——作假者主要動的是「內容取捨」而非「文筆」。'},
+  {label:'負面資訊',d:-0.51,color:'#6b3fa0',exp:'<strong>d = −.51（p<.01）</strong>：負號＝作假組「更少」提供自我不利資訊（1.28→1.14）。對應謊言偵測理論的「省略自我損害細節」。'},
+  {label:'正面美化',d:0.71,color:'#c0392b',exp:'<strong>d = .71（p<.01）</strong>：作假組大量增加自我優點、成就、favorable 行為的描述（3.35→3.71）。選擇性資訊管理中最強的成分。'}
+];
+let dBarRects=[];
+function drawDBars(hl=-1){
+  const c=document.getElementById('dBarCanvas');const W=c.offsetWidth;c.width=W;const H=330;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const pad={l:56,r:16,t:24,b:56},pw=W-pad.l-pad.r,ph=H-pad.t-pad.b;
+  const y0=pad.t+ph*(1-(0-(-0.6))/(0.9-(-0.6))); // zero line, range -0.6..0.9
+  const yOf=v=>pad.t+ph*(1-(v-(-0.6))/(0.9-(-0.6)));
+  // gridlines
+  ctx.strokeStyle='#eee';ctx.fillStyle='#999';ctx.font='11px JetBrains Mono';ctx.textAlign='right';
+  [-0.5,-0.25,0,0.25,0.5,0.75].forEach(v=>{const y=yOf(v);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();ctx.fillText(v.toFixed(2),pad.l-6,y+4);});
+  ctx.strokeStyle='#333';ctx.beginPath();ctx.moveTo(pad.l,y0);ctx.lineTo(W-pad.r,y0);ctx.stroke();
+  const bw=pw/dBars.length;dBarRects=[];
+  dBars.forEach((b,i)=>{
+    const x=pad.l+i*bw+bw*0.18,w=bw*0.64;
+    const yv=yOf(b.d),top=Math.min(yv,y0),h=Math.abs(yv-y0);
+    ctx.fillStyle=i===hl?'#d4a017':b.color;
+    ctx.fillRect(x,top,w,h);
+    dBarRects.push({x,y:top,w,h:Math.max(h,20),i});
+    ctx.fillStyle='#1a1a2e';ctx.font='bold 12px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText(b.d.toFixed(2),x+w/2,b.d>=0?top-6:top+h+14);
+    ctx.font='11px "Noto Sans TC"';ctx.fillStyle='#555';
+    b.label.split('\n').forEach((ln,k)=>ctx.fillText(ln,x+w/2,H-pad.b+16+k*14));
+  });
+}
+document.getElementById('dBarCanvas').addEventListener('click',e=>{
+  const r=e.target.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;
+  const hit=dBarRects.find(b=>mx>=b.x&&mx<=b.x+b.w&&my>=b.y-24&&my<=b.y+b.h+24);
+  if(hit){drawDBars(hit.i);document.getElementById('dBarExplain').innerHTML=dBars[hit.i].exp;}
+});
+
+// ── §6.2 Figure 2/3 recreation ──
+const figs=[
+  {t:'精緻回應 × 盡責性',xr:[2.6,7],xl:'盡責性（T2 誠實 Likert）',hb:-0.01,hm:3.31,fb:0.05,fm:3.46,xm:5.1,
+   exp:'<strong>盡責 × 精緻回應</strong>：兩線幾乎水平（誠實 b=−.01, p=.86；應徵 b=.05, p=.41）→ 盡責性高低不影響「寫得多用力」，H3 在盡責性上不成立。但紅線整體高於青線 = H1 的條件主效果仍在。'},
+  {t:'精緻回應 × 親和性',xr:[3.25,7],xl:'親和性（T2 誠實 Likert）',hb:0.13,hm:3.31,fb:0.20,fm:3.46,xm:5.6,
+   exp:'<strong>親和 × 精緻回應</strong>：兩線皆正斜率（誠實 b=.13, p<.05；應徵 b=.20, p<.01）→ 越親和的人寫得越精緻，且作假時最精緻的正是高親和者（紅線最陡、最高）——「特質是錨」的直接證據（H3 支持）。交互作用不顯著：誠實與作假組的斜率差異未達顯著。'},
+  {t:'選擇性資訊 × 盡責性',xr:[2.6,7],xl:'盡責性（T2 誠實 Likert）',hb:0.16,hm:4.04,fb:0.04,fm:4.28,xm:5.1,
+   exp:'<strong>盡責 × 選擇性資訊</strong>：唯一顯著的交互作用（b=−.13, p<.01）！誠實組斜率陡（b=.16）、作假組平（b=.04）→ 作假像「天花板」：不管真實盡責多低，大家都把正面資訊拉好拉滿，把特質差異「壓扁」了。'},
+  {t:'選擇性資訊 × 親和性',xr:[3.25,7],xl:'親和性（T2 誠實 Likert）',hb:0.12,hm:3.95,fb:0.12,fm:4.2,xm:5.6,
+   exp:'<strong>親和 × 選擇性資訊</strong>：兩線平行同斜率（皆 b=.12, p<.01），紅線整體較高 → 高親和者無論何時都更「報喜不報憂」（H4 支持），作假只是再整體加碼（H2），無交互作用。'}
+];
+let figMode=0;
+function setFigMode(i,btn){figMode=i;btn.parentElement.querySelectorAll('.dt-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');drawFig();}
+function drawFig(){
+  const f=figs[figMode];
+  const c=document.getElementById('figCanvas');const W=c.offsetWidth;c.width=W;const H=320;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const pad={l:56,r:110,t:30,b:46},pw=W-pad.l-pad.r,ph=H-pad.t-pad.b;
+  const yR=[2.3,5];
+  const xOf=v=>pad.l+pw*(v-f.xr[0])/(f.xr[1]-f.xr[0]);
+  const yOf=v=>pad.t+ph*(1-(v-yR[0])/(yR[1]-yR[0]));
+  ctx.strokeStyle='#eee';ctx.fillStyle='#999';ctx.font='11px JetBrains Mono';
+  for(let v=2.5;v<=5;v+=0.5){const y=yOf(v);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();ctx.textAlign='right';ctx.fillText(v.toFixed(1),pad.l-6,y+4);}
+  for(let v=Math.ceil(f.xr[0]);v<=f.xr[1];v++){const x=xOf(v);ctx.textAlign='center';ctx.fillText(v,x,H-pad.b+18);}
+  ctx.strokeStyle='#333';ctx.strokeRect(pad.l,pad.t,pw,ph);
+  ctx.fillStyle='#555';ctx.font='12px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText(f.xl,pad.l+pw/2,H-8);
+  ctx.save();ctx.translate(14,pad.t+ph/2);ctx.rotate(-Math.PI/2);ctx.fillText('寫作傾向（SME 1–5）',0,0);ctx.restore();
+  ctx.font='bold 13px "Noto Sans TC"';ctx.fillStyle='#1a1a2e';ctx.fillText(f.t,pad.l+pw/2,18);
+  const line=(b,m,col)=>{
+    ctx.strokeStyle=col;ctx.lineWidth=3;ctx.beginPath();
+    ctx.moveTo(xOf(f.xr[0]),yOf(m+b*(f.xr[0]-f.xm)));
+    ctx.lineTo(xOf(f.xr[1]),yOf(m+b*(f.xr[1]-f.xm)));
+    ctx.stroke();ctx.lineWidth=1;
+  };
+  line(f.hb,f.hm,'#1a9e9e');line(f.fb,f.fm,'#e05252');
+  ctx.textAlign='left';ctx.font='12px "Noto Sans TC"';
+  ctx.fillStyle='#e05252';ctx.fillText('應徵 b='+f.fb.toFixed(2),W-pad.r+8,yOf(f.fm+f.fb*(f.xr[1]-f.xm))+4);
+  ctx.fillStyle='#1a9e9e';ctx.fillText('誠實 b='+f.hb.toFixed(2),W-pad.r+8,yOf(f.hm+f.hb*(f.xr[1]-f.xm))+20);
+  document.getElementById('figExplain').innerHTML=f.exp;
+}
+
+// ── §7 d playground ──
+function setD(v){document.getElementById('dSlider').value=v;drawDPlay();}
+function erf(x){const s=x<0?-1:1;x=Math.abs(x);const t=1/(1+0.3275911*x);const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);return s*y;}
+const Phi=z=>0.5*(1+erf(z/Math.SQRT2));
+function drawDPlay(){
+  const d=parseFloat(document.getElementById('dSlider').value);
+  document.getElementById('dVal').textContent=d.toFixed(2);
+  const c=document.getElementById('dPlayCanvas');const W=c.offsetWidth;c.width=W;const H=300;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const pad={l:20,r:20,t:26,b:40},pw=W-pad.l-pad.r,ph=H-pad.t-pad.b;
+  const xmin=-3.5,xmax=3.5+d;
+  const xOf=v=>pad.l+pw*(v-xmin)/(xmax-xmin);
+  const pdf=(x,mu)=>Math.exp(-0.5*(x-mu)*(x-mu))/Math.sqrt(2*Math.PI);
+  const ymax=0.45;
+  const yOf=v=>pad.t+ph*(1-v/ymax);
+  const drawCurve=(mu,col,fill)=>{
+    ctx.beginPath();
+    for(let px=0;px<=pw;px++){const x=xmin+(xmax-xmin)*px/pw;const y=pdf(x,mu);px===0?ctx.moveTo(xOf(x),yOf(y)):ctx.lineTo(xOf(x),yOf(y));}
+    ctx.strokeStyle=col;ctx.lineWidth=2.5;ctx.stroke();ctx.lineWidth=1;
+    ctx.lineTo(xOf(xmax),yOf(0));ctx.lineTo(xOf(xmin),yOf(0));ctx.closePath();
+    ctx.fillStyle=fill;ctx.fill();
+  };
+  drawCurve(0,'#1a9e9e','rgba(26,158,158,.15)');
+  drawCurve(d,'#e05252','rgba(224,82,82,.15)');
+  ctx.font='13px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillStyle='#1a9e9e';ctx.fillText('誠實組',xOf(0),pad.t-6+18);
+  ctx.fillStyle='#e05252';ctx.fillText('作假組',xOf(d),pad.t-6);
+  ctx.strokeStyle='#999';ctx.setLineDash([4,4]);
+  ctx.beginPath();ctx.moveTo(xOf(0),yOf(0));ctx.lineTo(xOf(0),yOf(pdf(0,0)));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(xOf(d),yOf(0));ctx.lineTo(xOf(d),yOf(pdf(d,d)));ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='#555';ctx.font='12px JetBrains Mono';
+  ctx.fillText('d = '+d.toFixed(2),xOf(d/2),H-14);
+  const ovl=2*Phi(-d/2),cl=Phi(d/Math.SQRT2),u3=Phi(d);
+  document.getElementById('dPlayStats').innerHTML=
+    '<strong>d = '+d.toFixed(2)+'</strong> 的意義：兩分布重疊 <strong>'+(ovl*100).toFixed(0)+'%</strong>；'+
+    '隨機抽一位作假者、一位誠實者，作假者分數較高的機率 <strong>'+(cl*100).toFixed(0)+'%</strong>（50%＝無差異）；'+
+    '作假組平均落在誠實組的第 <strong>'+(u3*100).toFixed(0)+'</strong> 百分位。'+
+    (d<=0.3?' → 兩群幾乎混在一起，作假「佔不到多少便宜」。':d<=0.7?' → 有感的位移：排名前段將混入不少作假者。':' → 分布明顯分離：作假足以翻轉排序，選才決策已被扭曲。');
+}
+
+// ── §8 training config ──
+const configs=[
+  {n:'a. 誠實＋作假（全樣本 N=2,039）',d:0.26,r:0.41,exp:'<strong>本研究的主配置</strong>：訓練資料涵蓋兩種動機狀態 → 模型學會「在各種動機下都能重建誠實分數」。抗作假最好之一（d̄=.26）且效度最高（r̄=.41）。原則：訓練樣本要長得像應用場景（實務上應徵者有人假有人不假）。'},
+  {n:'b. 誠實＋作假（N=1,020 對齊）',d:0.23,r:0.38,exp:'跟 a 同配方但樣本減半，用來排除「a 的優勢只是樣本大」的質疑 → 結果幾乎不變（d̄=.23）。<strong>是配置效應，不是樣本量效應</strong>——這就是控制變因的思維。'},
+  {n:'c. 誠實＋30% 作假',d:0.28,r:0.37,exp:'只摻 30% 作假樣本 → d̄=.28、r̄=.37，接近全混合的效果。<strong>實務含意</strong>：不需要一半資料都是作假者，摻入少量「應徵者式」回答就能大幅提升抗作假性。'},
+  {n:'d. 只用誠實樣本',d:0.44,r:0.38,exp:'d̄=.44——抗作假明顯變差（vs. 混合 .26），效度卻沒有比較好。模型從沒見過「包裝過的文字」，上場遇到作假者就被灌高。<strong>但仍比 Likert（.65）抗假</strong>——開放式格式本身就有底線防護。'},
+  {n:'e. 只用作假樣本',d:0.21,r:0.32,exp:'d̄=.21 最低，但代價是效度掉到 r̄=.32（全配置最低）。模型太專注「看穿包裝」反而測不準人格。<strong>抗作假與測得準是一組權衡</strong>，不能只看單一指標。'}
+];
+let cfgIdx=0;
+function setConfig(i,btn){cfgIdx=i;btn.parentElement.querySelectorAll('.dt-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');drawConfig();}
+function drawConfig(){
+  const c=document.getElementById('configCanvas');const W=c.offsetWidth;c.width=W;const H=240;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const cf=configs[cfgIdx];
+  const rows=[{lab:'作假膨脹 d̄（越短越好）',v:cf.d,max:0.7,col:'#c0392b',bench:{v:0.65,lab:'Likert 基準 .65'}},
+              {lab:'聚合效度 r̄（越長越好）',v:cf.r,max:0.7,col:'#1a6b6e',bench:null}];
+  const pad={l:230,r:90,t:30},bh=54,gap=46;
+  ctx.font='bold 14px "Noto Sans TC"';ctx.fillStyle='#1a1a2e';ctx.textAlign='left';
+  ctx.fillText(cf.n,16,20);
+  rows.forEach((r,i)=>{
+    const y=pad.t+30+i*(bh+gap);
+    ctx.font='13px "Noto Sans TC"';ctx.fillStyle='#555';ctx.textAlign='right';
+    ctx.fillText(r.lab,pad.l-12,y+bh/2+5);
+    const pw=W-pad.l-pad.r;
+    ctx.fillStyle='#f0ece5';ctx.fillRect(pad.l,y,pw,bh);
+    ctx.fillStyle=r.col;ctx.fillRect(pad.l,y,pw*r.v/r.max,bh);
+    ctx.fillStyle='#1a1a2e';ctx.font='bold 15px JetBrains Mono';ctx.textAlign='left';
+    ctx.fillText(r.v.toFixed(2),pad.l+pw*r.v/r.max+10,y+bh/2+6);
+    if(r.bench){const bx=pad.l+pw*r.bench.v/r.max;
+      ctx.strokeStyle='#999';ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(bx,y-8);ctx.lineTo(bx,y+bh+8);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='#999';ctx.font='11px "Noto Sans TC"';ctx.textAlign='center';ctx.fillText(r.bench.lab,bx,y-12);}
+  });
+  document.getElementById('configExplain').innerHTML=cf.exp;
+}
+
+// ── §9 LLM chart ──
+const llmData=[
+  {n:'GPT-3.5',c:1.17,a:0.33},{n:'GPT-4.1',c:0.87,a:-0.15},{n:'GPT-5 mini',c:0.66,a:-0.99},
+  {n:'Claude 3 Haiku',c:1.01,a:0.37},{n:'Gemini 2.0',c:0.34,a:-1.82},{n:'Llama 3B',c:1.05,a:-0.27},
+  {n:'Qwen 2.5',c:1.20,a:-0.71},{n:'user-AI 人機混寫',c:0.61,a:-0.33}
+];
+let traitIdx=0;
+function setTrait(i,btn){traitIdx=i;btn.parentElement.querySelectorAll('.dt-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');drawLLM();}
+function drawLLM(){
+  const c=document.getElementById('llmCanvas');const W=c.offsetWidth;c.width=W;const H=330;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const key=traitIdx===0?'c':'a';
+  const min=-2,max=1.4;
+  const pad={l:150,r:60,t:16,b:30},pw=W-pad.l-pad.r;
+  const xOf=v=>pad.l+pw*(v-min)/(max-min);
+  const bh=26,gap=10;
+  ctx.strokeStyle='#ddd';[-2,-1.5,-1,-0.5,0.5,1].forEach(v=>{ctx.beginPath();ctx.moveTo(xOf(v),pad.t);ctx.lineTo(xOf(v),H-pad.b);ctx.stroke();
+    ctx.fillStyle='#999';ctx.font='10px JetBrains Mono';ctx.textAlign='center';ctx.fillText(v,xOf(v),H-12);});
+  ctx.strokeStyle='#333';ctx.beginPath();ctx.moveTo(xOf(0),pad.t);ctx.lineTo(xOf(0),H-pad.b);ctx.stroke();
+  ctx.fillStyle='#999';ctx.font='10px JetBrains Mono';ctx.textAlign='center';ctx.fillText('0',xOf(0),H-12);
+  llmData.forEach((m,i)=>{
+    const y=pad.t+6+i*(bh+gap);const v=m[key];
+    ctx.fillStyle='#555';ctx.font=(m.n.startsWith('user')?'bold ':'')+'12px "Noto Sans TC"';ctx.textAlign='right';
+    ctx.fillText(m.n,pad.l-10,y+bh/2+4);
+    ctx.fillStyle=v>=0?(v>0.8?'#c0392b':'#e08952'):'#2980b9';
+    const x0=xOf(Math.min(0,v)),x1=xOf(Math.max(0,v));
+    ctx.fillRect(x0,y,x1-x0,bh);
+    ctx.fillStyle='#1a1a2e';ctx.font='bold 12px JetBrains Mono';ctx.textAlign=v>=0?'left':'right';
+    ctx.fillText(v.toFixed(2),v>=0?x1+6:x0-6,y+bh/2+4);
+  });
+  document.getElementById('llmExplain').innerHTML=traitIdx===0
+   ?'<strong>盡責性</strong>：全部 LLM 為正（AI 高於真人），d̄ = 1.07。注意 GPT-3.5（1.17）> GPT-5 mini（.66）——模型越新不等於灌分越高。user-AI（人自己動手用 AI）灌分較溫和（.61），因為部分人只求潤飾不求滿分。'
+   :'<strong>親和性</strong>：大逆轉——多數 LLM <em>低於</em>真人（藍色負值），Gemini 低到 d = −1.82；只有 Claude（.37）與 GPT-3.5（.33）略高於真人。AI 不是萬能作弊器：它寫的「友善」在 NLP 模型眼中反而不像真人的親和。H7 只獲部分支持。';
+}
+
+// ── Quiz ──
+const quizData=[
+ {q:'本研究採受試者間設計（誠實組 vs. 應徵組隨機分派），而非讓同一人先誠實再作假。主要原因是？',
+  opts:['受試者間設計統計檢定力一定比較高','避免重複作答造成的攜帶／需求效應——尤其寫作題可能直接改寫前次答案','受試者內設計無法計算 Cohen\'s d','為了節省研究經費'],
+  ans:1,fb:'重複測量在模擬情境中易產生攜帶與需求效應；對敘事題，受試者甚至可能逐字改寫前答。代價是無法估「個人層次」作假幅度（作者在限制中坦承）。'},
+ {q:'「選擇性資訊管理 d = .72 遠大於精緻回應 d = .29」告訴我們作假的主要戰術是？',
+  opts:['把文章寫得更長','調整「講什麼」：藏負面、放大正面','使用更艱深的詞彙','花更多時間作答'],
+  ans:1,fb:'作假的主戰場是內容取捨（報喜不報憂），不是文筆。且兩組作答時間無顯著差異——力氣花在「選材」而非「加班」。'},
+ {q:'NLP 模型為什麼用「T2 誠實 Likert 分數」而不是「SME 評分」當訓練目標？',
+  opts:['Likert 分數比較容易取得','SME 評分信度太低不能用','SME 讀的是被包裝過的文字、自己會被騙（d=.94），以其為目標的模型會繼承可騙性（d̄=.63 vs. .26）','兩者效果其實一樣'],
+  ans:2,fb:'H6 的核心：模型向「被騙的老師」學習就會跟著被騙。誠實 Likert 目標教模型穿透包裝、重建真實自評——d̄ 從 .63 降到 .26。'},
+ {q:'Table 5 顯示「只用誠實樣本訓練」的模型 d̄ = .44，混合樣本 d̄ = .26。這對實務者的啟示是？',
+  opts:['訓練資料越乾淨越好，應只用誠實樣本','訓練樣本應包含「應徵者式」回答，讓資料長得像應用場景','作假樣本會污染模型，絕不可混入','樣本配置不影響模型表現'],
+  ans:1,fb:'ML 泛化原則：訓練樣本要貼近應用母體。應徵情境中必有作假者，訓練時見過「包裝文字」的模型才擋得住；摻 30% 即有效。'},
+ {q:'比較 Likert（α=.93）與 NLP（r_xx=.78）的作假幅度時，為何要看去衰減校正的 d_c？',
+  opts:['因為 d_c 一定比較小','測量誤差會稀釋效果量，信度不同的工具直接比 d 對「尺較不準」的一方不公平','因為期刊規定要報 d_c','d_c 可以取代顯著性檢定'],
+  ans:1,fb:'觀察效果 = 真實效果 × 測量品質。d_c = d/√r_xx 還原「測量若完美」的效果。校正後 NLP（.29）仍遠小於 Likert（.68），結論穩固。'},
+ {q:'精緻回應與選擇性資訊的相關在誠實組 r=.11、作假組 r=.58。用第六章的語言，這代表什麼？',
+  opts:['作假組的測量信度較高','兩個預測變數從「近乎正交」變成「高度非正交」——共享變異大增，各自的獨特貢獻（半偏相關）縮水','兩變數在作假組變成因果關係','誠實組的資料品質有問題'],
+  ans:1,fb:'動機像總開關同時啟動兩種戰術，使兩者高度重疊。若用它們同時預測人格，作假組的半偏相關會遠小於零階相關——文氏圖的重疊區被撐大了。'},
+ {q:'AI 偵測模型的偽陽性率（FPR）= 1% 為什麼被作者視為關鍵指標？',
+  opts:['因為 1% 代表模型只能抓到 1% 的 AI','選才情境中「把真人誤判成 AI」的公平與法律代價極高，遠比漏抓 AI 嚴重','FPR 越高模型越好','FPR 只影響統計檢定力'],
+  ans:1,fb:'冤枉純真人回答會造成公平性爭議與法律風險，故作者建議偵測到 AI 時採「警示＋重測」而非直接淘汰。召回率（抓到多少 AI）與 FPR（冤枉多少真人）要分開判讀。'},
+ {q:'下列哪一項是本研究「不能」下的結論？',
+  opts:['開放式＋NLP 計分的分數膨脹小於 Likert','客製化 AI 偵測器可高準確率辨識 AI 代寫','開放式人格測驗能有效預測工作表現（效標關聯效度）','特質水準與動機條件下的寫作傾向有關'],
+  ans:2,fb:'本研究完全沒檢驗效標關聯效度（分數能否預測工作績效）——作者明言 validity is paramount、需先建立效度證據才可實際採用。這是讀 Discussion 時必須自己抓出來的邊界。'}
+];
+function renderQuiz(){
+  const ct=document.getElementById('quizContainer');ct.innerHTML='';
+  quizData.forEach((q,qi)=>{
+    const card=document.createElement('div');card.className='quiz-card';
+    card.innerHTML='<div class="quiz-q"><span>'+(qi+1)+'</span>'+q.q+'</div>';
+    const opts=document.createElement('div');opts.className='quiz-opts';
+    q.opts.forEach((o,oi)=>{
+      const b=document.createElement('button');b.className='quiz-opt';b.textContent=String.fromCharCode(65+oi)+'. '+o;
+      b.onclick=()=>{
+        if(card.dataset.done)return;card.dataset.done='1';
+        const fb=card.querySelector('.quiz-feedback');
+        if(oi===q.ans){b.classList.add('selected-correct');fb.className='quiz-feedback show correct';fb.innerHTML='✅ 正確！'+q.fb;score++;}
+        else{b.classList.add('selected-wrong');opts.children[q.ans].classList.add('selected-correct');fb.className='quiz-feedback show wrong';fb.innerHTML='❌ 正解是 '+String.fromCharCode(65+q.ans)+'。'+q.fb;}
+        answered++;
+        if(answered===quizData.length){const s=document.getElementById('quizScore');s.style.display='block';s.textContent='🎉 完成！得分：'+score+' / '+quizData.length+(score===quizData.length?'　滿分，可以上台報告了！':score>=6?'　不錯，回頭補強錯的觀念':'　建議把 §5–§8 再讀一次');}
+      };
+      opts.appendChild(b);
+    });
+    card.appendChild(opts);
+    const fb=document.createElement('div');fb.className='quiz-feedback';card.appendChild(fb);
+    ct.appendChild(card);
+  });
+}
+let score=0,answered=0;
+function resetQuiz(){score=0;answered=0;document.getElementById('quizScore').style.display='none';renderQuiz();}
+
+// init
+function drawAll(){drawDBars();drawFig();drawDPlay();drawConfig();drawLLM();}
+window.addEventListener('resize',drawAll);
+renderQuiz();drawAll();
+</script>
+</body>
+</html>
