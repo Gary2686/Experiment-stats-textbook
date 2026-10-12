@@ -119,16 +119,16 @@ window.chaptersData = [
   {
     num: "15", file: "ch15.html",
     title: "多因子設計概論",
-    desc: "為什麼需要多因子設計？交互作用的概念，以及多因子實驗的優勢與挑戰。",
-    tags: ["多因子設計", "交互作用", "主效果"],
-    available: false
+    desc: "為什麼要同時操弄兩個變數？交互作用的理論價值，以及描述任何實驗設計的「語法」——巢套、交叉與設計公式。",
+    tags: ["交互作用", "巢套 A(B)", "交叉 A×B", "設計公式"],
+    available: true
   },
   {
     num: "16", file: "ch16.html",
     title: "二因子 ANOVA：A × B 設計",
-    desc: "兩個獨立因子的完整 ANOVA：主效果、交互作用、簡單主效果的計算與解釋。",
-    tags: ["A×B 設計", "交互作用", "簡單主效果"],
-    available: false
+    desc: "主效果、交互作用與平方和三分割。從 Treisman 視覺搜尋到 Tulving 線索回憶，含 Model I/II/III 的 F 分母選擇與三種效果量。",
+    tags: ["主效果", "交互作用", "期望均方", "partial η²"],
+    available: true
   },
   {
     num: "17", file: "ch17.html",

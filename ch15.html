@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第十五章：多因子設計概論 | 心理學統計教材</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a2e;--paper:#f8f4ef;--cream:#fdf8f2;--accent:#c0392b;--accent2:#2980b9;--gold:#d4a017;--teal:#1a6b6e;--purple:#6b3fa0;--muted:#6b7280;--border:#d5c9be;--card-bg:#fff;--formula-bg:#1a1a2e;--formula-text:#f0e6d3;--highlight:#fff3cd}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.8}
+.hero{background:var(--ink);color:var(--paper);padding:80px 40px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-55deg,transparent,transparent 40px,rgba(255,255,255,.02) 40px,rgba(255,255,255,.02) 41px)}
+.hero-eyebrow{font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500}
+.hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(28px,5vw,52px);font-weight:700;line-height:1.2;margin-bottom:20px}
+.hero h1 span{color:var(--gold)}
+.hero-sub{font-size:15px;color:rgba(248,244,239,.65);max-width:560px;margin:0 auto 40px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.tag{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 16px;font-size:13px;color:var(--paper)}
+nav{position:sticky;top:0;z-index:100;background:rgba(26,26,46,.97);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);padding:0 40px;display:flex;gap:0;overflow-x:auto}
+nav a{display:block;padding:16px 20px;color:rgba(248,244,239,.65);text-decoration:none;font-size:13px;font-weight:500;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+nav a:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+section{padding:64px 0;border-bottom:1px solid var(--border)}
+section:last-of-type{border-bottom:none}
+.section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:36px}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.2);border-radius:4px;padding:3px 8px;flex-shrink:0}
+.section-header h2{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:700;color:var(--ink)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:32px}
+.concept-card{background:var(--card-bg);border-radius:12px;padding:24px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.concept-icon{font-size:28px;margin-bottom:12px}
+.concept-card h3{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;margin-bottom:10px}
+.concept-card p{font-size:14px;color:var(--muted);line-height:1.7}
+.concept-card p+p{margin-top:8px}
+.highlight-box{background:var(--highlight);border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#6b4c00}
+.warn-box{background:rgba(192,57,43,.06);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#7a2a1f}
+.info-box{background:rgba(41,128,185,.06);border-left:4px solid var(--accent2);border-radius:0 8px 8px 0;padding:18px 24px;margin:24px 0;font-size:14px;color:#1e5a8a}
+.magic-box{background:linear-gradient(135deg,rgba(107,63,160,0.08),rgba(212,160,23,0.08));border:2px solid var(--purple);border-radius:12px;padding:24px;margin:24px 0;font-size:14px}
+.magic-box .magic-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--purple);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.formula-box{background:var(--formula-bg);border-radius:12px;padding:28px 32px;margin:24px 0;position:relative;overflow:hidden}
+.formula-box::before{content:'FORMULA';position:absolute;top:12px;right:16px;font-size:10px;letter-spacing:3px;color:rgba(255,255,255,.2);font-family:'JetBrains Mono',monospace}
+.formula-box .formula-label{font-size:12px;color:var(--gold);margin-bottom:10px;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.formula-box .formula-main{font-family:'JetBrains Mono',monospace;font-size:20px;color:var(--formula-text);font-weight:600;margin-bottom:12px;word-wrap:break-word;line-height:1.5}
+.formula-box .formula-desc{font-size:13px;color:rgba(240,230,211,.6);line-height:1.7}
+.formula-box .formula-desc strong{color:var(--gold)}
+.chart-wrapper{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px;margin:28px 0}
+.chart-title{font-size:14px;font-weight:600;color:var(--muted);margin-bottom:16px;letter-spacing:.5px}
+canvas{display:block;width:100%}
+.data-table-wrap{overflow-x:auto;margin:24px 0;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--card-bg)}
+thead tr{background:var(--ink)}
+thead th{color:var(--paper);padding:12px 16px;text-align:center;font-weight:600;font-size:13px}
+thead th:first-child{text-align:left}
+tbody tr:nth-child(even){background:var(--cream)}
+tbody td{padding:10px 16px;text-align:center;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:13px}
+tbody td:first-child{text-align:left;font-family:'Noto Sans TC',sans-serif;font-size:13.5px}
+tfoot tr{background:rgba(192,57,43,.08);font-weight:600}
+tfoot td{padding:12px 16px;border-top:2px solid var(--accent);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;text-align:center}
+.prose p{margin-bottom:16px;font-size:15px;line-height:1.85;color:#333}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--ink)}
+.prose em{color:var(--accent);font-style:normal;font-weight:500}
+.steps{counter-reset:step}
+.step{display:flex;gap:20px;margin-bottom:28px;align-items:flex-start}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--gold);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.step-body{flex:1}
+.step-body h4{font-weight:700;font-size:15px;margin-bottom:8px}
+.step-body p{font-size:14px;color:#444;margin-bottom:8px}
+.step-body p:last-child{margin-bottom:0}
+.notions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0}
+.notion-item{background:var(--ink);color:var(--paper);border-radius:8px;padding:14px 18px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px}
+.notion-item::before{content:'◆';color:var(--gold);font-size:10px;flex-shrink:0}
+.formula-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:24px 0}
+.formula-mini{background:var(--ink);border-radius:10px;padding:20px;color:var(--formula-text)}
+.formula-mini .fm-label{font-size:11px;color:var(--gold);letter-spacing:2px;font-family:'JetBrains Mono',monospace;margin-bottom:8px;text-transform:uppercase}
+.formula-mini .fm-eq{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#fff;line-height:1.6;word-wrap:break-word}
+.formula-mini .fm-note{font-size:12px;color:rgba(255,255,255,.5);margin-top:6px;line-height:1.5}
+.quiz-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:20px}
+.quiz-q{font-weight:700;font-size:15px;margin-bottom:16px;line-height:1.6}
+.quiz-q span{display:inline-block;width:26px;height:26px;background:var(--ink);color:var(--gold);border-radius:50%;font-size:13px;text-align:center;line-height:26px;margin-right:8px;font-family:'JetBrains Mono',monospace}
+.quiz-opts{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:12px 18px;cursor:pointer;font-size:14px;transition:all .2s;text-align:left;font-family:'Noto Sans TC',sans-serif}
+.quiz-opt:hover{border-color:var(--accent2);background:rgba(41,128,185,.05)}
+.quiz-opt.selected-correct{border-color:#27ae60;background:rgba(39,174,96,.1);color:#1e8449;font-weight:600}
+.quiz-opt.selected-wrong{border-color:var(--accent);background:rgba(192,57,43,.1);color:var(--accent)}
+.quiz-feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:13.5px;display:none;line-height:1.6}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:rgba(39,174,96,.1);color:#1e8449;border:1px solid rgba(39,174,96,.3)}
+.quiz-feedback.wrong{background:rgba(192,57,43,.08);color:#c0392b;border:1px solid rgba(192,57,43,.2)}
+.btn{display:inline-block;padding:14px 32px;background:var(--ink);color:var(--paper);border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.btn:hover{background:var(--accent);transform:translateY(-2px)}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--accent);color:#fff}
+footer{background:var(--ink);color:rgba(248,244,239,.5);text-align:center;padding:32px;font-size:13px}
+footer a{color:var(--gold);text-decoration:none}
+footer a:hover{text-decoration:underline}
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--gold);z-index:9999;width:0%;transition:width .1s}
+@media(max-width:600px){.hero{padding:48px 20px 40px}nav{padding:0 16px}.container{padding:0 16px}section{padding:48px 0}}
+.ctrl-row{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:14px 0;padding:16px;background:var(--cream);border-radius:8px;border:1px solid var(--border)}
+.ctrl-row label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:500}
+.mini-btn{background:var(--cream);border:2px solid var(--border);border-radius:8px;padding:9px 15px;cursor:pointer;font-size:12.5px;font-weight:600;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.mini-btn:hover{border-color:var(--accent2)}
+.mini-btn.active{background:var(--ink);color:var(--gold);border-color:var(--ink)}
+.rel-card{border-radius:12px;padding:22px;border:2px solid;margin-bottom:16px}
+.rel-card h3{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.rel-nest{background:rgba(107,63,160,.05);border-color:var(--purple)}
+.rel-cross{background:rgba(41,128,185,.05);border-color:var(--accent2)}
+.grid-demo{display:grid;gap:6px;margin:16px 0;justify-content:center}
+.gcell{border-radius:8px;padding:10px 6px;text-align:center;font-size:12px;font-family:'JetBrains Mono',monospace;border:1.5px solid}
+.gcell.filled{background:rgba(41,128,185,.14);border-color:var(--accent2);color:#1e5a8a;font-weight:700}
+.gcell.empty{background:#f6f3ee;border-color:#e0d8ce;color:#c5bdb4}
+.gcell.hdr{background:var(--ink);color:var(--gold);border-color:var(--ink);font-weight:700}
+.design-card{background:var(--card-bg);border:1px solid var(--border);border-left:4px solid var(--teal);border-radius:0 12px 12px 0;padding:18px 22px;margin-bottom:14px}
+.design-card .dc-f{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:var(--teal);margin-bottom:8px}
+.design-card .dc-n{font-size:14.5px;font-weight:700;margin-bottom:6px}
+.design-card p{font-size:13.5px;color:#555;line-height:1.8;margin:0}
+.quiz-ex{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:14px}
+.quiz-ex .qe-q{font-size:14.5px;line-height:1.85;color:#333;margin-bottom:12px}
+.quiz-ex summary{cursor:pointer;font-weight:700;color:var(--purple);font-size:14px;padding:8px 12px;background:rgba(107,63,160,.07);border-radius:8px}
+.quiz-ex .qe-a{margin-top:12px;font-size:14px;line-height:1.85;color:#444;padding:12px 16px;background:var(--cream);border-radius:8px}
+.formula-badge{display:inline-block;font-family:'JetBrains Mono',monospace;background:var(--ink);color:var(--gold);padding:3px 10px;border-radius:6px;font-size:13.5px;font-weight:700}
+.vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}
+@media(max-width:640px){.vs-grid{grid-template-columns:1fr}}
+.vs-card{border-radius:12px;padding:20px;border:2px solid}
+.vs-card h4{font-family:'Noto Serif TC',serif;font-size:16px;font-weight:700;margin-bottom:10px}
+.vs-card ul{margin:0;padding-left:20px;font-size:13.5px;line-height:1.85;color:#444}
+.vs-int{background:rgba(212,160,23,.07);border-color:var(--gold)}
+.vs-ctrl{background:rgba(26,107,110,.06);border-color:var(--teal)}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<div class="hero">
+  <div class="hero-eyebrow">第十五章 · Chapter 15</div>
+  <h1>多因子設計<span>概論</span></h1>
+  <p class="hero-sub">前面十四章，實驗裡永遠只有一個自變數。但真實世界的因素從不單獨作用——本章學會同時操弄兩個以上的變數，以及描述任何實驗設計的「語法」。</p>
+  <div class="hero-tags">
+    <span class="tag">🔀 交互作用</span>
+    <span class="tag">🪆 巢套 A(B)</span>
+    <span class="tag">✖️ 交叉 A×B</span>
+    <span class="tag">📝 設計公式</span>
+    <span class="tag">🎛️ 控制因子</span>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" style="color:var(--gold)">← 回首頁</a>
+  <a href="#why">§1 為什麼要多因子</a>
+  <a href="#story">§2 一個真實案例</a>
+  <a href="#notation">§3 記號系統</a>
+  <a href="#nest">§4 巢套關係</a>
+  <a href="#cross">§5 交叉關係</a>
+  <a href="#write">§6 寫出設計公式</a>
+  <a href="#practice">§7 動手練習</a>
+  <a href="#four">§8 四種基本設計</a>
+  <a href="#control">§9 控制因子</a>
+  <a href="#formulas">§K 重點整理</a>
+  <a href="#quiz">§Q 測驗</a>
+</nav>
+
+<div class="container">
+
+<!-- §1 -->
+<section id="why">
+<div class="section-header"><span class="section-num">§1</span><h2>為什麼要同時操弄兩個變數？</h2></div>
+
+<div class="prose">
+<p>到目前為止，我們的實驗長這樣：<strong>操弄一個自變數，看依變數怎麼變。</strong>簡單、乾淨。</p>
+<p>但停下來想一想：<em>真實世界裡，有哪個因素是單獨起作用的？</em></p>
+<p>咖啡因對專注力的效果，會不會因為「你有沒有睡飽」而不同？廣告的說服力，會不會因為「觀眾本來就喜不喜歡這個品牌」而不同？——這類問題，單因子設計<strong>永遠答不出來</strong>。</p>
+</div>
+
+<div class="concept-grid">
+<div class="concept-card" style="border-top:4px solid var(--gold)">
+<div class="concept-icon">🏆</div>
+<h3>理由一：對理論是更嚴格的檢驗</h3>
+<p>很多理論都能解釋「某個變數有效果」（主效果）。但<strong>能正確預測「交互作用」的理論，才是真正強的理論</strong>。</p>
+<p style="margin-top:8px;color:#8a6a00;font-weight:600">因為預測交互作用比預測主效果難得多——你得說清楚「在什麼條件下效果會出現、什麼條件下會消失」。</p>
+</div>
+<div class="concept-card" style="border-top:4px solid var(--teal)">
+<div class="concept-icon">🌍</div>
+<h3>理由二：生態效度更高</h3>
+<p>影響人類行為的因素很少單獨運作。例如電話通話的清晰度，同時取決於<strong>背景噪音</strong>與<strong>電話系統的濾波</strong>（Miller &amp; Nicely, 1965）。</p>
+<p style="margin-top:8px;color:var(--teal);font-weight:600">把兩個因素放進同一個研究，結論才貼近真實情境。</p>
+</div>
+<div class="concept-card" style="border-top:4px solid var(--accent2)">
+<div class="concept-icon">🛡️</div>
+<h3>理由三：可以「馴服」干擾變數</h3>
+<p>懷疑某個變數會干擾結果（例如實驗者是誰、受試者的性別）？<strong>把它納入設計當成一個因子</strong>，它就從「誤差」變成「可解釋的變異」。</p>
+<p style="margin-top:8px;color:var(--accent2);font-weight:600">這是控制外生變數的進階手法（§9）。</p>
+</div>
+</div>
+
+<div class="info-box">
+🎯 <strong>本章的定位</strong>：這是一章「地圖章」——不做任何計算，只做兩件事：<br>
+① 說清楚<strong>交互作用</strong>為什麼重要；② 教你一套能描述<em>任何</em>實驗設計的<strong>記號語法</strong>。<br><br>
+<em>學會這套語法後，第十六到二十一章的各種設計，你一看公式就知道它是什麼、該怎麼分析。</em>
+</div>
+</section>
+
+<!-- §2 -->
+<section id="story">
+<div class="section-header"><span class="section-num">§2</span><h2>一個真實案例：交互作用如何拯救一個研究</h2></div>
+
+<div class="prose">
+<p>課本舉了 Rubin 等人（1979）的例子，這個故事完美說明了「為什麼要多因子」。</p>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">📖 背景：字首要不要拆開？</div>
+<p style="line-height:1.95">Taft &amp; Foster（1975, 1976）主張：當我們聽到有<strong>字首</strong>的單字（insensitive、untiring、apathetic），大腦會先把它<strong>拆成兩半</strong>——字首＋字根，再去心理詞典查每一半的意思，最後組合起來。</p>
+<p style="line-height:1.95;margin-top:10px">如果字首和字根單獨看都合法、但組合起來不成詞（例如 <em>intiring</em>），大腦才會回頭把整個字當一個單位查。</p>
+<p style="line-height:1.95;margin-top:10px"><strong>這個模型的預測</strong>：像 <em>insult</em> 這種「看起來可以拆成 in＋sult、實際上不能拆」的字，反應時間應該比 <em>indirect</em>（真的可以拆）更長。</p>
+</div>
+
+<div class="prose">
+<p>如果只做這個單因子實驗（自變數＝「字看起來可不可以拆」），會怎樣？</p>
+</div>
+
+<div class="warn-box">
+😬 <strong>單因子的致命弱點</strong>：就算真的測到差異，審稿人立刻會問——<br>
+「你確定是『可拆性』造成的嗎？會不會只是因為 <em>insult</em> 比 <em>indirect</em> <strong>比較不常見</strong>？或是<strong>比較抽象</strong>？」<br><br>
+這些<em>寄生變數</em>（parasite variables）你排除不掉，因為你只有一條證據線。
+</div>
+
+<div class="prose">
+<p><strong>Rubin 等人的高招</strong>：他們加了第二個自變數——<em>周圍的字是什麼</em>。</p>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🔬 Rubin et al. (1979) 的 2×2 設計與結果（示意）</div>
+<canvas id="rubinCanvas" height="300"></canvas>
+<div class="highlight-box" style="margin-bottom:0;margin-top:14px">
+🎯 <strong>結果</strong>：「可拆性」的效果<strong>只在「周圍都是可拆字」的情境中出現</strong>；當周圍都是不可拆的字時，效果消失了。<br><br>
+這是一個<strong>交互作用</strong>——而它救了整個研究：<br>
+・如果效果來自「熟悉度」或「抽象度」，那麼<em>不管周圍是什麼字</em>，效果都該存在。<br>
+・效果會隨情境消失，表示它來自<strong>受試者採用的策略</strong>：當他們<em>預期</em>會遇到可拆的字，才會啟動「拆解」策略。
+</div>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">💡 這個故事的三個教訓</div>
+<p style="line-height:1.95">
+<strong>①</strong> 單因子實驗的結果，往往有好幾種解釋；<strong>交互作用能把對手解釋一次殺光</strong>。<br><br>
+<strong>②</strong> 如果 Rubin 等人只做了「可拆字情境」那一半，他們無法排除熟悉度等寄生變數。<br><br>
+<strong>③</strong> 最重要的是：<em>這個實驗的結果，如果只有一個因子就根本無法正確詮釋</em>。交互作用本身就是發現。
+</p>
+<p style="line-height:1.95;margin-top:12px;padding:12px;background:rgba(107,63,160,.1);border-radius:8px;font-weight:600;color:var(--purple)">
+這就是為什麼心理學把「多因子設計」與「交互作用」放在方法論的核心位置（Tulving, 1983）。
+</p>
+</div>
+</section>
+
+<!-- §3 -->
+<section id="notation">
+<div class="section-header"><span class="section-num">§3</span><h2>記號系統：三種字體，各有分工</h2></div>
+
+<div class="prose">
+<p>接下來要學的記號看起來很囉嗦，但它有一個了不起的性質：<strong>只要你寫得出一個設計的公式，就一定分析得出來；寫不出來，那個實驗十之八九沒救了。</strong></p>
+<p>所以課本強調：<em>設計公式要在「收資料之前」就寫出來</em>——它是實驗設計的健康檢查。而且統計軟體（SPSS、R、SAS）內部也正是靠這個公式在跑分析。</p>
+</div>
+
+<div class="data-table-wrap">
+<table>
+<thead><tr><th style="width:18%">寫法</th><th style="width:26%">代表什麼</th><th>範例</th></tr></thead>
+<tbody>
+<tr><td><strong style="font-size:17px">𝒜 ℬ 𝒞</strong><br><small>花體大寫</small></td><td>因子（自變數）本身的名字</td><td>𝒜 = 列表長度、ℬ = 提取線索</td></tr>
+<tr><td><strong style="font-size:17px">A B C</strong><br><small>正體斜大寫</small></td><td>該因子有<strong>幾個水準</strong></td><td>A = 3（12、24、48 字）</td></tr>
+<tr><td><strong style="font-size:17px">a₁ a₂ a₃</strong><br><small>小寫＋下標</small></td><td>第幾個水準</td><td>a₂ = 24 字那一組</td></tr>
+<tr><td><strong style="font-size:17px">𝒮</strong></td><td>受試者因子<br><em>（永遠要出現！）</em></td><td>S = 每組 10 人</td></tr>
+<tr><td><strong style="font-size:17px">𝒴</strong>、<strong style="font-size:17px">ℰ</strong></td><td>依變數、誤差<br><em>（保留字母，不拿來當因子名）</em></td><td>—</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="info-box">
+🧑‍🤝‍🧑 <strong>「受試者」不一定是人</strong>：課本特別註明，𝒮 這個因子代表「觀察的單位」——可以是人、動物、<strong>單字、房子、城市</strong>。<br>
+例如研究「哪些單字比較好記」時，單字就是你的「受試者」。這個觀念在第十章的「隨機因子」討論過，之後的混合效果模型也建立在這上面。
+</div>
+</section>
+
+<!-- §4 -->
+<section id="nest">
+<div class="section-header"><span class="section-num">§4</span><h2>關係一：巢套（nested）</h2></div>
+
+<div class="rel-card rel-nest">
+<h3>🪆 𝒜(ℬ)　讀作「𝒜 巢套在 ℬ 之下」</h3>
+<p style="font-size:15px;line-height:1.9;color:#333"><strong>定義</strong>：第一個因子的每個水準，<u>只出現在</u>第二個因子的某一個水準裡。</p>
+<p style="font-size:14px;line-height:1.85;color:#555;margin-top:10px">
+<strong>生活化的例子</strong>：從甲校選 3 個班、從乙校選 3 個班。<br>
+甲校的「1 班」跟乙校的「1 班」<em>不是同一個班</em>——「班級」這個因子的每個水準只屬於某一所學校。<br>
+所以：<strong>班級 巢套在 學校 之下</strong>，寫作 <span class="formula-badge">𝒜(ℬ)</span>，𝒜 = 班級、ℬ = 學校。
+</p>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🪆 巢套的樣子：每個班只屬於一所學校（格子不是「完全填滿」的）</div>
+<div id="nestGrid"></div>
+<div class="info-box" style="margin-bottom:0;margin-top:14px">
+👀 注意格子的形狀：<strong>每一行只有一個格子是實心的</strong>。班 1–3 只存在於甲校，班 4–6 只存在於乙校。這就是巢套的視覺特徵。
+</div>
+</div>
+
+<div class="warn-box">
+⚠️ <strong>第八章就提醒過的坑：括號外面的才是被巢套的因子</strong><br><br>
+<span class="formula-badge">𝒮(𝒜)</span> 讀作「𝒮 巢套在 𝒜 之下」——<strong>𝒮 才是被巢套的</strong>（每位受試者只出現在一個水準中）。<br>
+括號看起來像「把 𝒜 包起來」，但意思相反。<br><br>
+<strong>記法</strong>：把括號想成「住址」。<span class="formula-badge">𝒮(𝒜)</span> ＝「𝒮 住在 𝒜 裡面」。<br><br>
+<em>（其他課本也可能寫成 𝒜&lt;ℬ&gt;、𝒜[ℬ]、𝒜/ℬ，意思相同。）</em>
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🔗 巢套有「傳遞性」</div>
+<p style="line-height:1.95">在 5 個城市、每市 3 所學校、每校 10 位受試者的設計中：</p>
+<div style="text-align:center;margin:14px 0"><span class="formula-badge" style="font-size:18px">𝒮(𝒜(ℬ))</span></div>
+<p style="line-height:1.95">受試者巢套在學校裡，學校又巢套在城市裡 → <strong>受試者也自動巢套在城市裡</strong>。</p>
+<p style="line-height:1.95;margin-top:8px">為什麼？因為某位受試者只屬於某個班，而那個班只屬於某所學校——所以他必然也只屬於那一個城市。<em>這叫做巢套關係的「傳遞性」。</em></p>
+</div>
+</section>
+
+<!-- §5 -->
+<section id="cross">
+<div class="section-header"><span class="section-num">§5</span><h2>關係二：交叉（crossed）</h2></div>
+
+<div class="rel-card rel-cross">
+<h3>✖️ 𝒜 × ℬ　讀作「𝒜 乘 ℬ」或「𝒜 交叉 ℬ」</h3>
+<p style="font-size:15px;line-height:1.9;color:#333"><strong>定義</strong>：一個因子的<u>每一個</u>水準，都跟另一個因子的<u>每一個</u>水準配對出現。</p>
+<p style="font-size:14px;line-height:1.85;color:#555;margin-top:10px">
+<strong>課本的例子</strong>：𝒜 = 時段（早上／下午／晚上，A = 3），ℬ = 獎賞（有／無，B = 2）。<br>
+如果六種組合全都出現，𝒜 與 ℬ 就是完全交叉的。<br>
+<strong>水準數 = A × B = 3 × 2 = 6</strong> 個實驗條件。
+</p>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">✖️ 交叉的樣子：格子被「填滿」（點按鈕切換因子數）</div>
+<div class="ctrl-row" style="justify-content:center">
+  <button class="mini-btn active" onclick="setCross(2,this)">兩個因子 𝒜×ℬ（3×2 = 6 組）</button>
+  <button class="mini-btn" onclick="setCross(3,this)">三個因子 𝒜×ℬ×𝒞（3×2×2 = 12 組）</button>
+</div>
+<div id="crossGrid"></div>
+<div id="crossNote" style="margin-top:14px"></div>
+</div>
+
+<div class="highlight-box">
+🔁 <strong>交叉的順序無所謂</strong>：𝒜 × ℬ 與 ℬ × 𝒜 定義的是同一組實驗條件。但巢套<em>有</em>順序：𝒜(ℬ) 與 ℬ(𝒜) 完全不同！
+</div>
+
+<div class="magic-box">
+<div class="magic-title">⭐ 特例：當「受試者」也被交叉</div>
+<p style="line-height:1.95">如果<strong>每位受試者都跑過所有實驗條件</strong>，那麼 𝒮 就跟其他因子交叉了。這種設計叫做<strong>重複量數（repeated measures）</strong>。</p>
+<div style="text-align:center;margin:14px 0"><span class="formula-badge" style="font-size:18px">𝒮 × 𝒜 × ℬ × 𝒞</span></div>
+<p style="line-height:1.95">也有人稱為<em>配對樣本</em>（matched）、<em>相關樣本</em>（related）或 <em>yoked</em> 樣本。嚴格來說，「重複量數」一詞專指 𝒮 與<u>所有</u>實驗因子都交叉的情況。</p>
+<p style="line-height:1.95;margin-top:10px;padding:12px;background:rgba(107,63,160,.08);border-radius:8px">
+📐 <strong>書寫慣例</strong>：𝒮 永遠寫在<strong>最前面</strong>，其餘因子按<strong>字母順序</strong>排列。
+</p>
+</div>
+</section>
+
+<!-- §6 -->
+<section id="write">
+<div class="section-header"><span class="section-num">§6</span><h2>把設計寫成公式：三步驟</h2></div>
+
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div class="step-body">
+<h4>找出所有因子，給它們字母</h4>
+<p>別忘了 𝒮（受試者）永遠是其中一個。</p>
+</div></div>
+<div class="step"><div class="step-num">2</div><div class="step-body">
+<h4>逐對判斷：巢套還是交叉？</h4>
+<p>關鍵問句：<strong>「這個因子的某個水準，會同時出現在另一個因子的好幾個水準裡嗎？」</strong><br>
+會 → <em>交叉</em>；不會（只出現在一個裡面）→ <em>巢套</em>。</p>
+</div></div>
+<div class="step"><div class="step-num">3</div><div class="step-body">
+<h4>組合成公式，由左往右讀</h4>
+<p>某因子「巢套在」它右邊那對括號裡的所有因子之下（括號內的內容稱為該因子的<strong>巢 nest</strong>）。</p>
+</div></div>
+</div>
+
+<div class="info-box">
+✂️ <strong>一個省略慣例</strong>：當 𝒮 巢套在<u>所有</u>其他因子之下時，可以<strong>把 𝒮 省略不寫</strong>。<br>
+所以 𝒮(𝒜) 可寫成 <strong>𝒜</strong>、𝒮(𝒜×ℬ) 可寫成 <strong>𝒜×ℬ</strong>、𝒮(𝒜(ℬ)) 可寫成 <strong>𝒜(ℬ)</strong>。<br>
+這類設計統稱「<strong>完全獨立量數設計</strong>」（designs with completely independent measures）。<br><br>
+🔢 <strong>平衡設計可以把人數標上去</strong>：<span class="formula-badge">𝒮₁₀(𝒜₂)</span> 表示 2 個水準、每組 10 人。
+</div>
+</section>
+
+<!-- §7 -->
+<section id="practice">
+<div class="section-header"><span class="section-num">§7</span><h2>動手練習：五個設計，你寫得出公式嗎？</h2></div>
+
+<div class="prose">
+<p>這五題直接取自課本。<strong>先自己想，再點開答案</strong>——這一節是本章真正的練功房。</p>
+</div>
+
+<div class="quiz-ex">
+<div class="qe-q"><strong>1️⃣</strong> 想知道性別對賽跑表現的影響。找 10 位男生、10 位女生，測他們跑 500 公尺的時間。</div>
+<details><summary>👉 看答案與推理</summary>
+<div class="qe-a">
+<strong>因子</strong>：𝒮（受試者）、𝒜（性別，A = 2）<br>
+<strong>關係</strong>：一位受試者只能是男生<u>或</u>女生，不可能兩者都是 → <strong>𝒮 巢套在 𝒜</strong><br>
+<strong>公式</strong>：<span class="formula-badge">𝒮(𝒜)</span>　或標上人數 <span class="formula-badge">𝒮₁₀(𝒜₂)</span>　（也可簡寫成 𝒜）<br><br>
+💡 這就是我們第七到十四章一直在做的設計。
+</div></details>
+</div>
+
+<div class="quiz-ex">
+<div class="qe-q"><strong>2️⃣</strong> 給 20 位學生看 10 張不同的臉，每位學生都要對<u>每一張臉</u>評喜好程度。</div>
+<details><summary>👉 看答案與推理</summary>
+<div class="qe-a">
+<strong>因子</strong>：𝒮（學生，S = 20）、𝒜（臉孔，A = 10）<br>
+<strong>關係</strong>：每位學生都看過<u>全部</u> 10 張臉 → <strong>𝒮 與 𝒜 交叉</strong><br>
+<strong>公式</strong>：<span class="formula-badge">𝒮 × 𝒜</span>　或 <span class="formula-badge">𝒮₂₀ × 𝒜₁₀</span><br><br>
+💡 這是<strong>單因子重複量數設計</strong>——第十八章的主角。
+</div></details>
+</div>
+
+<div class="quiz-ex">
+<div class="qe-q"><strong>3️⃣</strong> 三組各 10 位兒童，年齡分別是 8、9、10 歲。每個孩子都要學<u>四份</u>單字表。</div>
+<details><summary>👉 看答案與推理</summary>
+<div class="qe-a">
+<strong>因子</strong>：𝒮（兒童）、𝒜（年齡，A = 3）、ℬ（單字表，B = 4）<br>
+<strong>關係</strong>：<br>
+・每個孩子只屬於一個年齡層 → <strong>𝒮 巢套在 𝒜</strong><br>
+・每個孩子都學全部四份表 → <strong>𝒮 與 ℬ 交叉</strong><br>
+・每個年齡層都用到全部四份表 → <strong>𝒜 與 ℬ 交叉</strong><br>
+<strong>公式</strong>：<span class="formula-badge">𝒮(𝒜) × ℬ</span><br><br>
+💡 這是<strong>混合設計</strong>（mixed design）——第二十章的主角。
+</div></details>
+</div>
+
+<div class="quiz-ex">
+<div class="qe-q"><strong>4️⃣</strong> 在 5 個城市各選 3 所學校；每校各找 10 位三年級與 10 位六年級學生；每位學生玩新電玩的<u>其中一個</u>版本（共 2 版）。依變數是遊玩時間。</div>
+<details><summary>👉 看答案與推理</summary>
+<div class="qe-a">
+<strong>因子</strong>：𝒮（學生）、𝒜（年級，A = 2）、ℬ（學校，B = 3）、𝒞（城市，C = 5）、𝒟（遊戲版本，D = 2）<br>
+<strong>關係</strong>：<br>
+・學生 ⊂ 年級 ⊂ 學校 ⊂ 城市（層層巢套）<br>
+・每位學生只玩一個版本 → <strong>𝒮 巢套在 𝒟</strong><br>
+・但年級、學校、城市都用到兩個版本 → <strong>𝒜、ℬ、𝒞 與 𝒟 交叉</strong><br>
+<strong>公式</strong>：<span class="formula-badge">𝒮(𝒜(ℬ(𝒞)) × 𝒟)</span>　或 <span class="formula-badge">𝒮₁₀(𝒜₂(ℬ₃(𝒞₅)) × 𝒟₂)</span><br><br>
+📖 <strong>怎麼讀這個公式</strong>：從左往右。𝒮 的「巢」包含 𝒜、ℬ、𝒞、𝒟（整個括號內容）；𝒜 的巢包含 ℬ 和 𝒞。被巢套的因子若與巢<u>外</u>的因子之間有 ×，就表示兩者交叉。<br><br>
+🔄 <strong>追問</strong>：如果每個孩子<u>兩個版本都玩</u>呢？<br>
+→ 那 𝒮 就不再巢套在 𝒟 裡，而是與 𝒟 交叉：<span class="formula-badge">𝒮(𝒜(ℬ(𝒞))) × 𝒟</span><br>
+<em>注意括號的位置整個變了——這就是為什麼公式必須在收資料前寫清楚。</em>
+</div></details>
+</div>
+
+<div class="quiz-ex">
+<div class="qe-q"><strong>5️⃣</strong> 120 位學生各接觸<u>一種</u>文章（科幻／科普／統計）。一半用讀的、一半用聽的。每人接觸<u>同一篇</u>文章四次。一半的人被告知「要逐字記憶」、另一半被告知「要記住意思」。每次呈現後寫下回憶內容。</div>
+<details><summary>👉 看答案與推理</summary>
+<div class="qe-a">
+<strong>因子</strong>：𝒮（學生）、𝒜（文章類型，A = 3）、ℬ（指導語，B = 2）、𝒞（呈現方式：讀／聽，C = 2）、𝒟（第幾次呈現，D = 4）<br>
+<strong>關係</strong>：<br>
+・每位學生只拿到一種文章、一種指導語、一種呈現方式 → <strong>𝒮 巢套在 𝒜×ℬ×𝒞</strong><br>
+・但每位學生都經歷<u>全部四次</u>呈現 → <strong>𝒮 與 𝒟 交叉</strong><br>
+<strong>公式</strong>：<span class="formula-badge">𝒮(𝒜 × ℬ × 𝒞) × 𝒟</span><br><br>
+💡 括號內是「受試者間」的因子（3×2×2 = 12 組），括號外的 𝒟 是「受試者內」的因子。
+</div></details>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🧪 設計公式辨識器：選出每個因子與受試者的關係，看看會組成什麼設計</div>
+<div class="ctrl-row" style="justify-content:center">
+  <div>
+    <label>因子 𝒜 與受試者的關係</label>
+    <button class="mini-btn active" id="fa-n" onclick="setRel('A','nest')">每人只接受一個水準（巢套）</button>
+    <button class="mini-btn" id="fa-c" onclick="setRel('A','cross')">每人都跑過（交叉）</button>
+  </div>
+</div>
+<div class="ctrl-row" style="justify-content:center">
+  <div>
+    <label>因子 ℬ 與受試者的關係</label>
+    <button class="mini-btn active" id="fb-n" onclick="setRel('B','nest')">每人只接受一個水準（巢套）</button>
+    <button class="mini-btn" id="fb-c" onclick="setRel('B','cross')">每人都跑過（交叉）</button>
+  </div>
+</div>
+<div id="designOut"></div>
+</div>
+</section>
+
+<!-- §8 -->
+<section id="four">
+<div class="section-header"><span class="section-num">§8</span><h2>接下來六章的地圖：四種基本設計</h2></div>
+
+<div class="prose">
+<p>複雜的設計都是由這四種基本型組合出來的。<strong>這張表就是第十六～二十一章的目錄。</strong></p>
+</div>
+
+<div class="design-card" style="border-left-color:var(--accent)">
+<div class="dc-f">𝒮(𝒜) 　或簡寫 𝒜</div>
+<div class="dc-n">單因子受試者間設計（已學完 ✓）</div>
+<p>一個自變數，每人只提供一個分數。<strong>第七～十四章</strong>講的就是它。</p>
+</div>
+
+<div class="design-card" style="border-left-color:var(--accent2)">
+<div class="dc-f">𝒮(𝒜 × ℬ) 　或簡寫 𝒜 × ℬ</div>
+<div class="dc-n">二因子受試者間設計 → <a href="ch16.html" style="color:var(--accent2);font-weight:700">第十六章</a>、<a href="ch17.html" style="color:var(--accent2);font-weight:700">第十七章</a></div>
+<p>兩個自變數，不同的人跑不同的條件組合。<strong>交互作用</strong>首次登場。</p>
+</div>
+
+<div class="design-card" style="border-left-color:var(--purple)">
+<div class="dc-f">𝒮 × 𝒜</div>
+<div class="dc-n">單因子重複量數設計 → <a href="ch18.html" style="color:var(--purple);font-weight:700">第十八章</a></div>
+<p>一個自變數，<strong>同一批人跑完所有條件</strong>。好處是每人當自己的控制組，誤差大幅縮小。</p>
+</div>
+
+<div class="design-card" style="border-left-color:var(--teal)">
+<div class="dc-f">𝒮 × 𝒜 × ℬ</div>
+<div class="dc-n">二因子完全重複量數設計 → <a href="ch19.html" style="color:var(--teal);font-weight:700">第十九章</a></div>
+<p>兩個自變數，同一批人跑完<strong>所有組合</strong>。</p>
+</div>
+
+<div class="design-card" style="border-left-color:var(--gold)">
+<div class="dc-f">𝒮(𝒜) × ℬ</div>
+<div class="dc-n">混合設計 / split-plot → <a href="ch20.html" style="color:#8a6a00;font-weight:700">第二十章</a></div>
+<p><strong>一個因子受試者間、一個因子受試者內</strong>——心理學最常見的設計之一。</p>
+<p style="margin-top:8px"><strong>典型情境</strong>：𝒜 = 年齡（年輕／年長），ℬ = 作業難度（難／易）。<br>
+同一個人可以做難題也做易題（ℬ 可重複），但<u>不可能</u>同時是年輕人又是年長人（𝒜 不可重複）。</p>
+</div>
+
+<div class="highlight-box">
+🔤 <strong>兩個要記住的術語</strong>：<br>
+・在 𝒮(𝒜) × ℬ 中，<strong>𝒜 叫做「受試者間因子」（between-subjects factor）</strong>——放在括號裡的那個；<br>
+・<strong>ℬ 叫做「受試者內因子」（within-subjects factor）</strong>——放在括號外的那個。<br><br>
+這種設計在農業統計傳統中有個生動的名字叫 <strong>split-plot（分割區集）</strong>。<br>
+<em>（課本調皮地加註：這個字常被誤拼成 split-<strong>splot</strong>，連好書都會出錯。）</em><br><br>
+📌 另外留意：課本提醒 𝒜 在這個例子裡是<strong>分類變數</strong>（年齡不是你能操弄的），這會影響因果推論的強度——回想第一章。
+</div>
+</section>
+
+<!-- §9 -->
+<section id="control">
+<div class="section-header"><span class="section-num">§9</span><h2>興趣因子 vs 控制因子</h2></div>
+
+<div class="prose">
+<p>設計裡的因子不是地位平等的。課本把它們分成兩類：</p>
+</div>
+
+<div class="vs-grid">
+<div class="vs-card vs-int">
+<h4>🎯 興趣因子（factors of interest）</h4>
+<ul>
+<li>你做這個實驗<strong>就是為了看它的效果</strong></li>
+<li>通常是你能主動操弄的變數</li>
+<li>理論預測的主角</li>
+<li><strong>例</strong>：句子長度對理解的影響</li>
+</ul>
+</div>
+<div class="vs-card vs-ctrl">
+<h4>🎛️ 控制因子（control factors）</h4>
+<ul>
+<li>納入設計是為了<strong>提高實驗的效率</strong></li>
+<li>或為了<strong>明確處理掉潛在的誤差來源</strong></li>
+<li>你懷疑它有影響，但覺得那不是重點</li>
+<li>又叫「次要因子」或「假因子」（pseudo-factors）</li>
+<li><strong>例</strong>：學校、班級、實驗者、性別</li>
+</ul>
+</div>
+</div>
+
+<div class="prose">
+<p><strong>課本的例子</strong>：研究句子長度對兒童閱讀理解的影響。40 位 10 歲兒童讀兩種文本（短句／長句）之一，做理解測驗。孩子來自 5 所學校，每校 2 個混合班級。</p>
+<p style="text-align:center;margin:18px 0"><span class="formula-badge" style="font-size:18px">𝒮(𝒜 × ℬ × 𝒞(𝒟))</span></p>
+<p style="text-align:center;font-size:14px;color:var(--muted)">𝒜 句子長度（興趣因子）｜ℬ 性別｜𝒞 班級｜𝒟 學校　（後三者為控制因子）</p>
+</div>
+
+<div class="chart-wrapper">
+<div class="chart-title">🎛️ 為什麼納入控制因子有用？（拖動看誤差被「吸走」的效果）</div>
+<div class="ctrl-row" style="justify-content:center">
+  <button class="mini-btn active" onclick="setCtrl(0,this)">不納入「學校」因子</button>
+  <button class="mini-btn" onclick="setCtrl(1,this)">納入「學校」當控制因子</button>
+</div>
+<canvas id="ctrlCanvas" height="240"></canvas>
+<div id="ctrlNote" style="margin-top:12px"></div>
+</div>
+
+<div class="prose">
+<p><strong>最常見的控制因子</strong>（課本列舉）：</p>
+<ul style="font-size:14.5px;line-height:2;color:#444;padding-left:22px">
+<li>「<strong>組別</strong>」——同一條件下用了好幾組人時</li>
+<li>「<strong>實驗者</strong>」——由不同人主持不同場次時</li>
+<li>「<strong>施測順序</strong>」——不同組別做作業的順序不同時</li>
+<li>「<strong>時段</strong>」——早上／下午做實驗</li>
+<li>「<strong>受試者特徵</strong>」——性別、年齡、宗教、族群……</li>
+</ul>
+</div>
+
+<div class="warn-box">
+😱 <strong>最棘手的狀況：控制因子與興趣因子產生交互作用</strong><br><br>
+假設甲校的孩子「短句理解得比較好」，乙校卻<strong>相反</strong>。這表示你的核心發現<em>取決於學校</em>——這通常是個令人不快的意外，而且很難解釋。<br><br>
+更麻煩的是，控制因子常常是<strong>分類變數</strong>（學校、性別），所以你會懷疑：這個交互作用是不是來自某個<em>與學校混淆在一起</em>的第三變數（社經地位？師資？）。<br><br>
+<span style="font-weight:700">但換個角度想</span>：如果你能找出造成這個交互作用的變數，那可能就是一個<strong>意料之外的發現</strong>。
+</div>
+
+<div class="magic-box">
+<div class="magic-title">🤔 為什麼不乾脆把控制因子「固定住」？</div>
+<p style="line-height:1.95">既然控制因子不重要，那只用<strong>一位</strong>實驗者、只測<strong>一所</strong>學校，不就把問題消滅了嗎？</p>
+<p style="line-height:1.95;margin-top:10px">可以，但有代價：<strong>你觀察到（或沒觀察到）的效果，可能只在那一位實驗者、那一所學校成立。</strong></p>
+<p style="line-height:1.95;margin-top:12px;padding:12px;background:rgba(107,63,160,.09);border-radius:8px;font-weight:600;color:var(--purple)">
+把控制因子「明確納入」而非「固定住」，提高的是實驗的<strong>生態效度</strong>與<strong>可推論性</strong>（generalizability）。<br>
+這是第一章「內在效度 vs 外在效度」那組權衡，在多因子設計裡的具體展現。
+</p>
+<p style="line-height:1.95;margin-top:12px">📌 最後，課本提醒一個相對主義的重點：<strong>「控制因子」與「興趣因子」的區分來自研究者的目的，不是變數本身的性質。</strong>這個實驗的控制因子，可能正是另一個實驗的興趣因子。</p>
+</div>
+</section>
+
+<!-- §K -->
+<section id="formulas">
+<div class="section-header"><span class="section-num">§K</span><h2>重點整理</h2></div>
+
+<div class="formula-grid">
+<div class="formula-mini"><div class="fm-label">巢套</div><div class="fm-eq">𝒜(ℬ)</div><div class="fm-note">𝒜 的每個水準只出現在 ℬ 的一個水準裡；括號外的才是被巢套的</div></div>
+<div class="formula-mini"><div class="fm-label">交叉</div><div class="fm-eq">𝒜 × ℬ</div><div class="fm-note">水準數 = A × B；順序無所謂</div></div>
+<div class="formula-mini"><div class="fm-label">受試者間設計</div><div class="fm-eq">𝒮(𝒜 × ℬ)　= 𝒜 × ℬ</div><div class="fm-note">𝒮 巢套在全部因子下時可省略</div></div>
+<div class="formula-mini"><div class="fm-label">重複量數設計</div><div class="fm-eq">𝒮 × 𝒜</div><div class="fm-note">𝒮 與實驗因子交叉</div></div>
+<div class="formula-mini"><div class="fm-label">混合設計</div><div class="fm-eq">𝒮(𝒜) × ℬ</div><div class="fm-note">𝒜 受試者間、ℬ 受試者內；又叫 split-plot</div></div>
+<div class="formula-mini"><div class="fm-label">書寫慣例</div><div class="fm-eq">𝒮 放最前面，其餘按字母序</div></div>
+<div class="formula-mini"><div class="fm-label">標註人數</div><div class="fm-eq">𝒮₁₀(𝒜₂)</div><div class="fm-note">下標 = 該因子的水準數</div></div>
+</div>
+
+<h3 style="font-family:'Noto Serif TC',serif;font-size:18px;margin:32px 0 16px;font-weight:700">📌 關鍵概念</h3>
+<div class="notions-grid">
+<div class="notion-item">單因子 vs 多因子</div>
+<div class="notion-item">交互作用</div>
+<div class="notion-item">巢套關係</div>
+<div class="notion-item">交叉關係</div>
+<div class="notion-item">巢套的傳遞性</div>
+<div class="notion-item">設計公式</div>
+<div class="notion-item">受試者間設計</div>
+<div class="notion-item">重複量數設計</div>
+<div class="notion-item">混合（split-plot）設計</div>
+<div class="notion-item">受試者間/內因子</div>
+<div class="notion-item">興趣因子</div>
+<div class="notion-item">控制因子</div>
+<div class="notion-item">生態效度</div>
+</div>
+</section>
+
+<!-- 測驗 -->
+<section id="quiz">
+<div class="section-header"><span class="section-num">§Q</span><h2>複習測驗</h2></div>
+<div id="quizContainer"></div>
+<div style="text-align:center;margin-top:32px">
+<button onclick="resetQuiz()" class="btn">🔄 重新作答</button>
+<div id="quizScore" style="margin-top:16px;font-size:16px;font-weight:700;color:var(--teal);display:none"></div>
+</div>
+</section>
+
+<section style="text-align:center;border-bottom:none">
+<h2 style="font-family:'Noto Serif TC',serif;margin-bottom:16px">繼續學習</h2>
+<p style="color:var(--muted);margin-bottom:24px">地圖畫好了，接下來正式進入第一種多因子設計。<em>交互作用</em>這個全新概念，就在下一章</p>
+<a href="ch16.html" class="btn btn-gold">前往第十六章：二因子 ANOVA →</a>
+</section>
+
+</div>
+
+<footer>
+<a href="ch14.html">← 第十四章</a>  &nbsp;|&nbsp;  <a href="index.html">回首頁</a>  &nbsp;|&nbsp;  <a href="ch16.html">第十六章 →</a><br><br>
+教材製作基於：Abdi, H., Edelman, B., Valentin, D. &amp; Dowling, W. J. (2009). <em>Experimental Design and Analysis for Psychology</em>. Oxford University Press.<br><br>
+© 版權所有　<strong style="color:var(--paper)">葉欲禾（Gary Yu-Ho Yeh）</strong>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{const d=document.documentElement;document.getElementById('progress-bar').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%'});
+
+// ═══ §2 Rubin et al. 交互作用圖 ═══
+function drawRubin(){
+  const c=document.getElementById('rubinCanvas');const W=c.offsetWidth;c.width=W;const H=300;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const pad={l:62,r:130,t:30,b:56},pw=W-pad.l-pad.r,ph=H-pad.t-pad.b;
+  const yOf=v=>pad.t+ph*(1-(v-500)/300);
+  ctx.strokeStyle='#eee';ctx.fillStyle='#aaa';ctx.font='11px JetBrains Mono';ctx.textAlign='right';
+  for(let v=500;v<=800;v+=100){const y=yOf(v);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();ctx.fillText(v,pad.l-6,y+4);}
+  const x1=pad.l+pw*0.25,x2=pad.l+pw*0.75;
+  // 可拆字情境：效果明顯
+  const lines=[
+    {n:'周圍都是「可拆」的字',v:[620,740],col:'#c0392b',dash:false},
+    {n:'周圍都是「不可拆」的字',v:[640,655],col:'#2980b9',dash:true}
+  ];
+  lines.forEach(L=>{
+    ctx.strokeStyle=L.col;ctx.lineWidth=3.5;
+    if(L.dash)ctx.setLineDash([7,4]);
+    ctx.beginPath();ctx.moveTo(x1,yOf(L.v[0]));ctx.lineTo(x2,yOf(L.v[1]));ctx.stroke();
+    ctx.setLineDash([]);ctx.lineWidth=1;
+    [x1,x2].forEach((x,i)=>{ctx.fillStyle=L.col;ctx.beginPath();ctx.arc(x,yOf(L.v[i]),6.5,0,7);ctx.fill();});
+    ctx.fillStyle=L.col;ctx.font='bold 12px "Noto Sans TC"';ctx.textAlign='left';
+    ctx.fillText(L.n,x2+12,yOf(L.v[1])+4);
+  });
+  ctx.strokeStyle='#333';ctx.beginPath();ctx.moveTo(pad.l,yOf(500));ctx.lineTo(W-pad.r,yOf(500));ctx.stroke();
+  ctx.fillStyle='#555';ctx.font='12.5px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('真的可拆（indirect）',x1,H-pad.b+20);
+  ctx.fillText('假可拆（insult）',x2,H-pad.b+20);
+  ctx.fillStyle='#666';ctx.font='12px "Noto Sans TC"';
+  ctx.fillText('目標字的類型',pad.l+pw/2,H-pad.b+40);
+  ctx.save();ctx.translate(16,pad.t+ph/2);ctx.rotate(-Math.PI/2);ctx.fillText('反應時間 (ms)',0,0);ctx.restore();
+  // 標註效果差
+  ctx.strokeStyle='#8a6a00';ctx.lineWidth=2;ctx.setLineDash([3,3]);
+  ctx.beginPath();ctx.moveTo(x2+14,yOf(620));ctx.lineTo(x2+14,yOf(740));ctx.stroke();ctx.setLineDash([]);ctx.lineWidth=1;
+  ctx.fillStyle='#8a6a00';ctx.font='bold 11.5px "Noto Sans TC"';ctx.textAlign='left';
+  ctx.fillText('效果只在這裡出現',x1+10,yOf(700));
+}
+
+// ═══ §4 巢套格子 ═══
+function buildNestGrid(){
+  const schools=['甲校','乙校'],classes=['1 班','2 班','3 班','4 班','5 班','6 班'];
+  let h='<div class="grid-demo" style="grid-template-columns:repeat('+(schools.length+1)+',minmax(66px,1fr));max-width:420px;margin:16px auto">';
+  h+='<div class="gcell hdr">班級＼學校</div>';
+  schools.forEach(s=>h+='<div class="gcell hdr">'+s+'</div>');
+  classes.forEach((cl,i)=>{
+    h+='<div class="gcell hdr">'+cl+'</div>';
+    schools.forEach((s,j)=>{
+      const belongs = (i<3 && j===0)||(i>=3 && j===1);
+      h+='<div class="gcell '+(belongs?'filled':'empty')+'">'+(belongs?'✓':'—')+'</div>';
+    });
+  });
+  document.getElementById('nestGrid').innerHTML=h+'</div>';
+}
+
+// ═══ §5 交叉格子 ═══
+function setCross(n,btn){
+  if(btn){btn.parentElement.querySelectorAll('.mini-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+  const times=['早上','下午','晚上'],reward=['無獎賞','有獎賞'],mat=['文字','圖片'];
+  let h='',total;
+  if(n===2){
+    total=6;
+    h='<div class="grid-demo" style="grid-template-columns:repeat(4,minmax(74px,1fr));max-width:420px;margin:16px auto">';
+    h+='<div class="gcell hdr">　</div>';
+    times.forEach(t=>h+='<div class="gcell hdr">'+t+'</div>');
+    reward.forEach((r,j)=>{
+      h+='<div class="gcell hdr">'+r+'</div>';
+      times.forEach((t,i)=>h+='<div class="gcell filled">a'+(i+1)+'b'+(j+1)+'</div>');
+    });
+    h+='</div>';
+  }else{
+    total=12;
+    h='<div style="max-width:560px;margin:16px auto">';
+    mat.forEach((m,k)=>{
+      h+='<div style="font-size:12.5px;font-weight:700;color:var(--muted);margin:10px 0 6px;text-align:center">𝒞 = '+m+'（c'+(k+1)+'）</div>';
+      h+='<div class="grid-demo" style="grid-template-columns:repeat(4,minmax(64px,1fr))">';
+      h+='<div class="gcell hdr">　</div>';
+      times.forEach(t=>h+='<div class="gcell hdr">'+t+'</div>');
+      reward.forEach((r,j)=>{
+        h+='<div class="gcell hdr">'+r+'</div>';
+        times.forEach((t,i)=>h+='<div class="gcell filled">a'+(i+1)+'b'+(j+1)+'c'+(k+1)+'</div>');
+      });
+      h+='</div>';
+    });
+    h+='</div>';
+  }
+  document.getElementById('crossGrid').innerHTML=h;
+  document.getElementById('crossNote').innerHTML=
+    '<div class="info-box" style="margin:0">👀 <strong>交叉的視覺特徵：格子被完全填滿</strong>——每一種組合都真的存在，共 <strong>'+total+'</strong> 個實驗條件。'+
+    (n===3?'<br>加入第三個因子後，條件數變成 3 × 2 × 2 = 12。<strong style="color:var(--accent)">⚠️ 注意：因子一多，需要的受試者數量會爆炸</strong>——每格 10 人就要 120 人。這是多因子設計的現實限制。':'')+'</div>';
+}
+
+// ═══ §7 設計辨識器 ═══
+const relState={A:'nest',B:'nest'};
+function setRel(f,r){
+  relState[f]=r;
+  const low=f.toLowerCase();
+  document.getElementById('f'+low+'-n').classList.toggle('active',r==='nest');
+  document.getElementById('f'+low+'-c').classList.toggle('active',r==='cross');
+  updDesign();
+}
+function updDesign(){
+  const a=relState.A,b=relState.B;
+  let formula,name,desc,chap,col;
+  if(a==='nest'&&b==='nest'){
+    formula='𝒮(𝒜 × ℬ)　＝　𝒜 × ℬ';
+    name='二因子受試者間設計';
+    desc='每位受試者只跑一種「𝒜 與 ℬ 的組合」。需要的人最多（A×B×S 人），但完全沒有攜帶效應的疑慮。';
+    chap='第十六、十七章';col='#2980b9';
+  }else if(a==='cross'&&b==='cross'){
+    formula='𝒮 × 𝒜 × ℬ';
+    name='二因子完全重複量數設計';
+    desc='每位受試者跑完<strong>所有</strong>組合。用最少的人得到最多資料，誤差也最小——但要小心練習效應與疲勞效應。';
+    chap='第十九章';col='#1a6b6e';
+  }else if(a==='nest'&&b==='cross'){
+    formula='𝒮(𝒜) × ℬ';
+    name='混合設計（split-plot）';
+    desc='𝒜 是受試者間因子（例如年齡、性別——無法重複），ℬ 是受試者內因子（例如作業難度——同一人可以都做）。<strong>心理學最常見的設計之一。</strong>';
+    chap='第二十章';col='#d4a017';
+  }else{
+    formula='𝒮(ℬ) × 𝒜';
+    name='混合設計（split-plot，角色互換）';
+    desc='跟上一個是同一類設計，只是哪個因子當「受試者間」換了人做。<strong>記號慣例上會把受試者間因子寫進括號。</strong>';
+    chap='第二十章';col='#d4a017';
+  }
+  document.getElementById('designOut').innerHTML=
+    '<div class="design-card" style="border-left-color:'+col+';margin:0">'+
+    '<div class="dc-f" style="color:'+col+'">'+formula+'</div>'+
+    '<div class="dc-n">'+name+'　<span style="font-size:12.5px;color:var(--muted);font-weight:400">→ '+chap+'</span></div>'+
+    '<p>'+desc+'</p></div>';
+}
+
+// ═══ §9 控制因子示意 ═══
+let ctrlMode=0;
+function setCtrl(m,btn){ctrlMode=m;
+  if(btn){btn.parentElement.querySelectorAll('.mini-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+  drawCtrl();}
+function drawCtrl(){
+  const c=document.getElementById('ctrlCanvas');const W=c.offsetWidth;c.width=W;const H=240;c.height=H;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const x0=92,bw=W-x0-50,total=100;
+  const parts = ctrlMode===0
+    ? [{n:'句子長度（效果）',v:18,col:'#c0392b'},{n:'誤差（含學校差異）',v:82,col:'#8a8a8a'}]
+    : [{n:'句子長度（效果）',v:18,col:'#c0392b'},{n:'學校（控制因子）',v:34,col:'#1a6b6e'},{n:'誤差（縮小了！）',v:48,col:'#8a8a8a'}];
+  const y=66,h=58;let x=x0;
+  parts.forEach(p=>{
+    const w=bw*p.v/total;
+    ctx.fillStyle=p.col;ctx.fillRect(x,y,w,h);
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.strokeRect(x,y,w,h);ctx.lineWidth=1;
+    if(w>88){ctx.fillStyle='#fff';ctx.font='bold 12.5px "Noto Sans TC"';ctx.textAlign='center';
+      ctx.fillText(p.n,x+w/2,y+26);
+      ctx.font='bold 13px JetBrains Mono';ctx.fillText(p.v+'%',x+w/2,y+45);}
+    x+=w;
+  });
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2;ctx.strokeRect(x0,y,bw,h);ctx.lineWidth=1;
+  ctx.fillStyle='#444';ctx.font='bold 13px "Noto Sans TC"';ctx.textAlign='right';
+  ctx.fillText('總變異',x0-12,y+h/2+5);
+  ctx.fillStyle='#1a1a2e';ctx.font='bold 13px "Noto Sans TC"';ctx.textAlign='center';
+  ctx.fillText('總變異 100%',x0+bw/2,y-14);
+  // F 比值示意
+  const errPct = ctrlMode===0?82:48;
+  const Fval = (18/1)/(errPct/(ctrlMode===0?38:34));
+  ctx.fillStyle='#8a6a00';ctx.font='bold 14px "Noto Sans TC"';
+  ctx.fillText('句子長度的 F ≈ '+Fval.toFixed(2)+(ctrlMode===1?'　（變大了！）':''),x0+bw/2,y+h+36);
+  document.getElementById('ctrlNote').innerHTML= ctrlMode===0
+   ? '<div class="warn-box" style="margin:0">😐 <strong>不納入「學校」</strong>：學校之間的差異（不同師資、不同社經背景）全部被丟進<strong>誤差項</strong>，把分母撐大。<br>結果：就算句子長度真的有效果，也可能被噪音淹沒而測不出來。</div>'
+   : '<div class="highlight-box" style="margin:0">✅ <strong>納入「學校」當控制因子</strong>：學校造成的變異被<strong>單獨切出來</strong>，不再汙染誤差項。<br>分母變小 → <strong>F 變大</strong> → 同樣的效果更容易被偵測到。<br><br>這就是控制因子「提高實驗效率」的具體意思——<em>它不改變效果本身，但讓效果更容易被看見</em>。</div>';
+}
+
+// ═══ 測驗 ═══
+const quizData=[
+ {q:'課本說「能預測交互作用的理論，是更成功的理論」。為什麼？',
+  opts:['因為交互作用的統計檢定力比較高','因為預測交互作用比預測主效果困難——它必須說清楚效果在什麼條件下出現、什麼條件下消失','因為交互作用一定比主效果大','因為期刊比較喜歡交互作用'],
+  ans:1,fb:'很多理論都能解釋「某變數有效果」，但能正確指出「效果何時出現、何時消失」的理論，受到的限制更嚴格、也更容易被推翻——所以通過檢驗時更有說服力。'},
+ {q:'從甲校選 3 個班、從乙校選 3 個班。「班級」與「學校」是什麼關係？',
+  opts:['交叉：班級 × 學校','巢套：班級(學校)','巢套：學校(班級)','無關'],
+  ans:1,fb:'甲校的 1 班跟乙校的 1 班不是同一個班——班級的每個水準只出現在一所學校裡，所以是「班級巢套在學校之下」，寫作 𝒜(ℬ)。'},
+ {q:'在記號 𝒮(𝒜) 中，哪一個因子是「被巢套」的？',
+  opts:['括號裡的 𝒜','括號外的 𝒮','兩者都是','看實驗設計而定'],
+  ans:1,fb:'反直覺但重要：括號外的 𝒮 才是被巢套的因子。記法是把括號想成「住址」：𝒮(𝒜) ＝「𝒮 住在 𝒜 裡面」，也就是每位受試者只出現在 𝒜 的一個水準中。'},
+ {q:'「𝒮 與所有實驗因子交叉」的設計，專有名詞叫什麼？',
+  opts:['受試者間設計','重複量數設計','巢套設計','混合設計'],
+  ans:1,fb:'𝒮 與實驗因子交叉 = 同一批受試者跑過所有條件 = 重複量數（repeated measures）設計，也叫受試者內（within-subjects）設計。'},
+ {q:'𝒮(𝒜) × ℬ 這個設計中，哪個是受試者內因子？',
+  opts:['𝒜','ℬ','兩者都是','兩者都不是'],
+  ans:1,fb:'括號裡的 𝒜 是受試者間因子（每人只接受一個水準），括號外與 𝒮 交叉的 ℬ 才是受試者內因子（每人都跑過所有水準）。這種設計又叫 split-plot。'},
+ {q:'3 個年齡組各 10 位兒童，每個孩子都學 4 份單字表。設計公式是？',
+  opts:['𝒮(𝒜 × ℬ)','𝒮 × 𝒜 × ℬ','𝒮(𝒜) × ℬ','𝒮(𝒜(ℬ))'],
+  ans:2,fb:'孩子只屬於一個年齡層（𝒮 巢套在 𝒜），但每個孩子都學全部四份表（𝒮 與 ℬ 交叉）→ 𝒮(𝒜) × ℬ，是混合設計。'},
+ {q:'課本為什麼說「設計公式要在收資料之前就寫出來」？',
+  opts:['因為期刊審稿會要求','因為寫得出公式就一定分析得出來；寫不出來，資料很可能根本無法分析','因為統計軟體需要先註冊設計','因為這是 APA 規定'],
+  ans:1,fb:'設計公式是實驗設計的健康檢查。寫不出公式，表示因子之間的關係沒想清楚，收完資料往往會發現無法分析。此外統計軟體內部也正是靠這個公式在跑分析。'},
+ {q:'研究句子長度對閱讀理解的影響時，把「學校」納入設計當因子。這麼做的好處是？',
+  opts:['可以提高句子長度的效果量','學校造成的變異被單獨切出來，不再汙染誤差項，使 F 的分母變小、效果更容易被偵測','可以減少所需的受試者人數','可以避免交互作用'],
+  ans:1,fb:'控制因子不改變效果本身，但把原本混在誤差裡的系統性變異抽出來，讓訊噪比提高。此外，相較於「只測一所學校」，納入多所學校也提高了生態效度與可推論性。'},
+ {q:'課本提醒「控制因子與興趣因子的區分」有什麼特性？',
+  opts:['由變數本身的性質決定，不會改變','由研究者的目的決定，不是絕對的——這個實驗的控制因子可能是另一個實驗的興趣因子','由統計軟體自動判斷','由樣本數決定'],
+  ans:1,fb:'這個區分是研究者依研究目的賦予的，不是變數的內在屬性。例如「實驗者」在多數研究中是控制因子，但在研究「實驗者效應」的研究中就是興趣因子。'}
+];
+let score=0,answered=0;
+function renderQuiz(){
+  const ct=document.getElementById('quizContainer');ct.innerHTML='';
+  quizData.forEach((q,qi)=>{
+    const card=document.createElement('div');card.className='quiz-card';
+    card.innerHTML='<div class="quiz-q"><span>'+(qi+1)+'</span>'+q.q+'</div>';
+    const opts=document.createElement('div');opts.className='quiz-opts';
+    q.opts.forEach((o,oi)=>{
+      const b=document.createElement('button');b.className='quiz-opt';b.textContent=String.fromCharCode(65+oi)+'. '+o;
+      b.onclick=()=>{
+        if(card.dataset.done)return;card.dataset.done='1';
+        const fb=card.querySelector('.quiz-feedback');
+        if(oi===q.ans){b.classList.add('selected-correct');fb.className='quiz-feedback show correct';fb.innerHTML='✅ 正確！'+q.fb;score++;}
+        else{b.classList.add('selected-wrong');opts.children[q.ans].classList.add('selected-correct');fb.className='quiz-feedback show wrong';fb.innerHTML='❌ 正解是 '+String.fromCharCode(65+q.ans)+'。'+q.fb;}
+        answered++;
+        if(answered===quizData.length){const s=document.getElementById('quizScore');s.style.display='block';s.textContent='🎉 完成！得分：'+score+' / '+quizData.length;}
+      };
+      opts.appendChild(b);
+    });
+    card.appendChild(opts);
+    const fb=document.createElement('div');fb.className='quiz-feedback';card.appendChild(fb);
+    ct.appendChild(card);
+  });
+}
+function resetQuiz(){score=0;answered=0;document.getElementById('quizScore').style.display='none';renderQuiz();}
+
+function drawAll(){drawRubin();drawCtrl();}
+window.addEventListener('resize',drawAll);
+buildNestGrid();setCross(2,null);updDesign();renderQuiz();drawAll();
+</script>
+</body>
+</html>
